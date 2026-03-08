@@ -19,3 +19,13 @@ The system is developed using CodeIgniter 4 (PHP framework) and MySQL for the da
 - Database: MySQL  
 - IDE / Development Tool: Visual Studio Code  
 - API Testing: Postman
+
+## Setup Instructions
+1. Clone the repository:
+   git clone https://github.com/your-team/WBMM.git
+2. Move project to C:/xampp/htdocs/
+3. Rename `env` to `.env` and configure database
+4. Start Apache & MySQL in XAMPP
+5. Create database `wbmm_db` in phpMyAdmin
+6. Open: http://localhost/WBMM/public/
+7. Test API using Postman collection: WBMM-API
