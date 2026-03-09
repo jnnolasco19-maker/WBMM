@@ -6,6 +6,7 @@ Member:
 - Mohairudin G. Ali
 - Cathrina T. Fado
 - Adrianne M. Lozada
+- Charles Keyan Mark T. Tudal
 
 ## Description
 The Web-Based Market Management System (WBMM) is designed to efficiently manage public market vendors, stalls, and records. It allows market administrators to:  
