@@ -4,6 +4,7 @@ Group: 5
 Member: 
 - Johnnoel B. Nolasco 
 - Mohairudin G. Ali
+- Cathrina T. Fado
 
 
 ## Description
