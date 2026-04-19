@@ -16,3 +16,6 @@ $routes->get('forgot-password',                'AuthController::forgotPasswordFo
 $routes->post('forgot-password',               'AuthController::forgotPasswordProcess');
 $routes->get('reset-password/(:segment)',      'AuthController::resetPasswordForm/$1');
 $routes->post('reset-password/(:segment)',     'AuthController::resetPasswordProcess/$1');
+
+// Dashboard route
+$routes->get('dashboard', 'DashboardController::index');
