@@ -26,6 +26,15 @@
         <testsuite name="App">
             <directory>./tests</directory>
         </testsuite>
+        <testsuite name="Auth Unit">
+            <directory>./tests/unit/Auth</directory>
+        </testsuite>
+        <testsuite name="Auth Feature">
+            <directory>./tests/feature/Auth</directory>
+        </testsuite>
+        <testsuite name="Auth Property">
+            <directory>./tests/property/Auth</directory>
+        </testsuite>
     </testsuites>
     <logging>
         <testdoxHtml outputFile="build/logs/testdox.html"/>
