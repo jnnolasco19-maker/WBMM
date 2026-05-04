@@ -197,6 +197,7 @@ FROM `records`', [], false)
 12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+<<<<<<< HEAD
 DEBUG - 2026-04-19 18:23:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-19 18:23:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.vendors' doesn't exist
@@ -1203,3 +1204,5 @@ DEBUG - 2026-04-19 18:49:50 --> Session: Class initialized using 'CodeIgniter\Se
 DEBUG - 2026-04-19 18:49:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-19 18:49:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-19 18:49:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+=======
+>>>>>>> ccc0df3908d3c5e97c195dd61391846392cb2537
