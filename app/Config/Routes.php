@@ -19,6 +19,10 @@ $routes->post('reset-password/(:segment)',     'AuthController::resetPasswordPro
 
 // Dashboard route
 $routes->get('dashboard', 'DashboardController::index');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
 
 // Vendor routes
 $routes->get('vendors',                    'VendorController::index');
@@ -43,3 +47,8 @@ $routes->post('records/create',            'RecordController::store');
 $routes->get('records/edit/(:num)',        'RecordController::edit/$1');
 $routes->post('records/edit/(:num)',       'RecordController::update/$1');
 $routes->post('records/delete/(:num)',     'RecordController::delete/$1');
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ccc0df3908d3c5e97c195dd61391846392cb2537
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3

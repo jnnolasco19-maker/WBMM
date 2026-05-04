@@ -120,6 +120,7 @@
 
         <?php if ($user_role === 'admin'): ?>
             <div class="col-auto">
+<<<<<<< HEAD
                 <a href="<?= base_url('vendors') ?>" class="btn btn-primary">Manage Vendors</a>
             </div>
             <div class="col-auto">
@@ -134,6 +135,22 @@
             </div>
             <div class="col-auto">
                 <a href="<?= base_url('stalls') ?>" class="btn btn-outline-success">View Stalls</a>
+=======
+                <a href="/vendors" class="btn btn-primary">Manage Vendors</a>
+            </div>
+            <div class="col-auto">
+                <a href="/stalls" class="btn btn-success">Manage Stalls</a>
+            </div>
+            <div class="col-auto">
+                <a href="/records" class="btn btn-purple" style="background:#6f42c1;color:#fff;border-color:#6f42c1;">Manage Records</a>
+            </div>
+        <?php else: ?>
+            <div class="col-auto">
+                <a href="/vendors" class="btn btn-outline-primary">View Vendors</a>
+            </div>
+            <div class="col-auto">
+                <a href="/stalls" class="btn btn-outline-success">View Stalls</a>
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
             </div>
         <?php endif; ?>
 

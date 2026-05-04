@@ -6,10 +6,22 @@
  *   $user_name  string
  *   $user_role  string  'admin' | 'staff'
  */
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
 $currentUri = current_url(true)->getPath();
 $basePath   = rtrim(parse_url(base_url(), PHP_URL_PATH), '/'); // e.g. /WBMM/public
 $isActive   = static fn(string $path): string =>
     str_starts_with($currentUri, $basePath . $path) ? ' active" aria-current="page' : '';
+<<<<<<< HEAD
+=======
+=======
+$currentUri = current_url(true)->getPath(); // e.g. /dashboard
+$isActive   = static fn(string $path): string =>
+    str_starts_with($currentUri, $path) ? ' active" aria-current="page' : '';
+>>>>>>> ccc0df3908d3c5e97c195dd61391846392cb2537
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
 ?>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
@@ -29,6 +41,10 @@ $isActive   = static fn(string $path): string =>
             <!-- Left nav links -->
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
                     <a class="nav-link<?= $isActive('/dashboard') ?>" href="<?= base_url('dashboard') ?>">Dashboard</a>
                 </li>
                 <li class="nav-item">
@@ -40,6 +56,30 @@ $isActive   = static fn(string $path): string =>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/records') ?>" href="<?= base_url('records') ?>">Records</a>
                 </li>
+<<<<<<< HEAD
+=======
+                <?php if ($user_role === 'admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/users') ?>" href="<?= base_url('users') ?>">User Management</a>
+=======
+                    <a class="nav-link<?= $isActive('/dashboard') ?>" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/vendors') ?>" href="/vendors">Vendors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/stalls') ?>" href="/stalls">Stalls</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/records') ?>" href="/records">Records</a>
+                </li>
+                <?php if ($user_role === 'admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/users') ?>" href="/users">User Management</a>
+>>>>>>> ccc0df3908d3c5e97c195dd61391846392cb2537
+                </li>
+                <?php endif; ?>
+>>>>>>> d1cf516220353282350a0e9bc833e37f5f94d7f3
             </ul>
 
             <!-- Right: user info + logout -->
