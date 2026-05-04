@@ -23,15 +23,20 @@ class AuthController extends BaseController
 
     public function loginProcess(): object
     {
-        // --- Rate limit check ---
-        $blockedUntil = session()->get('login_blocked_until');
+        $cache  = \Config\Services::cache();
+        $ip     = $this->request->getIPAddress();
+        $keyAtt = 'login_attempts_' . md5($ip);
+        $keyBlk = 'login_blocked_' . md5($ip);
+
+        // Rate limit check (IP-based, persists across browser tabs) 
+        $blockedUntil = $cache->get($keyBlk);
         if ($blockedUntil && time() < $blockedUntil) {
             $wait = ceil(($blockedUntil - time()) / 60);
             return redirect()->back()
                 ->with('error', "Too many failed attempts. Please wait {$wait} minute(s) before trying again.");
         }
 
-        // --- Input validation ---
+        //  Input validation 
         if (! $this->validate([
             'email'    => 'required|valid_email',
             'password' => 'required|min_length[8]|max_length[72]',
@@ -44,19 +49,19 @@ class AuthController extends BaseController
         $email    = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        // --- Credential check ---
+        //  Credential check
         $userModel = new UserModel();
         $user      = $userModel->findByEmailWithPassword($email);
 
         if (! $user || ! password_verify($password, $user['password'])) {
-            // Increment failed attempts
-            $attempts = (int) session()->get('login_attempts') + 1;
-            session()->set('login_attempts', $attempts);
+            // Increment failed attempts (tracked by IP, not session)
+            $attempts = (int) $cache->get($keyAtt) + 1;
+            $cache->save($keyAtt, $attempts, 300); // store for 5 min
 
             if ($attempts >= 5) {
-                session()->set('login_blocked_until', time() + 600);
+                $cache->save($keyBlk, time() + 300, 300);
                 return redirect()->back()
-                    ->with('error', 'Too many failed attempts. You are blocked for 10 minutes.');
+                    ->with('error', 'Too many failed attempts. You are blocked for 5 minutes.');
             }
 
             return redirect()->back()
@@ -64,7 +69,7 @@ class AuthController extends BaseController
                 ->with('error', 'The email address or password you entered is incorrect.');
         }
 
-        // --- Success: establish session ---
+        //  Success: establish session 
         session()->regenerate(true);
         session()->set([
             'user_id'      => $user['id'],
@@ -73,8 +78,11 @@ class AuthController extends BaseController
             'is_logged_in' => true,
         ]);
 
-        // Clear rate-limit keys
-        session()->remove(['login_attempts', 'login_blocked_until']);
+        // Clear IP-based rate-limit keys on successful login
+        $cache  = \Config\Services::cache();
+        $ip     = $this->request->getIPAddress();
+        $cache->delete('login_attempts_' . md5($ip));
+        $cache->delete('login_blocked_' . md5($ip));
 
         return redirect()->to('/dashboard');
     }
