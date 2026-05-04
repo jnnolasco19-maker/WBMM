@@ -44,7 +44,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="/login" method="post">
+    <form action="<?= base_url('login') ?>" method="post">
         <?= csrf_field() ?>
 
         <div class="form-group">
@@ -61,7 +61,7 @@
     </form>
 
     <div class="links">
-        <a href="/forgot-password">Forgot your password?</a>
+        <a href="<?= base_url('forgot-password') ?>">Forgot your password?</a>
     </div>
 </div>
 </body>

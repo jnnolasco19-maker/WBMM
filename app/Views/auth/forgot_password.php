@@ -35,7 +35,7 @@
         <div class="alert alert-success"><?= esc(session()->getFlashdata('message')) ?></div>
     <?php endif; ?>
 
-    <form action="/forgot-password" method="post">
+    <form action="<?= base_url('forgot-password') ?>" method="post">
         <?= csrf_field() ?>
         <div class="form-group">
             <label for="email">Email Address</label>

@@ -32,7 +32,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="/reset-password/<?= esc($token) ?>" method="post">
+    <form action="<?= base_url('reset-password/' . esc($token)) ?>" method="post">
         <?= csrf_field() ?>
         <div class="form-group">
             <label for="password">New Password (min 8 characters)</label>

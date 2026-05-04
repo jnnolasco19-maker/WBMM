@@ -9,14 +9,25 @@ class AuthSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'name'       => 'Admin User',
-            'email'      => 'admin@wbmm.com',
-            'password'   => password_hash('Admin@1234', PASSWORD_BCRYPT),
-            'role'       => 'admin',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            [
+                'name'       => 'Admin User',
+                'email'      => 'admin@wbmm.com',
+                'password'   => password_hash('Admin@1234', PASSWORD_BCRYPT),
+                'role'       => 'admin',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name'       => 'Staff Member',
+                'email'      => 'staff@wbmm.com',
+                'password'   => password_hash('Staff@1234', PASSWORD_BCRYPT),
+                'role'       => 'staff',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]
         ];
 
-        $this->db->table('users')->insert($data);
+        $this->db->table('users')->emptyTable();
+        $this->db->table('users')->insertBatch($data);
     }
 }
