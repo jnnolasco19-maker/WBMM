@@ -16,3 +16,30 @@ $routes->get('forgot-password',                'AuthController::forgotPasswordFo
 $routes->post('forgot-password',               'AuthController::forgotPasswordProcess');
 $routes->get('reset-password/(:segment)',      'AuthController::resetPasswordForm/$1');
 $routes->post('reset-password/(:segment)',     'AuthController::resetPasswordProcess/$1');
+
+// Dashboard route
+$routes->get('dashboard', 'DashboardController::index');
+
+// Vendor routes
+$routes->get('vendors',                    'VendorController::index');
+$routes->get('vendors/create',             'VendorController::create');
+$routes->post('vendors/create',            'VendorController::store');
+$routes->get('vendors/edit/(:num)',        'VendorController::edit/$1');
+$routes->post('vendors/edit/(:num)',       'VendorController::update/$1');
+$routes->post('vendors/delete/(:num)',     'VendorController::delete/$1');
+
+// Stall routes
+$routes->get('stalls',                     'StallController::index');
+$routes->get('stalls/create',              'StallController::create');
+$routes->post('stalls/create',             'StallController::store');
+$routes->get('stalls/edit/(:num)',         'StallController::edit/$1');
+$routes->post('stalls/edit/(:num)',        'StallController::update/$1');
+$routes->post('stalls/delete/(:num)',      'StallController::delete/$1');
+
+// Record routes
+$routes->get('records',                    'RecordController::index');
+$routes->get('records/create',             'RecordController::create');
+$routes->post('records/create',            'RecordController::store');
+$routes->get('records/edit/(:num)',        'RecordController::edit/$1');
+$routes->post('records/edit/(:num)',       'RecordController::update/$1');
+$routes->post('records/delete/(:num)',     'RecordController::delete/$1');

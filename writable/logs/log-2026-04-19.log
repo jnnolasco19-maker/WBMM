@@ -72,3 +72,1134 @@ Stack trace:
 #14 {main}
 DEBUG - 2026-04-19 15:58:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-04-19 15:58:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 16:04:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 16:14:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:36:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:40:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:44:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:44:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:44:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:44:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:46:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:48:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:48:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:48:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:49:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:49:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:49:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:51:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 17:51:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 17:51:54 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 17:51:54 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 17:51:54 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 17:51:54 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 17:51:54 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 17:51:54 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:23:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:42 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:42 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:42 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:42 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:42 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:42 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:45 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:45 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:45 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:45 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:45 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:45 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:45 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:45 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:45 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:45 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:23:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:46 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:46 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:46 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:46 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:46 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:46 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:46 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:46 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:46 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:46 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:47 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:47 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:48 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:48 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:48 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:48 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:48 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:48 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:48 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:48 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:48 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:48 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:23:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:23:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:23:59 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:59 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:23:59 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:59 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:59 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:59 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:59 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:59 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:23:59 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:23:59 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:35:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:35:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:35:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:35:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:35:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:36:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:36:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:36:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:36:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:36:15 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:36:15 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:36:15 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:36:15 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:36:15 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:36:15 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:36:15 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:36:15 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:36:15 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:36:15 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:37:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-04-19 18:37:01 --> Table 'wbmm_db.vendors' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `vendors`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `vendors`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(17): App\Models\DashboardModel->countTable('vendors')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:37:01 --> [DashboardModel] countTable(vendors) failed: Table 'wbmm_db.vendors' doesn't exist
+ERROR - 2026-04-19 18:37:01 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(18): App\Models\DashboardModel->countTable('stalls')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:37:01 --> [DashboardModel] countTable(stalls) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:37:01 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'occupied\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(19): App\Models\DashboardModel->countWhere('stalls', 'status', 'occupied')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:37:01 --> [DashboardModel] countWhere(stalls, status=occupied) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:37:01 --> Table 'wbmm_db.stalls' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = \'vacant\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `stalls`
+WHERE `status` = :status:', [...], false)
+ 5 APPPATH\Models\DashboardModel.php(65): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(20): App\Models\DashboardModel->countWhere('stalls', 'status', 'vacant')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:37:01 --> [DashboardModel] countWhere(stalls, status=vacant) failed: Table 'wbmm_db.stalls' doesn't exist
+ERROR - 2026-04-19 18:37:01 --> Table 'wbmm_db.records' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(769): CodeIgniter\Database\MySQLi\Connection->execute('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(686): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT COUNT(*) AS `numrows`
+FROM `records`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1733): CodeIgniter\Database\BaseConnection->query('SELECT COUNT(*) AS `numrows`
+FROM `records`', [], false)
+ 5 APPPATH\Models\DashboardModel.php(50): CodeIgniter\Database\BaseBuilder->countAllResults()
+ 6 APPPATH\Models\DashboardModel.php(21): App\Models\DashboardModel->countTable('records')
+ 7 APPPATH\Controllers\DashboardController.php(24): App\Models\DashboardModel->getAdminStats()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\DashboardController->index()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DashboardController))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-04-19 18:37:01 --> [DashboardModel] countTable(records) failed: Table 'wbmm_db.records' doesn't exist
+DEBUG - 2026-04-19 18:43:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:43:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:44:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:44:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-04-19 18:49:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
