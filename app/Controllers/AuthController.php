@@ -189,4 +189,40 @@ class AuthController extends BaseController
         return redirect()->to('/login')
             ->with('message', 'Your password has been reset. Please log in.');
     }
+
+    // -------------------------------------------------------------------------
+    // REGISTER
+    // -------------------------------------------------------------------------
+
+    public function registerForm(): string|object
+    {
+        if (session()->get('is_logged_in')) {
+            return redirect()->to('/dashboard');
+        }
+        return view('auth/register');
+    }
+
+    public function registerProcess(): object
+    {
+        if (! $this->validate([
+            'name'     => 'required|min_length[3]|max_length[100]',
+            'email'    => 'required|valid_email|is_unique[users.email]',
+            'password' => 'required|min_length[8]|max_length[72]',
+        ])) {
+            return redirect()->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
+        }
+
+        $userModel = new UserModel();
+        $userModel->insert([
+            'name'     => $this->request->getPost('name'),
+            'email'    => $this->request->getPost('email'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
+            'role'     => 'staff', // Default role for public registration
+        ]);
+
+        return redirect()->to('/login')
+            ->with('message', 'Registration successful. Please log in.');
+    }
 }

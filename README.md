@@ -86,6 +86,8 @@ The Web-Based Market Management System (WBMM) is a web-based application designe
 - Email: `admin@wbmm.com`
 - Password: `Admin@1234`
 
+- Email: `staff@wbmm.com`
+- Password: `Staff@1234`
 ## System Workflow
 ```
 [Login] → [Dashboard] → [Vendors / Stalls / Records]

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — WBMM</title>
+    <title>Register — WBMM</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #f4f6f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -14,9 +14,9 @@
         .alert-success { background: #e8f5e9; color: #27ae60; border: 1px solid #c3e6cb; }
         .form-group { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.4rem; font-size: 0.9rem; color: #555; }
-        input[type="email"], input[type="password"] { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+        input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
         input:focus { outline: none; border-color: #3498db; }
-        button[type="submit"] { width: 100%; padding: 0.75rem; background: #3498db; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        button[type="submit"] { width: 100%; padding: 0.75rem; background: #3498db; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; margin-top: 10px; }
         button[type="submit"]:hover { background: #2980b9; }
         .links { margin-top: 1rem; text-align: center; font-size: 0.85rem; }
         .links a { color: #3498db; text-decoration: none; }
@@ -24,14 +24,10 @@
 </head>
 <body>
 <div class="card">
-    <h2>WBMM Login</h2>
+    <h2>Register</h2>
 
     <?php if (session()->getFlashdata('error')): ?>
         <div class="alert alert-error"><?= esc(session()->getFlashdata('error')) ?></div>
-    <?php endif; ?>
-
-    <?php if (session()->getFlashdata('message')): ?>
-        <div class="alert alert-success"><?= esc(session()->getFlashdata('message')) ?></div>
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('errors')): ?>
@@ -44,8 +40,13 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?= base_url('login') ?>" method="post">
+    <form action="<?= base_url('register') ?>" method="post">
         <?= csrf_field() ?>
+
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" value="<?= esc(old('name')) ?>" required>
+        </div>
 
         <div class="form-group">
             <label for="email">Email Address</label>
@@ -54,15 +55,14 @@
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" autocomplete="off" required>
+            <input type="password" id="password" name="password" autocomplete="new-password" required>
         </div>
 
-        <button type="submit">Log In</button>
+        <button type="submit">Register</button>
     </form>
 
     <div class="links">
-        <a href="<?= base_url('forgot-password') ?>">Forgot your password?</a><br><br>
-        <a href="<?= base_url('register') ?>">Don't have an account? Register</a>
+        <a href="<?= base_url('login') ?>">Already have an account? Log in</a>
     </div>
 </div>
 </body>

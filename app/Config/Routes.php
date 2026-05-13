@@ -12,6 +12,8 @@ $routes->get('login',                          'AuthController::loginForm');
 $routes->post('login',                         'AuthController::loginProcess');
 $routes->post('logout',                        'AuthController::logout');
 $routes->get('logout',                         'AuthController::logoutGet');
+$routes->get('register',                       'AuthController::registerForm');
+$routes->post('register',                      'AuthController::registerProcess');
 $routes->get('forgot-password',                'AuthController::forgotPasswordForm');
 $routes->post('forgot-password',               'AuthController::forgotPasswordProcess');
 $routes->get('reset-password/(:segment)',      'AuthController::resetPasswordForm/$1');
@@ -43,3 +45,15 @@ $routes->post('records/create',            'RecordController::store');
 $routes->get('records/edit/(:num)',        'RecordController::edit/$1');
 $routes->post('records/edit/(:num)',       'RecordController::update/$1');
 $routes->post('records/delete/(:num)',     'RecordController::delete/$1');
+
+// Profile routes
+$routes->get('profile',                    'UserController::profile');
+$routes->post('profile',                   'UserController::updateProfile');
+
+// User Management routes
+$routes->get('users',                      'UserController::index');
+$routes->get('users/create',               'UserController::create');
+$routes->post('users/create',              'UserController::store');
+$routes->get('users/edit/(:num)',          'UserController::edit/$1');
+$routes->post('users/edit/(:num)',         'UserController::update/$1');
+$routes->post('users/delete/(:num)',       'UserController::delete/$1');

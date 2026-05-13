@@ -40,14 +40,19 @@ $isActive   = static fn(string $path): string =>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/records') ?>" href="<?= base_url('records') ?>">Records</a>
                 </li>
+                <?php if (isset($user_role) && $user_role === 'admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link<?= $isActive('/users') ?>" href="<?= base_url('users') ?>">Users</a>
+                </li>
+                <?php endif; ?>
             </ul>
 
             <!-- Right: user info + logout -->
             <div class="d-flex align-items-center gap-3">
-                <span class="text-white-50 small d-none d-md-inline">
+                <a href="<?= base_url('profile') ?>" class="text-white text-decoration-none small d-none d-md-inline">
                     <?= esc($user_name) ?>
                     <span class="badge bg-secondary ms-1"><?= esc(ucfirst($user_role)) ?></span>
-                </span>
+                </a>
                 <form action="<?= base_url('logout') ?>" method="post" class="m-0">
                     <?= csrf_field() ?>
                     <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
