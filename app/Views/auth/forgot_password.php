@@ -45,7 +45,7 @@
     </form>
 
     <div class="links">
-        <a href="/login">Back to Login</a>
+        <a href="<?= base_url('login') ?>">Back to Login</a>
     </div>
 </div>
 </body>

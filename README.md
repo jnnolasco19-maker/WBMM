@@ -88,14 +88,10 @@ The Web-Based Market Management System (WBMM) is a web-based application designe
 
 - Email: `staff@wbmm.com`
 - Password: `Staff@1234`
-## System Workflow
-```
-[Login] → [Dashboard] → [Vendors / Stalls / Records]
-              ↓
-         Role Check
-         Admin: Full CRUD + all stats
-         Staff: Read-only + create records
-```
+## WBMM System Workflow Diagram
+The system workflow represents the user journey and operations across modules. In addition to user routing, it outlines the specific **input parameters** processed by each stage.
+
+![System Workflow Diagram](public/system_workflow_diagram.png)
 
 ## Known Issues and Resolutions
 | Issue | Resolution |
