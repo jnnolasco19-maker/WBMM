@@ -11,7 +11,6 @@ class UserModel extends Model
 
     // Removed role_id
     protected $allowedFields = ['name', 'email', 'password', 'role'];
-
     protected $useTimestamps = true;
     protected $returnType    = 'array';
 
@@ -38,6 +37,7 @@ class UserModel extends Model
     }
 
     /**
+
      * Find user by ID
      */
     public function findWithRole(int $userId): ?array
@@ -86,3 +86,4 @@ class UserModel extends Model
         return $this->update($id, ['password' => $hash]);
     }
 }
+

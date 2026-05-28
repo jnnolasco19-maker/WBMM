@@ -3,16 +3,21 @@
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
+use CodeIgniter\CLI\CLI;
 
 class AuthSeeder extends Seeder
 {
     public function run(): void
     {
-        // Get role IDs from roles table
-        $adminRole = $this->db->table('roles')->where('role_name', 'admin')->get()->getRowArray();
-        $managerRole = $this->db->table('roles')->where('role_name', 'manager')->get()->getRowArray();
-        $staffRole = $this->db->table('roles')->where('role_name', 'staff')->get()->getRowArray();
-        $cashierRole = $this->db->table('roles')->where('role_name', 'cashier')->get()->getRowArray();
+        $rolesTable = $this->db->table('roles');
+
+        // Get role IDs safely
+        $adminRole   = $rolesTable->where('role_name', 'admin')->get()->getRowArray();
+        $managerRole = $rolesTable->where('role_name', 'manager')->get()->getRowArray();
+        $staffRole   = $rolesTable->where('role_name', 'staff')->get()->getRowArray();
+        $cashierRole = $rolesTable->where('role_name', 'cashier')->get()->getRowArray();
+
+        $now = date('Y-m-d H:i:s');
 
         $data = [
             [
@@ -20,47 +25,51 @@ class AuthSeeder extends Seeder
                 'email'      => 'admin@wbmm.com',
                 'password'   => password_hash('Admin@1234', PASSWORD_BCRYPT),
                 'role'       => 'admin',
-                'role_id'    => $adminRole['id'] ?? null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'role_id'   => $adminRole['id'] ?? null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name'       => 'Manager User',
                 'email'      => 'manager@wbmm.com',
                 'password'   => password_hash('Manager@1234', PASSWORD_BCRYPT),
                 'role'       => 'manager',
-                'role_id'    => $managerRole['id'] ?? null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'role_id'   => $managerRole['id'] ?? null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name'       => 'Staff Member',
                 'email'      => 'staff@wbmm.com',
                 'password'   => password_hash('Staff@1234', PASSWORD_BCRYPT),
                 'role'       => 'staff',
-                'role_id'    => $staffRole['id'] ?? null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'role_id'   => $staffRole['id'] ?? null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name'       => 'Cashier User',
                 'email'      => 'cashier@wbmm.com',
                 'password'   => password_hash('Cashier@1234', PASSWORD_BCRYPT),
                 'role'       => 'cashier',
-                'role_id'    => $cashierRole['id'] ?? null,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]
+                'role_id'   => $cashierRole['id'] ?? null,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
         ];
 
-        $this->db->table('users')->emptyTable();
-        $this->db->table('users')->insertBatch($data);
-        
-        echo "Auth Seeder completed successfully.\n";
-        echo "Created 4 test users:\n";
-        echo "  - admin@wbmm.com / Admin@1234\n";
-        echo "  - manager@wbmm.com / Manager@1234\n";
-        echo "  - staff@wbmm.com / Staff@1234\n";
-        echo "  - cashier@wbmm.com / Cashier@1234\n";
+        $usersTable = $this->db->table('users');
+
+        // Proper way to clear table in CI4
+        $usersTable->truncate();
+
+        $usersTable->insertBatch($data);
+
+        CLI::write("Auth Seeder completed successfully.", 'green');
+        CLI::write("Created 4 test users:");
+        CLI::write("  - admin@wbmm.com / Admin@1234");
+        CLI::write("  - manager@wbmm.com / Manager@1234");
+        CLI::write("  - staff@wbmm.com / Staff@1234");
+        CLI::write("  - cashier@wbmm.com / Cashier@1234");
     }
 }

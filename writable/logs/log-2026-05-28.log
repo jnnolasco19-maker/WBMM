@@ -304,3 +304,10 @@ DEBUG - 2026-05-28 11:46:04 --> Session: Class initialized using 'CodeIgniter\Se
 DEBUG - 2026-05-28 11:57:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-05-28 11:57:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2026-05-28 11:57:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-05-28 12:58:21 --> ParseError: syntax error, unexpected token "<<", expecting end of file
+[Method: CLI, Route: cache:clear]
+in APPPATH\Config\Routes.php on line 22.
+ 1 SYSTEMPATH\CLI\Console.php(41): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\Boot.php(442): CodeIgniter\CLI\Console->run()
+ 3 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+ 4 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
