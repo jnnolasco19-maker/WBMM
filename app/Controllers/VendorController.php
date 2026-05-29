@@ -3,87 +3,58 @@
 namespace App\Controllers;
 
 use App\Models\VendorModel;
-use App\Models\StallModel;
 
 class VendorController extends BaseController
 {
-    private function getRole(): string
+    private function checkAdminOnly()
     {
-        return (string) session()->get('user_role');
-    }
-
-    private function requireAdmin(): ?object
-    {
-        $role = $this->getRole();
-        if ($role === 'admin') {
-            return null;
+        if (session()->get('user_role') !== 'admin') {
+            return true; // restricted
         }
-        if (! in_array($role, ['admin', 'staff'], true)) {
-            session()->destroy();
-            return redirect()->to(base_url('login'));
-        }
-        return $this->response->setStatusCode(403)->setBody(view('errors/403', [
-            'user_name' => session()->get('user_name'),
-            'user_role' => $role,
-        ]));
+        return false;
     }
-
-    // -------------------------------------------------------------------------
-    // LIST
-    // -------------------------------------------------------------------------
 
     public function index(): string|object
     {
-        $role = $this->getRole();
-        if (! in_array($role, ['admin', 'staff'], true)) {
-            session()->destroy();
-            return redirect()->to(base_url('login'));
-        }
+        $model        = new VendorModel();
+        $search       = (string) $this->request->getGet('search');
+        $section      = (string) $this->request->getGet('section');
+        $status       = (string) $this->request->getGet('status');
+        $expiringSoon = (bool) $this->request->getGet('expiring_soon');
 
-        $model  = new VendorModel();
-        $search = (string) $this->request->getGet('search');
-        $status = (string) $this->request->getGet('status');
-
-        $vendors = $model->getFiltered($search, $status)->paginate(15, 'vendors');
+        $vendors = $model->getFiltered($search, $section, $status, $expiringSoon)->paginate(15, 'vendors');
 
         return view('vendors/index', [
-            'page_title' => 'Vendors',
-            'user_name'  => session()->get('user_name'),
-            'user_role'  => $role,
-            'vendors'    => $vendors,
-            'pager'      => $model->pager,
-            'search'     => $search,
-            'status'     => $status,
+            'page_title'    => 'Vendors Directory',
+            'user_name'     => session()->get('user_name'),
+            'user_role'     => session()->get('user_role'),
+            'vendors'       => $vendors,
+            'pager'         => $model->pager,
+            'search'        => $search,
+            'section'       => $section,
+            'status'        => $status,
+            'expiring_soon' => $expiringSoon
         ]);
     }
 
-    // -------------------------------------------------------------------------
-    // CREATE
-    // -------------------------------------------------------------------------
-
     public function create(): string|object
     {
-        $guard = $this->requireAdmin();
-        if ($guard !== null) return $guard;
-
         return view('vendors/create', [
-            'page_title' => 'Add Vendor',
+            'page_title' => 'Register Vendor',
             'user_name'  => session()->get('user_name'),
-            'user_role'  => $this->getRole(),
-            'validation' => null,
+            'user_role'  => session()->get('user_role')
         ]);
     }
 
     public function store(): object
     {
-        $guard = $this->requireAdmin();
-        if ($guard !== null) return $guard;
-
         $rules = [
-            'name'           => 'required|max_length[150]',
-            'email'          => 'permit_empty|valid_email|max_length[150]',
-            'contact_number' => 'permit_empty|max_length[20]',
-            'status'         => 'required|in_list[active,inactive]',
+            'name'          => 'required|min_length[3]|max_length[100]',
+            'stall_number'  => 'required|is_unique[vendors.stall_number]|max_length[50]',
+            'section'       => 'required|in_list[Dry Goods,Wet Market,Livestock,Commercial]',
+            'contact'       => 'permit_empty|max_length[20]',
+            'permit_expiry' => 'required|valid_date[Y-m-d]',
+            'status'        => 'required|in_list[active,inactive]'
         ];
 
         if (! $this->validate($rules)) {
@@ -91,73 +62,64 @@ class VendorController extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $email = trim((string) $this->request->getPost('email'));
-
-        // Unique email check
-        if ($email !== '') {
-            $model = new VendorModel();
-            if ($model->where('email', $email)->first()) {
-                return redirect()->back()->withInput()
-                    ->with('errors', ['email' => 'This email address is already in use.']);
-            }
-        }
-
         $model = new VendorModel();
         $model->insert([
-            'name'           => $this->request->getPost('name'),
-            'contact_number' => $this->request->getPost('contact_number'),
-            'email'          => $email ?: null,
-            'address'        => $this->request->getPost('address'),
-            'status'         => $this->request->getPost('status'),
+            'name'          => $this->request->getPost('name'),
+            'stall_number'  => $this->request->getPost('stall_number'),
+            'section'       => $this->request->getPost('section'),
+            'contact'       => $this->request->getPost('contact') ?: null,
+            'permit_expiry' => $this->request->getPost('permit_expiry'),
+            'status'        => $this->request->getPost('status')
         ]);
 
-        return redirect()->to(base_url('vendors'))
-            ->with('message', 'Vendor created successfully.');
-    }
+        $vendorId = $model->getInsertID();
+        $this->logActivity('Registered vendor: ' . $this->request->getPost('name'), 'vendors', $vendorId);
 
-    // -------------------------------------------------------------------------
-    // EDIT / UPDATE
-    // -------------------------------------------------------------------------
+        return redirect()->to('/vendors')
+            ->with('message', 'Vendor registered successfully.');
+    }
 
     public function edit(int $id): string|object
     {
-        $guard = $this->requireAdmin();
-        if ($guard !== null) return $guard;
+        if ($this->checkAdminOnly()) {
+            return redirect()->to('/vendors')->with('error', 'Access Denied. Admin privileges required.');
+        }
 
         $model  = new VendorModel();
         $vendor = $model->find($id);
 
         if (! $vendor) {
-            return redirect()->to(base_url('vendors'))
-                ->with('error', 'Vendor not found.');
+            return redirect()->to('/vendors')->with('error', 'Vendor not found.');
         }
 
         return view('vendors/edit', [
-            'page_title' => 'Edit Vendor',
+            'page_title' => 'Edit Vendor Profile',
             'user_name'  => session()->get('user_name'),
-            'user_role'  => $this->getRole(),
-            'vendor'     => $vendor,
+            'user_role'  => session()->get('user_role'),
+            'vendor'     => $vendor
         ]);
     }
 
     public function update(int $id): object
     {
-        $guard = $this->requireAdmin();
-        if ($guard !== null) return $guard;
+        if ($this->checkAdminOnly()) {
+            return redirect()->to('/vendors')->with('error', 'Access Denied. Admin privileges required.');
+        }
 
         $model  = new VendorModel();
         $vendor = $model->find($id);
 
         if (! $vendor) {
-            return redirect()->to(base_url('vendors'))
-                ->with('error', 'Vendor not found.');
+            return redirect()->to('/vendors')->with('error', 'Vendor not found.');
         }
 
         $rules = [
-            'name'           => 'required|max_length[150]',
-            'email'          => 'permit_empty|valid_email|max_length[150]',
-            'contact_number' => 'permit_empty|max_length[20]',
-            'status'         => 'required|in_list[active,inactive]',
+            'name'          => 'required|min_length[3]|max_length[100]',
+            'stall_number'  => 'required|is_unique[vendors.stall_number,id,' . $id . ']|max_length[50]',
+            'section'       => 'required|in_list[Dry Goods,Wet Market,Livestock,Commercial]',
+            'contact'       => 'permit_empty|max_length[20]',
+            'permit_expiry' => 'required|valid_date[Y-m-d]',
+            'status'        => 'required|in_list[active,inactive]'
         ];
 
         if (! $this->validate($rules)) {
@@ -165,53 +127,38 @@ class VendorController extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $email = trim((string) $this->request->getPost('email'));
-
-        // Unique email check — exclude current vendor
-        if ($email !== '') {
-            $duplicate = $model->where('email', $email)->where('id !=', $id)->first();
-            if ($duplicate) {
-                return redirect()->back()->withInput()
-                    ->with('errors', ['email' => 'This email address is already in use.']);
-            }
-        }
-
         $model->update($id, [
-            'name'           => $this->request->getPost('name'),
-            'contact_number' => $this->request->getPost('contact_number'),
-            'email'          => $email ?: null,
-            'address'        => $this->request->getPost('address'),
-            'status'         => $this->request->getPost('status'),
+            'name'          => $this->request->getPost('name'),
+            'stall_number'  => $this->request->getPost('stall_number'),
+            'section'       => $this->request->getPost('section'),
+            'contact'       => $this->request->getPost('contact') ?: null,
+            'permit_expiry' => $this->request->getPost('permit_expiry'),
+            'status'        => $this->request->getPost('status')
         ]);
 
-        return redirect()->to(base_url('vendors'))
-            ->with('message', 'Vendor updated successfully.');
-    }
+        $this->logActivity('Updated vendor profile for: ' . $this->request->getPost('name'), 'vendors', $id);
 
-    // -------------------------------------------------------------------------
-    // DELETE
-    // -------------------------------------------------------------------------
+        return redirect()->to('/vendors')
+            ->with('message', 'Vendor profile updated successfully.');
+    }
 
     public function delete(int $id): object
     {
-        $guard = $this->requireAdmin();
-        if ($guard !== null) return $guard;
+        if ($this->checkAdminOnly()) {
+            return redirect()->to('/vendors')->with('error', 'Access Denied. Admin privileges required.');
+        }
 
         $model  = new VendorModel();
         $vendor = $model->find($id);
 
         if (! $vendor) {
-            return redirect()->to(base_url('vendors'))
-                ->with('error', 'Vendor not found.');
+            return redirect()->to('/vendors')->with('error', 'Vendor not found.');
         }
 
-        // Vacate stalls assigned to this vendor before deleting
-        $stallModel = new StallModel();
-        $stallModel->vacateByVendor($id);
-
         $model->delete($id);
+        $this->logActivity('Deleted vendor: ' . $vendor['name'], 'vendors', $id);
 
-        return redirect()->to(base_url('vendors'))
+        return redirect()->to('/vendors')
             ->with('message', 'Vendor deleted successfully.');
     }
 }

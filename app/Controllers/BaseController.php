@@ -42,4 +42,19 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
     }
+
+    /**
+     * Log actions inside the audit_logs table for compliance and tracking.
+     */
+    protected function logActivity(string $action, string $table, ?int $recordId = null): void
+    {
+        $userId = session()->get('user_id');
+        $auditModel = new \App\Models\AuditLogModel();
+        $auditModel->insert([
+            'user_id'        => $userId ?: null,
+            'action'         => $action,
+            'table_affected' => $table,
+            'record_id'      => $recordId,
+        ]);
+    }
 }

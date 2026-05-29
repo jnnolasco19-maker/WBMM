@@ -1,104 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($page_title) ?> — WBMM</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
-    <style>body { background-color: #f4f6f8; }</style>
-</head>
-<body>
+<?= $this->extend('layouts/main') ?>
 
-<?= view('layouts/navbar', ['user_name' => $user_name, 'user_role' => $user_role]) ?>
+<?= $this->section('content') ?>
 
-<main class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+            <h1 class="h3 fw-bold mb-0">Modify Vendor Profile</h1>
+        </div>
 
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary btn-sm">← Back</a>
-                <h1 class="h4 mb-0">Edit Vendor</h1>
-            </div>
+        <?php $errors = session()->getFlashdata('errors') ?? []; ?>
 
-            <?php $errors = session()->getFlashdata('errors') ?? []; ?>
-            <?php if (! empty($errors)): ?>
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        <?php foreach ($errors as $err): ?>
-                            <li><?= esc($err) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+        <div class="card card-custom">
+            <div class="card-body p-4 p-md-5">
+                <form action="<?= base_url('vendors/edit/' . $vendor['id']) ?>" method="post" novalidate>
+                    <?= csrf_field() ?>
 
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form action="<?= base_url('vendors/edit/' . $vendor['id']) ?>" method="post" novalidate>
-                        <?= csrf_field() ?>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" id="name" name="name"
-                                   class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>"
-                                   value="<?= esc(old('name', $vendor['name'])) ?>" maxlength="150" required>
+                    <div class="row g-4">
+                        <!-- Vendor Name -->
+                        <div class="col-12">
+                            <label for="name" class="form-label fw-semibold text-dark">Vendor Name <span class="text-danger">*</span></label>
+                            <input type="text" id="name" name="name" class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>" placeholder="Full Legal Name" value="<?= esc(old('name', $vendor['name'])) ?>" required>
                             <?php if (isset($errors['name'])): ?>
                                 <div class="invalid-feedback"><?= esc($errors['name']) ?></div>
                             <?php endif; ?>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="contact_number" class="form-label">Contact Number</label>
-                            <input type="text" id="contact_number" name="contact_number"
-                                   class="form-control <?= isset($errors['contact_number']) ? 'is-invalid' : '' ?>"
-                                   value="<?= esc(old('contact_number', $vendor['contact_number'])) ?>" maxlength="20">
-                            <?php if (isset($errors['contact_number'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['contact_number']) ?></div>
+                        <!-- Stall Number -->
+                        <div class="col-12 col-md-6">
+                            <label for="stall_number" class="form-label fw-semibold text-dark">Stall Number <span class="text-danger">*</span></label>
+                            <input type="text" id="stall_number" name="stall_number" class="form-control <?= isset($errors['stall_number']) ? 'is-invalid' : '' ?>" placeholder="e.g. STALL-001" value="<?= esc(old('stall_number', $vendor['stall_number'])) ?>" required>
+                            <?php if (isset($errors['stall_number'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['stall_number']) ?></div>
                             <?php endif; ?>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" name="email"
-                                   class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
-                                   value="<?= esc(old('email', $vendor['email'])) ?>" maxlength="150">
-                            <?php if (isset($errors['email'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['email']) ?></div>
+                        <!-- Section Dropdown -->
+                        <div class="col-12 col-md-6">
+                            <label for="section" class="form-label fw-semibold text-dark">Market Section <span class="text-danger">*</span></label>
+                            <select id="section" name="section" class="form-select <?= isset($errors['section']) ? 'is-invalid' : '' ?>" required>
+                                <option value="">-- Choose Section --</option>
+                                <option value="Dry Goods" <?= old('section', $vendor['section']) === 'Dry Goods' ? 'selected' : '' ?>>Dry Goods</option>
+                                <option value="Wet Market" <?= old('section', $vendor['section']) === 'Wet Market' ? 'selected' : '' ?>>Wet Market</option>
+                                <option value="Livestock" <?= old('section', $vendor['section']) === 'Livestock' ? 'selected' : '' ?>>Livestock</option>
+                                <option value="Commercial" <?= old('section', $vendor['section']) === 'Commercial' ? 'selected' : '' ?>>Commercial</option>
+                            </select>
+                            <?php if (isset($errors['section'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['section']) ?></div>
                             <?php endif; ?>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <textarea id="address" name="address" class="form-control" rows="3"><?= esc(old('address', $vendor['address'])) ?></textarea>
+                        <!-- Contact -->
+                        <div class="col-12 col-md-6">
+                            <label for="contact" class="form-label fw-semibold text-dark">Contact Number</label>
+                            <input type="text" id="contact" name="contact" class="form-control <?= isset($errors['contact']) ? 'is-invalid' : '' ?>" placeholder="09xxxxxxxxx" value="<?= esc(old('contact', $vendor['contact'])) ?>">
+                            <?php if (isset($errors['contact'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['contact']) ?></div>
+                            <?php endif; ?>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                            <select id="status" name="status" class="form-select <?= isset($errors['status']) ? 'is-invalid' : '' ?>">
-                                <option value="active"   <?= old('status', $vendor['status']) === 'active'   ? 'selected' : '' ?>>Active</option>
+                        <!-- Permit Expiry -->
+                        <div class="col-12 col-md-6">
+                            <label for="permit_expiry" class="form-label fw-semibold text-dark">Permit Expiration Date <span class="text-danger">*</span></label>
+                            <input type="date" id="permit_expiry" name="permit_expiry" class="form-control <?= isset($errors['permit_expiry']) ? 'is-invalid' : '' ?>" value="<?= esc(old('permit_expiry', $vendor['permit_expiry'])) ?>" required>
+                            <?php if (isset($errors['permit_expiry'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['permit_expiry']) ?></div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Status Option -->
+                        <div class="col-12">
+                            <label for="status" class="form-label fw-semibold text-dark">Stall Lease Status <span class="text-danger">*</span></label>
+                            <select id="status" name="status" class="form-select <?= isset($errors['status']) ? 'is-invalid' : '' ?>" required>
+                                <option value="active" <?= old('status', $vendor['status']) === 'active' ? 'selected' : '' ?>>Active</option>
                                 <option value="inactive" <?= old('status', $vendor['status']) === 'inactive' ? 'selected' : '' ?>>Inactive</option>
                             </select>
                             <?php if (isset($errors['status'])): ?>
                                 <div class="invalid-feedback"><?= esc($errors['status']) ?></div>
                             <?php endif; ?>
                         </div>
+                    </div>
 
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Update Vendor</button>
-                            <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary">Cancel</a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="d-flex gap-3 mt-5">
+                        <button type="submit" class="btn btn-gradient-primary px-4 py-2">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> Save Changes
+                        </button>
+                        <a href="<?= base_url('vendors') ?>" class="btn btn-light border px-4 py-2">Cancel</a>
+                    </div>
+                </form>
             </div>
-
         </div>
-    </div>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmFXFMrWCU3FA0e6bKIHFORSMR9"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+    </div>
+</div>
+
+<?= $this->endSection() ?>

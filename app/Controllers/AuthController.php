@@ -3,325 +3,75 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\PasswordResetModel;
 
 class AuthController extends BaseController
 {
-    // -------------------------------------------------------------------------
-    // LOGIN
-    // -------------------------------------------------------------------------
-
-    public function loginForm(): string|object
+    public function login(): string|object
     {
-        // Already logged in — go to dashboard
         if (session()->get('is_logged_in')) {
             return redirect()->to('/dashboard');
         }
 
-        return view('auth/login');
+        return view('auth/login', [
+            'page_title' => 'Sign In'
+        ]);
     }
 
     public function loginProcess(): object
     {
-        $cache  = \Config\Services::cache();
-        $ip     = $this->request->getIPAddress();
-        $keyAtt = 'login_attempts_' . md5($ip);
-        $keyBlk = 'login_blocked_' . md5($ip);
-
-        // --- Rate limit check ---
-        $blockedUntil = $cache->get($keyBlk);
-
-        if ($blockedUntil && time() < $blockedUntil) {
-            $wait = ceil(($blockedUntil - time()) / 60);
-
-            return redirect()->back()
-                ->with(
-                    'error',
-                    "Too many failed attempts. Please wait {$wait} minute(s) before trying again."
-                );
+        if (session()->get('is_logged_in')) {
+            return redirect()->to('/dashboard');
         }
 
-        // --- Input validation ---
-        if (! $this->validate([
+        $rules = [
             'email'    => 'required|valid_email',
-            'password' => 'required|min_length[8]|max_length[72]',
-        ])) {
-            return redirect()->back()
-                ->withInput()
+            'password' => 'required|min_length[6]|max_length[100]'
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()
                 ->with('errors', $this->validator->getErrors());
         }
 
         $email    = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        // --- Credential check ---
         $userModel = new UserModel();
-        $user      = $userModel->findByEmailWithPassword($email);
+        $user      = $userModel->findByEmail($email);
 
         if (! $user || ! password_verify($password, $user['password'])) {
-
-            // Increment failed attempts
-            $attempts = (int) $cache->get($keyAtt) + 1;
-
-            $cache->save($keyAtt, $attempts, 300);
-
-            if ($attempts >= 5) {
-                $cache->save($keyBlk, time() + 300, 300);
-
-                return redirect()->back()
-                    ->with(
-                        'error',
-                        'Too many failed attempts. You are blocked for 5 minutes.'
-                    );
-            }
-
-            return redirect()->back()
-                ->withInput()
-                ->with(
-                    'error',
-                    'The email address or password you entered is incorrect.'
-                );
+            return redirect()->back()->withInput()
+                ->with('error', 'Invalid email or password.');
         }
 
-        // --- Success: establish session ---
-        session()->regenerate(true);
-
-        // Fetch role information
-        $roleName  = $user['role'] ?? 'staff';
-        $roleLevel = 0;
-
-        if (! empty($user['role_id'])) {
-
-            $roleModel = new \App\Models\RoleModel();
-            $role      = $roleModel->find($user['role_id']);
-
-            if ($role) {
-                $roleName  = $role['role_name'];
-                $roleLevel = $role['level'];
-            }
+        if ($user['status'] !== 'active') {
+            return redirect()->back()->withInput()
+                ->with('error', 'Your account has been deactivated.');
         }
 
+        // Establish session parameters
         session()->set([
-            'user_id'         => $user['id'],
-            'user_name'       => $user['name'],
-            'user_role'       => $roleName,
-            'user_role_id'    => $user['role_id'] ?? null,
-            'user_role_level' => $roleLevel,
-            'is_logged_in'    => true,
+            'user_id'      => (int) $user['id'],
+            'user_name'    => $user['name'],
+            'user_role'    => $user['role'],
+            'is_logged_in' => true
         ]);
 
-        // Clear rate-limit keys
-        $cache->delete($keyAtt);
-        $cache->delete($keyBlk);
+        $this->logActivity('User logged in successfully', 'users', $user['id']);
 
-        return redirect()->to('/dashboard');
+        return redirect()->to('/dashboard')
+            ->with('message', 'Welcome back, ' . $user['name'] . '!');
     }
-
-    // -------------------------------------------------------------------------
-    // LOGOUT
-    // -------------------------------------------------------------------------
 
     public function logout(): object
     {
+        if (session()->get('is_logged_in')) {
+            $this->logActivity('User logged out', 'users', session()->get('user_id'));
+        }
+        
         session()->destroy();
 
         return redirect()->to('/login')
             ->with('message', 'You have been logged out successfully.');
-    }
-
-    public function logoutGet(): object
-    {
-        return $this->response->setStatusCode(405, 'Method Not Allowed');
-    }
-
-    // -------------------------------------------------------------------------
-    // FORGOT PASSWORD
-    // -------------------------------------------------------------------------
-
-    public function forgotPasswordForm(): string
-    {
-        return view('auth/forgot_password');
-    }
-
-    public function forgotPasswordProcess(): object
-    {
-        if (! $this->validate([
-            'email' => 'required|valid_email',
-        ])) {
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $this->validator->getErrors());
-        }
-
-        $email     = $this->request->getPost('email');
-        $userModel = new UserModel();
-        $user      = $userModel->findByEmail($email);
-
-        // Prevent email enumeration
-        $confirmation =
-            'If that email is registered, a reset link has been sent.';
-
-        if ($user) {
-
-            $token     = bin2hex(random_bytes(32));
-            $expiresAt = date(
-                'Y-m-d H:i:s',
-                strtotime('+60 minutes')
-            );
-
-            $resetModel = new PasswordResetModel();
-
-            $resetModel->createToken(
-                $email,
-                $token,
-                $expiresAt
-            );
-
-            // Send reset email
-            $resetLink = base_url("reset-password/{$token}");
-
-            $emailService = \Config\Services::email();
-
-            $emailService->setTo($email);
-            $emailService->setSubject('WBMM Password Reset');
-
-            $emailService->setMessage(
-                "Click the link to reset your password: {$resetLink}"
-            );
-
-            $emailService->send();
-        }
-
-        return redirect()->back()
-            ->with('message', $confirmation);
-    }
-
-    // -------------------------------------------------------------------------
-    // RESET PASSWORD
-    // -------------------------------------------------------------------------
-
-    public function resetPasswordForm(string $token): string|object
-    {
-        $resetModel = new PasswordResetModel();
-
-        $record = $resetModel->findValidToken($token);
-
-        if (! $record) {
-            return redirect()->to('/forgot-password')
-                ->with(
-                    'error',
-                    'This reset link is invalid or has expired.'
-                );
-        }
-
-        return view('auth/reset_password', [
-            'token' => $token,
-        ]);
-    }
-
-    public function resetPasswordProcess(string $token): object
-    {
-        $resetModel = new PasswordResetModel();
-
-        $record = $resetModel->findValidToken($token);
-
-        if (! $record) {
-            return redirect()->to('/forgot-password')
-                ->with(
-                    'error',
-                    'This reset link is invalid or has expired.'
-                );
-        }
-
-        if (! $this->validate([
-            'password' => 'required|min_length[8]',
-        ])) {
-            return redirect()->back()
-                ->with(
-                    'errors',
-                    $this->validator->getErrors()
-                );
-        }
-
-        $newHash = password_hash(
-            $this->request->getPost('password'),
-            PASSWORD_BCRYPT
-        );
-
-        $userModel = new UserModel();
-
-        $user = $userModel->findByEmail($record['email']);
-
-        if ($user) {
-
-            $userModel->updatePassword(
-                $user['id'],
-                $newHash
-            );
-
-            $resetModel->invalidateToken($token);
-        }
-
-        return redirect()->to('/login')
-            ->with(
-                'message',
-                'Your password has been reset. Please log in.'
-            );
-    }
-
-    // -------------------------------------------------------------------------
-    // REGISTER
-    // -------------------------------------------------------------------------
-
-    public function registerForm(): string|object
-    {
-        if (session()->get('is_logged_in')) {
-            return redirect()->to('/dashboard');
-        }
-
-        return view('auth/register');
-    }
-
-    public function registerProcess(): object
-    {
-        if (! $this->validate([
-            'name'     => 'required|min_length[3]|max_length[100]',
-            'email'    => 'required|valid_email|is_unique[users.email]',
-            'password' => 'required|min_length[8]|max_length[72]',
-        ])) {
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $this->validator->getErrors());
-        }
-
-        $userModel = new UserModel();
-
-        // Default staff role
-        $roleModel = new \App\Models\RoleModel();
-
-        $staffRole = $roleModel->findByName('staff');
-
-        $roleId = $staffRole
-            ? $staffRole['id']
-            : null;
-
-        $userModel->insert([
-            'name'     => $this->request->getPost('name'),
-            'email'    => $this->request->getPost('email'),
-            'password' => password_hash(
-                $this->request->getPost('password'),
-                PASSWORD_BCRYPT
-            ),
-
-            // Role system
-            'role'    => 'staff',
-            'role_id' => $roleId,
-        ]);
-
-        return redirect()->to('/login')
-            ->with(
-                'message',
-                'Registration successful. Please log in.'
-            );
     }
 }

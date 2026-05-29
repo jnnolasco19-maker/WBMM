@@ -1,126 +1,175 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($page_title) ?> — WBMM</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
-    <style>body { background-color: #f4f6f8; }</style>
-</head>
-<body>
+<?= $this->extend('layouts/main') ?>
 
-<?= view('layouts/navbar', ['user_name' => $user_name, 'user_role' => $user_role]) ?>
+<?= $this->section('content') ?>
 
-<main class="container py-4">
-
-    <!-- Flash messages -->
-    <?php if (session()->getFlashdata('message')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= esc(session()->getFlashdata('message')) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= esc(session()->getFlashdata('error')) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3 mb-0">Vendors</h1>
-        <?php if ($user_role === 'admin'): ?>
-            <a href="<?= base_url('vendors/create') ?>" class="btn btn-primary btn-sm">+ Add Vendor</a>
-        <?php endif; ?>
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">Vendors Directory</h1>
+        <p class="text-muted mb-0">Manage and audit registered stall holders.</p>
     </div>
+    <a href="<?= base_url('vendors/create') ?>" class="btn btn-gradient-primary rounded-pill px-4">
+        <i class="fa-solid fa-plus me-2"></i> Register Vendor
+    </a>
+</div>
 
-    <!-- Search / filter form -->
-    <form method="get" action="<?= base_url('vendors') ?>" class="row g-2 mb-3">
-        <div class="col-12 col-md-5">
-            <input type="text" name="search" class="form-control form-control-sm"
-                   placeholder="Search name, email, contact…"
-                   value="<?= esc($search) ?>">
-        </div>
-        <div class="col-6 col-md-3">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
-                <option value="active"   <?= $status === 'active'   ? 'selected' : '' ?>>Active</option>
-                <option value="inactive" <?= $status === 'inactive' ? 'selected' : '' ?>>Inactive</option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-secondary btn-sm">Filter</button>
-            <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary btn-sm">Clear</a>
-        </div>
-    </form>
+<style>
+    .table-row-expired {
+        background-color: rgba(239, 68, 68, 0.04) !important;
+    }
+    .table-row-expiring {
+        background-color: rgba(245, 158, 11, 0.04) !important;
+    }
+</style>
 
-    <!-- Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover bg-white shadow-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Contact Number</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <?php if ($user_role === 'admin'): ?>
-                        <th class="text-center">Actions</th>
-                    <?php endif; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($vendors)): ?>
+<!-- SEARCH AND FILTERS -->
+<div class="card card-custom mb-4">
+    <div class="card-body">
+        <form action="<?= base_url('vendors') ?>" method="get" class="row g-3">
+            <div class="col-12 col-md-3">
+                <label for="search" class="form-label small fw-semibold text-muted">Search Query</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="search" name="search" class="form-control border-start-0" placeholder="Name, stall..." value="<?= esc($search) ?>">
+                </div>
+            </div>
+            
+            <div class="col-6 col-md-2">
+                <label for="section" class="form-label small fw-semibold text-muted">Section</label>
+                <select id="section" name="section" class="form-select">
+                    <option value="">-- All --</option>
+                    <option value="Dry Goods" <?= $section === 'Dry Goods' ? 'selected' : '' ?>>Dry Goods</option>
+                    <option value="Wet Market" <?= $section === 'Wet Market' ? 'selected' : '' ?>>Wet Market</option>
+                    <option value="Livestock" <?= $section === 'Livestock' ? 'selected' : '' ?>>Livestock</option>
+                    <option value="Commercial" <?= $section === 'Commercial' ? 'selected' : '' ?>>Commercial</option>
+                </select>
+            </div>
+
+            <div class="col-6 col-md-2">
+                <label for="status" class="form-label small fw-semibold text-muted">Status</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="">-- All --</option>
+                    <option value="active" <?= $status === 'active' ? 'selected' : '' ?>>Active</option>
+                    <option value="inactive" <?= $status === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3 d-flex align-items-center pt-md-4">
+                <div class="form-check form-switch pt-2">
+                    <input class="form-check-input" type="checkbox" role="switch" name="expiring_soon" id="expiring_soon" value="1" <?= $expiring_soon ? 'checked' : '' ?>>
+                    <label class="form-check-label small fw-semibold text-muted" for="expiring_soon">Show Expiring/Expired</label>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-100 fw-bold">Filter</button>
+                <a href="<?= base_url('vendors') ?>" class="btn btn-light border w-100 fw-bold">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- VENDORS DIRECTORY TABLE -->
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.95rem;">
+                <thead class="table-light">
                     <tr>
-                        <td colspan="<?= $user_role === 'admin' ? 6 : 5 ?>" class="text-center text-muted py-4">
-                            No vendors found.
-                        </td>
+                        <th class="px-4 py-3">Stall Holder</th>
+                        <th class="py-3">Stall Number</th>
+                        <th class="py-3">Section</th>
+                        <th class="py-3">Contact</th>
+                        <th class="py-3">Permit Expiry</th>
+                        <th class="py-3">Status</th>
+                        <?php if ($user_role === 'admin'): ?>
+                            <th class="px-4 py-3 text-end">Actions</th>
+                        <?php endif; ?>
                     </tr>
-                <?php else: ?>
-                    <?php foreach ($vendors as $vendor): ?>
+                </thead>
+                <tbody>
+                    <?php if (empty($vendors)): ?>
                         <tr>
-                            <td><?= esc($vendor['id']) ?></td>
-                            <td><?= esc($vendor['name']) ?></td>
-                            <td><?= esc($vendor['contact_number'] ?? '—') ?></td>
-                            <td><?= esc($vendor['email'] ?? '—') ?></td>
-                            <td>
-                                <span class="badge <?= $vendor['status'] === 'active' ? 'bg-success' : 'bg-secondary' ?>">
-                                    <?= esc(ucfirst($vendor['status'])) ?>
-                                </span>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="fa-regular fa-folder-open fa-3x mb-3 d-block text-muted"></i>
+                                No registered vendors match your filters.
                             </td>
-                            <?php if ($user_role === 'admin'): ?>
-                                <td class="text-center">
-                                    <a href="<?= base_url('vendors/edit/' . $vendor['id']) ?>"
-                                       class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="<?= base_url('vendors/delete/' . $vendor['id']) ?>"
-                                          method="post" class="d-inline"
-                                          onsubmit="return confirm('Delete this vendor?')">
-                                        <?= csrf_field() ?>
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
-                            <?php endif; ?>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Pagination -->
-    <?php if ($pager): ?>
-        <div class="d-flex justify-content-center">
-            <?= $pager->links('vendors', 'bootstrap_pagination') ?>
+                    <?php else: ?>
+                        <?php 
+                        $today = date('Y-m-d');
+                        $thirtyDaysFromNow = date('Y-m-d', strtotime('+30 days'));
+                        foreach ($vendors as $vendor): 
+                            $isExpired = $vendor['permit_expiry'] < $today;
+                            $isExpiringSoon = !$isExpired && ($vendor['permit_expiry'] <= $thirtyDaysFromNow);
+                            
+                            $rowClass = '';
+                            if ($isExpired) {
+                                $rowClass = 'table-row-expired';
+                            } elseif ($isExpiringSoon) {
+                                $rowClass = 'table-row-expiring';
+                            }
+                        ?>
+                            <tr class="<?= $rowClass ?>">
+                                <td class="px-4 fw-semibold text-dark"><?= esc($vendor['name']) ?></td>
+                                <td>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1.5"><i class="fa-solid fa-hashtag text-muted me-1"></i><?= esc($vendor['stall_number']) ?></span>
+                                </td>
+                                <td><?= esc($vendor['section']) ?></td>
+                                <td><?= esc($vendor['contact']) ?: '<em class="text-muted">None</em>' ?></td>
+                                <td>
+                                    <?php if ($isExpired): ?>
+                                        <span class="badge badge-expired px-2.5 py-1.5" title="Permit has expired!">
+                                            <i class="fa-solid fa-triangle-exclamation me-1"></i><?= date('M d, Y', strtotime($vendor['permit_expiry'])) ?> (Expired)
+                                        </span>
+                                    <?php elseif ($isExpiringSoon): ?>
+                                        <span class="badge bg-warning text-dark border border-warning border-opacity-25 px-2.5 py-1.5" title="Permit is expiring soon!">
+                                            <i class="fa-solid fa-triangle-exclamation me-1"></i><?= date('M d, Y', strtotime($vendor['permit_expiry'])) ?> (Expiring)
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge badge-active px-2.5 py-1.5" title="Permit is active">
+                                            <i class="fa-solid fa-circle-check me-1"></i><?= date('M d, Y', strtotime($vendor['permit_expiry'])) ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($vendor['status'] === 'active'): ?>
+                                        <span class="badge bg-success-subtle text-success px-2 py-1 border border-success border-opacity-25 rounded-pill text-uppercase" style="font-size:0.75rem;">Active</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary-subtle text-secondary px-2 py-1 border border-secondary border-opacity-25 rounded-pill text-uppercase" style="font-size:0.75rem;">Inactive</span>
+                                    <?php endif; ?>
+                                </td>
+                                <?php if ($user_role === 'admin'): ?>
+                                    <td class="px-4 text-end">
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a href="<?= base_url('vendors/edit/' . $vendor['id']) ?>" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1.5 rounded-pill px-3">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                <span>Edit</span>
+                                            </a>
+                                            <form action="<?= base_url('vendors/delete/' . $vendor['id']) ?>" method="post" class="m-0" onsubmit="return confirm('Are you absolutely sure you want to delete vendor <?= esc($vendor['name']) ?>? This action is irreversible.');">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1.5 rounded-pill px-3">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
-    <?php endif; ?>
+        
+        <!-- PAGINATION -->
+        <?php if (! empty($pager)): ?>
+            <div class="d-flex justify-content-center py-4 bg-light border-top">
+                <?= $pager->links('vendors', 'bootstrap_pagination') ?>
+            </div>
+        <?php endif; ?>
 
-</main>
+    </div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmFXFMrWCU3FA0e6bKIHFORSMR9"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+<?= $this->endSection() ?>

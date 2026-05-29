@@ -112,6 +112,23 @@
                             </div>
                         </div>
 
+                        <!-- Payment Method Toggle for LGU Paleng-QR Ph -->
+                        <div class="mb-3" id="payment_method_group" style="display:none;">
+                            <label class="form-label d-block fw-semibold small">Payment Channel</label>
+                            <div class="btn-group w-100 mb-2" role="group">
+                                <input type="radio" class="btn-check" name="record_payment_method" id="rpm_cash" value="cash" checked autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="rpm_cash">💵 Cash Remittance</label>
+
+                                <input type="radio" class="btn-check" name="record_payment_method" id="rpm_gcash" value="gcash" autocomplete="off">
+                                <label class="btn btn-outline-primary btn-sm" for="rpm_gcash">📱 GCash / Paleng-QR</label>
+                            </div>
+                            
+                            <div id="rpm_gcash_ref_group" style="display:none;">
+                                <label for="record_gcash_ref" class="form-label small fw-semibold">GCash Reference Transaction ID</label>
+                                <input type="text" id="record_gcash_ref" name="record_gcash_ref" class="form-control form-control-sm" placeholder="13-Digit Receipt ID">
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
                             <textarea id="description" name="description"
@@ -137,5 +154,29 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmFXFMrWCU3FA0e6bKIHFORSMR9"
         crossorigin="anonymous"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.getElementById('type');
+    const paymentMethodGroup = document.getElementById('payment_method_group');
+    const rpmCash = document.getElementById('rpm_cash');
+    const rpmGcash = document.getElementById('rpm_gcash');
+    const rpmGcashRefGroup = document.getElementById('rpm_gcash_ref_group');
+
+    function toggleGroups() {
+        if (typeSelect.value === 'payment') {
+            paymentMethodGroup.style.display = 'block';
+        } else {
+            paymentMethodGroup.style.display = 'none';
+        }
+    }
+
+    typeSelect.addEventListener('change', toggleGroups);
+    toggleGroups(); // trigger initially
+
+    rpmCash.addEventListener('change', () => rpmGcashRefGroup.style.display = 'none');
+    rpmGcash.addEventListener('change', () => rpmGcashRefGroup.style.display = 'block');
+});
+</script>
 </body>
 </html>

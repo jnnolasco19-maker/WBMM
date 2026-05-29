@@ -1,100 +1,85 @@
 # Web-Based Market Management System (WBMM)
+### General Santos City Public Market Administration Portal
 
-Group: 5  
-Members:
-- Johnnoel B. Nolasco
-- Mohairudin G. Ali
-- Cathrina T. Fado
-- Adrianne M. Lozada
-- Charles Keyan Mark T. Tudal
+A premium, server-side rendered **CodeIgniter 4** web application designed to manage public market operations, automate daily rental (Arkalaba) collections, audit cashier logs, generate thermal receipt e-tickets, and stream real-time treasury collection reports.
 
-## Description
-The Web-Based Market Management System (WBMM) is a web-based application designed to efficiently manage public market vendors, stalls, and records. It allows market administrators and staff to:
-- Authenticate securely via a login system
-- View a role-based dashboard with system analytics
-- Add, update, and remove vendors
-- Assign and track market stalls
-- Maintain daily records and activity logs
+---
 
-## Technologies Used
-- Backend Framework: CodeIgniter 4 (PHP)
-- Database: MySQL (via XAMPP)
-- Frontend: Bootstrap 5 (CDN)
-- IDE: Visual Studio Code
-- Version Control: Git / GitHub
+## 🛠️ Technology Stack
+* **Backend:** CodeIgniter 4 (PHP 8.x)
+* **Database:** MySQL 8.x
+* **Server environment:** Apache via XAMPP
+* **Styling (CSS):** Bootstrap 5 via CDN + Premium Custom HSL Glassmorphic CSS
+* **Visual Graphics:** Chart.js via CDN (monthly collection aggregations)
+* **Auth:** Native CI4 Session-based authentication with bcrypt password hashes
 
-## Modules
+---
 
-### 1. Login Module (Johnnoel B. Nolasco)
-- Session-based authentication
-- Credential validation against the `users` table using bcrypt
-- Login error handling and rate limiting (5 attempts = 10 min block)
-- Password recovery via email token
-- Route protection via `AuthFilter`
+## 🚀 Setup & Installation Instructions
 
-### 2. Dashboard Module (Mohairudin G. Ali)
-- Displays welcome message with user name and role
-- Role-based stat cards (admin sees all 5, staff sees 2)
-- Quick action shortcuts based on role
-- Responsive Bootstrap 5 layout with hamburger menu on mobile
+Follow these steps to deploy the portal locally using XAMPP:
 
-### 3. Records Module (Cathrina T. Fado)
-- Full CRUD for Vendors, Stalls, and Records
-- Search and filter on all list pages
-- Role-based access: admin = full CRUD, staff = read + create records only
-- Data validation and CSRF protection on all forms
+### 1. File Setup
+1. Download or clone this project repository.
+2. Place the project folder (`WBMM`) inside your local XAMPP root directory: `C:\xampp\htdocs\WBMM`.
 
-### 4. Integration & Testing (Charles Keyan Mark T. Tudal)
-- Merged all modules into a single codebase
-- Resolved base URL issues for XAMPP subfolder deployment
-- Verified seamless user flow: login → dashboard → records
+### 2. Database Import
+1. Ensure Apache and MySQL are running inside your **XAMPP Control Panel**.
+2. Open **phpMyAdmin** in your browser (`http://localhost/phpmyadmin`).
+3. Click the **Import** tab.
+4. Browse and select the [schema.sql](file:///c:/xampp/htdocs/WBMM/schema.sql) file located in the root folder of this project.
+5. Click **Go** to create the `wbmm_db` database, structure the tables, and seed the default accounts.
 
-### 5. Version Control & Documentation (Charles Keyan Mark T. Tudal)
-- Maintained GitHub repository
-- Documented setup instructions and module descriptions
-
-## Setup Instructions
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/your-team/WBMM.git
-   ```
-2. Move project to `C:/xampp/htdocs/WBMM`
-3. Copy `env` to `.env` and configure:
-   ```
-   CI_ENVIRONMENT = development
+### 3. Environment Configuration
+1. Open the [.env](file:///c:/xampp/htdocs/WBMM/.env) file in your text editor.
+2. Verify the base URL matches your localhost execution path:
+   ```env
    app.baseURL = 'http://localhost/WBMM/public/'
+   ```
+3. Verify the database configurations:
+   ```env
    database.default.hostname = localhost
    database.default.database = wbmm_db
    database.default.username = root
-   database.default.password =
-   database.default.DBDriver = MySQLi
+   database.default.password = 
    ```
-4. Start Apache and MySQL in XAMPP
-5. Create database `wbmm_db` in phpMyAdmin
-6. Run migrations:
-   ```
-   php spark migrate
-   ```
-7. Seed the default admin user:
-   ```
-   php spark db:seed AuthSeeder
-   ```
-8. Open: http://localhost/WBMM/public/login
 
-## Default Login Credentials
-- Email: `admin@wbmm.com`
-- Password: `Admin@1234`
+### 4. Run the Portal
+* Access the login gateway in your web browser: **`http://localhost/WBMM/public/`**
 
-- Email: `staff@wbmm.com`
-- Password: `Staff@1234`
-## WBMM System Workflow Diagram
-The system workflow represents the user journey and operations across modules. In addition to user routing, it outlines the specific **input parameters** processed by each stage.
+---
 
-![System Workflow Diagram](public/system_workflow_diagram.png)
+## 🔑 Default Credentials
 
-## Known Issues and Resolutions
-| Issue | Resolution |
-|-------|-----------|
-| Redirects going to `localhost/login` instead of `localhost/WBMM/public/login` | Set `app.baseURL` in `.env` and updated all form actions and links to use `base_url()` |
-| `migrations` table appearing in database | Normal CI4 behavior — tracks which migrations have run |
+Use these pre-seeded accounts to verify and test the RBAC access configurations:
+
+| Role | Email Address | Password | Privileges Level |
+| :--- | :--- | :--- | :--- |
+| **System Administrator** | `admin@wbmm.com` | `Admin@1234` | **Full CRUD** (Full access, system audits, user management) |
+| **Staff Personnel** | `staff@wbmm.com` | `Staff@1234` | **Read + Create only** (Restricted from edits, deletions, and logs) |
+
+---
+
+## 📊 Role & Permissions Matrix
+
+The portal implements strict controller-level and UI-level **Role-Based Access Control (RBAC)**:
+
+| System Path / Feature | Mapped Route | Administrator (`admin`) | Staff (`staff`) |
+| :--- | :--- | :---: | :---: |
+| **Dashboard Metrics** | `/dashboard` | View All stats + Chart | View basic stats + Chart |
+| **Register Vendor** | `/vendors/create` | **Allowed** | **Allowed** |
+| **Modify Vendor** | `/vendors/edit/{id}` | **Allowed** | *Blocked (403)* |
+| **Remove Vendor** | `/vendors/delete/{id}` | **Allowed** | *Blocked (403)* |
+| **Collect Arkalaba** | `/payments/create` | **Allowed** | **Allowed** |
+| **Print Lease Receipts** | `/payments/receipt/{id}` | **Allowed** | **Allowed** |
+| **Export Collections CSV** | `/records/export` | **Allowed** | **Allowed** |
+| **Audit Logs Console** | `/records/audit-logs` | **Allowed** | *Blocked (403)* |
+| **Staff User CRUD** | `/users/*` | **Allowed** | *Blocked (403)* |
+
+---
+
+## 🛡️ Security Features
+* **SQL Injection Protection:** Engineered strictly using CodeIgniter 4's parameterized **Query Builder** (no raw SQL concatenations).
+* **CSRF Token Guards:** Enabled globally for all post operations.
+* **Authentication Middleware:** The global `AuthFilter` interceptor secures all dashboard routes and rejects unauthenticated guests.
+* **Audit Logs:** Every update, registration, deletion, and auth action logs a record in the `audit_logs` table detailing who performed the action, which table was affected, and the timestamp.

@@ -12,13 +12,23 @@ class StallController extends BaseController
         return (string) session()->get('user_role');
     }
 
-    private function requireAdmin(): ?object
+    private function requireAdminOrManager(): ?object
+    {
+        $role = $this->getRole();
+        if (in_array($role, ['admin', 'manager'], true)) {
+            return null;
+        }
+        session()->destroy();
+        return redirect()->to(base_url('login'));
+    }
+
+    private function requireAdminOnly(): ?object
     {
         $role = $this->getRole();
         if ($role === 'admin') {
             return null;
         }
-        if (! in_array($role, ['admin', 'staff'], true)) {
+        if (! in_array($role, ['admin', 'manager'], true)) {
             session()->destroy();
             return redirect()->to(base_url('login'));
         }
@@ -35,9 +45,9 @@ class StallController extends BaseController
     public function index(): string|object
     {
         $role = $this->getRole();
-        if (! in_array($role, ['admin', 'staff'], true)) {
-            session()->destroy();
-            return redirect()->to(base_url('login'));
+        if (! in_array($role, ['admin', 'manager'], true)) {
+            return redirect()->to(base_url('dashboard'))
+                ->with('error', 'Access Denied. You do not have permission to access this page.');
         }
 
         $model  = new StallModel();
@@ -63,7 +73,7 @@ class StallController extends BaseController
 
     public function create(): string|object
     {
-        $guard = $this->requireAdmin();
+        $guard = $this->requireAdminOrManager();
         if ($guard !== null) return $guard;
 
         $vendorModel = new VendorModel();
@@ -79,7 +89,7 @@ class StallController extends BaseController
 
     public function store(): object
     {
-        $guard = $this->requireAdmin();
+        $guard = $this->requireAdminOrManager();
         if ($guard !== null) return $guard;
 
         $rules = [
@@ -133,7 +143,7 @@ class StallController extends BaseController
 
     public function edit(int $id): string|object
     {
-        $guard = $this->requireAdmin();
+        $guard = $this->requireAdminOrManager();
         if ($guard !== null) return $guard;
 
         $model = new StallModel();
@@ -158,7 +168,7 @@ class StallController extends BaseController
 
     public function update(int $id): object
     {
-        $guard = $this->requireAdmin();
+        $guard = $this->requireAdminOrManager();
         if ($guard !== null) return $guard;
 
         $model = new StallModel();
@@ -219,7 +229,7 @@ class StallController extends BaseController
 
     public function delete(int $id): object
     {
-        $guard = $this->requireAdmin();
+        $guard = $this->requireAdminOnly();
         if ($guard !== null) return $guard;
 
         $model = new StallModel();

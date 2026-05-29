@@ -31,15 +31,19 @@ $isActive   = static fn(string $path): string =>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/dashboard') ?>" href="<?= base_url('dashboard') ?>">Dashboard</a>
                 </li>
+                <?php if (isset($user_role) && in_array($user_role, ['admin', 'manager'], true)): ?>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/vendors') ?>" href="<?= base_url('vendors') ?>">Vendors</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/stalls') ?>" href="<?= base_url('stalls') ?>">Stalls</a>
                 </li>
+                <?php endif; ?>
+                <?php if (isset($user_role) && in_array($user_role, ['admin', 'manager', 'cashier'], true)): ?>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/records') ?>" href="<?= base_url('records') ?>">Records</a>
                 </li>
+                <?php endif; ?>
                 <?php if (isset($user_role) && $user_role === 'admin'): ?>
                 <li class="nav-item">
                     <a class="nav-link<?= $isActive('/users') ?>" href="<?= base_url('users') ?>">Users</a>

@@ -1,92 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($page_title) ?> — WBMM</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
-</head>
-<body class="bg-light">
+<?= $this->extend('layouts/main') ?>
 
-<?= view('layouts/navbar', ['user_name' => $user_name, 'user_role' => $user_role]) ?>
+<?= $this->section('content') ?>
 
-<main class="container py-4">
-
-    <!-- Flash messages -->
-    <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= esc(session()->getFlashdata('error')) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if (session()->getFlashdata('message')): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= esc(session()->getFlashdata('message')) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Manage Users</h1>
-        <a href="<?= base_url('users/create') ?>" class="btn btn-primary">Add New User</a>
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">User Management</h1>
+        <p class="text-muted mb-0">List, modify, and control system staff accounts.</p>
     </div>
+    <a href="<?= base_url('users/create') ?>" class="btn btn-gradient-primary rounded-pill px-4">
+        <i class="fa-solid fa-user-plus me-2"></i> Add Account
+    </a>
+</div>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" style="font-size: 0.95rem;">
+                <thead class="table-light">
                     <tr>
-                        <th class="ps-4">Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th class="text-end pe-4">Actions</th>
+                        <th class="px-4 py-3">User Profile Name</th>
+                        <th class="py-3">Email Address</th>
+                        <th class="py-3">Role Authority</th>
+                        <th class="py-3">Status</th>
+                        <th class="py-3">Date Registered</th>
+                        <th class="px-4 py-3 text-end">Action</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <?php if (empty($users)): ?>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $u): ?>
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">No users found.</td>
+                            <td class="px-4 fw-semibold text-dark"><?= esc($u['name']) ?></td>
+                            <td><?= esc($u['email']) ?></td>
+                            <td>
+                                <?php if ($u['role'] === 'admin'): ?>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 px-2.5 py-1.5 text-uppercase" style="font-size:0.7rem;">Administrator</span>
+                                <?php else: ?>
+                                    <span class="badge bg-info-subtle text-info border border-info border-opacity-25 px-2.5 py-1.5 text-uppercase" style="font-size:0.7rem;">Staff Personnel</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($u['status'] === 'active'): ?>
+                                    <span class="badge bg-success-subtle text-success border border-success border-opacity-25 px-2 py-1.5 rounded-pill text-uppercase" style="font-size:0.7rem;">Active</span>
+                                <?php else: ?>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 px-2 py-1.5 rounded-pill text-uppercase" style="font-size:0.7rem;">Deactivated</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="text-muted small"><?= date('M d, Y', strtotime($u['created_at'])) ?></td>
+                            <td class="px-4 text-end">
+                                <a href="<?= base_url('users/edit/' . $u['id']) ?>" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1.5 rounded-pill px-3">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                    <span>Edit</span>
+                                </a>
+                            </td>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td class="ps-4 align-middle"><?= esc($user['name']) ?></td>
-                                <td class="align-middle"><?= esc($user['email']) ?></td>
-                                <td class="align-middle">
-                                    <?php if ($user['role'] === 'admin'): ?>
-                                        <span class="badge bg-danger">Admin</span>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary">Staff</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-end pe-4 align-middle">
-                                    <a href="<?= base_url('users/edit/' . $user['id']) ?>" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                    
-                                    <?php if ($user['id'] != session()->get('user_id')): ?>
-                                        <form action="<?= base_url('users/delete/' . $user['id']) ?>" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                        </form>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmFXFMrWCU3FA0e6bKIHFORSMR9"
-        crossorigin="anonymous"></script>
-</body>
-</html>
+<?= $this->endSection() ?>

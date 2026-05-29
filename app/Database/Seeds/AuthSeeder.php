@@ -60,10 +60,10 @@ class AuthSeeder extends Seeder
 
         $usersTable = $this->db->table('users');
 
-        // Proper way to clear table in CI4
+        $this->db->disableForeignKeyChecks();
         $usersTable->truncate();
-
         $usersTable->insertBatch($data);
+        $this->db->enableForeignKeyChecks();
 
         CLI::write("Auth Seeder completed successfully.", 'green');
         CLI::write("Created 4 test users:");

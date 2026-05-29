@@ -28,6 +28,8 @@ class Filters extends BaseFilters
      */
     public array $aliases = [
         'auth'          => AuthFilter::class,
+        'role'          => \App\Filters\RoleFilter::class,
+        'permission'    => \App\Filters\PermissionFilter::class,
 
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
@@ -76,14 +78,11 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'auth' => ['except' => ['login', 'login/*', 'forgot-password', 'forgot-password/*', 'register', 'register/*', 'reset-password', 'reset-password/*']],
-            // 'honeypot',
+            'auth' => ['except' => ['login', 'login/*']],
             'csrf',
-            // 'invalidchars',
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
+            'toolbar',
         ],
     ];
 
