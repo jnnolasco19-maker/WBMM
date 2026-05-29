@@ -8,33 +8,33 @@ class RBACSeeder extends Seeder
 {
     public function run(): void
     {
-        // Insert roles with hierarchy levels
+        // Insert roles with hierarchy levels (matches WBMM roles)
         $roles = [
             [
                 'role_name'  => 'admin',
-                'description' => 'Full system access - can manage users, roles, products, orders, and reports',
+                'description' => 'Full system access',
                 'level'      => 100,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                'role_name'  => 'manager',
-                'description' => 'Can manage products, inventory, and orders. Can view reports. Cannot manage users/roles.',
-                'level'      => 75,
+                'role_name'  => 'supervisor',
+                'description' => 'Can view reports and oversight dashboards',
+                'level'      => 80,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'role_name'  => 'collector',
+                'description' => 'Can record arkalaba payments and view own records',
+                'level'      => 60,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'role_name'  => 'staff',
-                'description' => 'Can add and update products. Can manage inventory. Cannot access user management or reports.',
+                'description' => 'Can register vendors and manage assignments with limited access',
                 'level'      => 50,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'role_name'  => 'cashier',
-                'description' => 'Can view products and create orders/sales. Has limited dashboard access.',
-                'level'      => 25,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
@@ -45,11 +45,11 @@ class RBACSeeder extends Seeder
 
         // Get role IDs
         $adminRole = $this->db->table('roles')->where('role_name', 'admin')->get()->getRowArray();
-        $managerRole = $this->db->table('roles')->where('role_name', 'manager')->get()->getRowArray();
+        $supervisorRole = $this->db->table('roles')->where('role_name', 'supervisor')->get()->getRowArray();
+        $collectorRole = $this->db->table('roles')->where('role_name', 'collector')->get()->getRowArray();
         $staffRole = $this->db->table('roles')->where('role_name', 'staff')->get()->getRowArray();
-        $cashierRole = $this->db->table('roles')->where('role_name', 'cashier')->get()->getRowArray();
 
-        // Insert permissions mapped to actual application features
+        // Insert permissions mapped to WBMM modules
         $permissions = [
             ['permission_name' => 'manage_users',    'description' => 'Can manage user accounts and roles'],
             ['permission_name' => 'manage_vendors',  'description' => 'Can register, edit, and delete vendors'],
@@ -82,18 +82,18 @@ class RBACSeeder extends Seeder
             ];
         }
 
-        // Manager: Vendors, stalls, payments, records — no user management or audit logs
-        $managerPerms = ['manage_vendors', 'manage_stalls', 'record_payments', 'view_records', 'export_records'];
-        foreach ($managerPerms as $permName) {
+        // Supervisor: View/export records (reports), no user/stall management
+        $supervisorPerms = ['view_records', 'export_records'];
+        foreach ($supervisorPerms as $permName) {
             $rolePermissions[] = [
-                'role_id' => $managerRole['id'],
+                'role_id' => $supervisorRole['id'],
                 'permission_id' => $permMap[$permName],
                 'created_at' => date('Y-m-d H:i:s'),
             ];
         }
 
-        // Staff: Record payments and view records only
-        $staffPerms = ['record_payments', 'view_records'];
+        // Staff: Vendors + assignments (modeled as manage_vendors) + view records
+        $staffPerms = ['manage_vendors', 'view_records'];
         foreach ($staffPerms as $permName) {
             $rolePermissions[] = [
                 'role_id' => $staffRole['id'],
@@ -102,10 +102,15 @@ class RBACSeeder extends Seeder
             ];
         }
 
-        // Cashier: Record payments only
+        // Collector: Record payments + view records (own records are enforced by application logic)
         $rolePermissions[] = [
-            'role_id' => $cashierRole['id'],
+            'role_id' => $collectorRole['id'],
             'permission_id' => $permMap['record_payments'],
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        $rolePermissions[] = [
+            'role_id' => $collectorRole['id'],
+            'permission_id' => $permMap['view_records'],
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
@@ -113,6 +118,16 @@ class RBACSeeder extends Seeder
         $this->db->table('role_permissions')->insertBatch($rolePermissions);
 
         // Update existing users to use role_id
+        $userFields = $this->db->getFieldNames('users');
+        if (! in_array('role_id', $userFields, true)) {
+            echo "Skipped updating users.role_id (column does not exist)\n";
+            echo "RBAC Seeder completed successfully.\n";
+            echo "Created 4 roles: admin, supervisor, collector, staff\n";
+            echo "Created 7 permissions\n";
+            echo "Assigned permissions to roles based on hierarchy\n";
+            return;
+        }
+
         $users = $this->db->table('users')->get()->getResultArray();
         
         foreach ($users as $user) {
@@ -122,11 +137,11 @@ class RBACSeeder extends Seeder
                 case 'admin':
                     $roleId = $adminRole['id'];
                     break;
-                case 'manager':
-                    $roleId = $managerRole['id'];
+                case 'supervisor':
+                    $roleId = $supervisorRole['id'];
                     break;
-                case 'cashier':
-                    $roleId = $cashierRole['id'];
+                case 'collector':
+                    $roleId = $collectorRole['id'];
                     break;
                 case 'staff':
                 default:
@@ -137,7 +152,7 @@ class RBACSeeder extends Seeder
         }
 
         echo "RBAC Seeder completed successfully.\n";
-        echo "Created 4 roles: admin, manager, staff, cashier\n";
+        echo "Created 4 roles: admin, supervisor, collector, staff\n";
         echo "Created 7 permissions\n";
         echo "Assigned permissions to roles based on hierarchy\n";
         echo "Updated existing users with role_id\n";

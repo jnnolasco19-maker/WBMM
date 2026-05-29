@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateVendorsTable extends Migration
 {
@@ -15,48 +16,65 @@ class CreateVendorsTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'name' => [
+            'vendor_no' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 30,
+                'null'       => false,
+            ],
+            'first_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
+                'null'       => false,
+            ],
+            'last_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
+                'null'       => false,
+            ],
+            'business_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 150,
-                'null'       => false,
-            ],
-            'stall_number' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 50,
-                'null'       => false,
-            ],
-            'section' => [
-                'type'       => 'ENUM',
-                'constraint' => ['Dry Goods', 'Wet Market', 'Livestock', 'Commercial'],
-                'null'       => false,
+                'null'       => true,
             ],
             'contact' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 20,
                 'null'       => true,
             ],
-            'permit_expiry' => [
-                'type' => 'DATE',
-                'null' => false,
+            'address' => [
+                'type' => 'TEXT',
+                'null' => true,
+            ],
+            'id_type' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
+                'null'       => true,
+            ],
+            'id_number' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
+                'null'       => true,
+            ],
+            'type' => [
+                'type'       => 'ENUM',
+                'constraint' => ['inside', 'outside', 'ambulant'],
+                'null'       => false,
             ],
             'status' => [
                 'type'       => 'ENUM',
-                'constraint' => ['active', 'inactive'],
+                'constraint' => ['active', 'inactive', 'suspended'],
                 'null'       => false,
                 'default'    => 'active',
             ],
             'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
+                'type'    => 'TIMESTAMP',
+                'null'    => false,
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addUniqueKey('stall_number');
+        $this->forge->addUniqueKey('vendor_no');
         $this->forge->createTable('vendors', true, ['ENGINE' => 'InnoDB', 'DEFAULT CHARSET' => 'utf8mb4']);
     }
 

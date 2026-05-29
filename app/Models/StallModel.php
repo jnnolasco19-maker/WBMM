@@ -72,7 +72,8 @@ class StallModel extends Model
     public function getSections(): array
     {
         return $this->db->table('stalls')
-            ->select('DISTINCT section')
+            ->distinct()
+            ->select('section')
             ->orderBy('section', 'ASC')
             ->get()->getResultArray();
     }

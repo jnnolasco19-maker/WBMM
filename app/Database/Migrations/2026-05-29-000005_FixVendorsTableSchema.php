@@ -5,81 +5,102 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 
 /**
- * Fixes the vendors table schema to match the application.
+ * Best-effort compatibility migration for older vendor schemas.
  *
- * The original CreateVendorsTable migration created columns (contact_number, email, address)
- * that do not match what the application uses (stall_number, section, contact, permit_expiry).
- * This migration corrects the schema on existing databases.
+ * The WBMM application expects the vendors table to have:
+ * - vendor_no, first_name, last_name, business_name, contact, address, id_type, id_number
+ * - type (inside/outside/ambulant), status (active/inactive/suspended), created_at
  *
- * Safe to run on a fresh install — all changes use IF EXISTS / IF NOT EXISTS guards.
+ * Safe to run on a fresh install (it will detect the correct schema and do nothing).
  */
 class FixVendorsTableSchema extends Migration
 {
     public function up(): void
     {
-        // On a fresh install the correct schema is already in CreateVendorsTable — nothing to do
         if (! $this->db->tableExists('vendors')) {
             return;
         }
 
-        // Add missing columns if they don't exist
         $fields = $this->db->getFieldNames('vendors');
 
-        if (! in_array('stall_number', $fields)) {
-            $this->forge->addColumn('vendors', [
-                'stall_number' => [
-                    'type'       => 'VARCHAR',
-                    'constraint' => 50,
-                    'null'       => true,
-                    'after'      => 'name',
-                ],
-            ]);
+        // If we're already on the expected schema, do nothing.
+        if (in_array('vendor_no', $fields, true)
+            && in_array('first_name', $fields, true)
+            && in_array('last_name', $fields, true)
+            && in_array('type', $fields, true)
+        ) {
+            return;
         }
 
-        if (! in_array('section', $fields)) {
-            $this->forge->addColumn('vendors', [
-                'section' => [
-                    'type'       => 'ENUM',
-                    'constraint' => ['Dry Goods', 'Wet Market', 'Livestock', 'Commercial'],
-                    'null'       => true,
-                    'after'      => 'stall_number',
-                ],
-            ]);
+        // Add missing columns (nullable) so the application can run.
+        $add = [];
+
+        if (! in_array('vendor_no', $fields, true)) {
+            $add['vendor_no'] = ['type' => 'VARCHAR', 'constraint' => 30, 'null' => true];
+        }
+        if (! in_array('first_name', $fields, true)) {
+            $add['first_name'] = ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true];
+        }
+        if (! in_array('last_name', $fields, true)) {
+            $add['last_name'] = ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true];
+        }
+        if (! in_array('business_name', $fields, true)) {
+            $add['business_name'] = ['type' => 'VARCHAR', 'constraint' => 150, 'null' => true];
+        }
+        if (! in_array('contact', $fields, true)) {
+            $add['contact'] = ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true];
+        }
+        if (! in_array('address', $fields, true)) {
+            $add['address'] = ['type' => 'TEXT', 'null' => true];
+        }
+        if (! in_array('id_type', $fields, true)) {
+            $add['id_type'] = ['type' => 'VARCHAR', 'constraint' => 50, 'null' => true];
+        }
+        if (! in_array('id_number', $fields, true)) {
+            $add['id_number'] = ['type' => 'VARCHAR', 'constraint' => 50, 'null' => true];
+        }
+        if (! in_array('type', $fields, true)) {
+            // Use VARCHAR here for compatibility; fresh installs use ENUM in CreateVendorsTable.
+            $add['type'] = ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true];
+        }
+        if (! in_array('status', $fields, true)) {
+            $add['status'] = ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true];
+        }
+        if (! in_array('created_at', $fields, true)) {
+            $add['created_at'] = ['type' => 'DATETIME', 'null' => true];
         }
 
-        if (! in_array('contact', $fields)) {
-            $this->forge->addColumn('vendors', [
-                'contact' => [
-                    'type'       => 'VARCHAR',
-                    'constraint' => 20,
-                    'null'       => true,
-                    'after'      => 'section',
-                ],
-            ]);
+        if ($add !== []) {
+            $this->forge->addColumn('vendors', $add);
         }
 
-        if (! in_array('permit_expiry', $fields)) {
-            $this->forge->addColumn('vendors', [
-                'permit_expiry' => [
-                    'type' => 'DATE',
-                    'null' => true,
-                    'after' => 'contact',
-                ],
-            ]);
+        // Backfill some values where possible.
+        $fields = $this->db->getFieldNames('vendors');
+
+        if (in_array('name', $fields, true) && in_array('first_name', $fields, true)) {
+            $this->db->query("UPDATE vendors SET first_name = COALESCE(first_name, name) WHERE first_name IS NULL OR first_name = ''");
         }
 
-        // Add unique key on stall_number if not already present
+        if (in_array('vendor_no', $fields, true)) {
+            $this->db->query("UPDATE vendors SET vendor_no = COALESCE(vendor_no, CONCAT('VND-LEGACY-', LPAD(id, 4, '0'))) WHERE vendor_no IS NULL OR vendor_no = ''");
+        }
+
+        if (in_array('type', $fields, true)) {
+            $this->db->query("UPDATE vendors SET type = COALESCE(type, 'inside') WHERE type IS NULL OR type = ''");
+        }
+
+        if (in_array('status', $fields, true)) {
+            $this->db->query("UPDATE vendors SET status = COALESCE(status, 'active') WHERE status IS NULL OR status = ''");
+        }
+
+        // Add unique key on vendor_no if not already present
         $indexes = $this->db->getIndexData('vendors');
-        $hasStallIndex = false;
         foreach ($indexes as $index) {
-            if (in_array('stall_number', (array) $index->fields)) {
-                $hasStallIndex = true;
-                break;
+            if (in_array('vendor_no', (array) $index->fields, true)) {
+                return;
             }
         }
-        if (! $hasStallIndex) {
-            $this->db->query('ALTER TABLE vendors ADD UNIQUE KEY `stall_number` (`stall_number`)');
-        }
+        $this->db->query('ALTER TABLE vendors ADD UNIQUE KEY `vendor_no` (`vendor_no`)');
     }
 
     public function down(): void
@@ -87,21 +108,6 @@ class FixVendorsTableSchema extends Migration
         if (! $this->db->tableExists('vendors')) {
             return;
         }
-
-        // Reverse: drop the added columns
-        $fields = $this->db->getFieldNames('vendors');
-
-        if (in_array('stall_number', $fields)) {
-            $this->forge->dropColumn('vendors', 'stall_number');
-        }
-        if (in_array('section', $fields)) {
-            $this->forge->dropColumn('vendors', 'section');
-        }
-        if (in_array('contact', $fields)) {
-            $this->forge->dropColumn('vendors', 'contact');
-        }
-        if (in_array('permit_expiry', $fields)) {
-            $this->forge->dropColumn('vendors', 'permit_expiry');
-        }
+        // No-op (dropping columns is risky on legacy databases)
     }
 }

@@ -3,6 +3,8 @@
 namespace Config;
 
 use App\Filters\AuthFilter;
+use App\Filters\RoleFilter;
+use App\Filters\PermissionFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -18,6 +20,8 @@ class Filters extends BaseFilters
 {
     public array $aliases = [
         'auth'          => AuthFilter::class,
+        'role'          => RoleFilter::class,
+        'permission'    => PermissionFilter::class,
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,

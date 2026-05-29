@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateUsersTable extends Migration
 {
@@ -22,7 +23,7 @@ class CreateUsersTable extends Migration
             ],
             'email' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 150,
+                'constraint' => 100,
                 'null'       => false,
             ],
             'password' => [
@@ -32,9 +33,8 @@ class CreateUsersTable extends Migration
             ],
             'role' => [
                 'type'       => 'ENUM',
-                'constraint' => ['admin', 'manager', 'staff', 'cashier'],
+                'constraint' => ['admin', 'supervisor', 'collector', 'staff'],
                 'null'       => false,
-                'default'    => 'staff',
             ],
             'status' => [
                 'type'       => 'ENUM',
@@ -43,12 +43,9 @@ class CreateUsersTable extends Migration
                 'default'    => 'active',
             ],
             'created_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
+                'type'    => 'TIMESTAMP',
+                'null'    => false,
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
 

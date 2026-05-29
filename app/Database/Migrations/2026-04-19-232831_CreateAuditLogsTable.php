@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateAuditLogsTable extends Migration
 {
@@ -23,12 +24,12 @@ class CreateAuditLogsTable extends Migration
             ],
             'action' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 500,
-                'null'       => false,
+                'constraint' => 100,
+                'null'       => true,
             ],
             'table_affected' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 50,
                 'null'       => true,
             ],
             'record_id' => [
@@ -37,13 +38,14 @@ class CreateAuditLogsTable extends Migration
                 'unsigned'   => true,
                 'null'       => true,
             ],
-            'created_at' => [
-                'type' => 'DATETIME',
+            'details' => [
+                'type' => 'TEXT',
                 'null' => true,
             ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
+            'created_at' => [
+                'type'    => 'TIMESTAMP',
+                'null'    => false,
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
 

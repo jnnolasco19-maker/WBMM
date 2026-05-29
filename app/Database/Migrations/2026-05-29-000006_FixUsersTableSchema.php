@@ -6,7 +6,7 @@ use CodeIgniter\Database\Migration;
 
 /**
  * Fixes the users table schema:
- * 1. Expands the role ENUM to include manager and cashier.
+ * 1. Ensures the role ENUM matches the WBMM application roles.
  * 2. Adds the status column if missing.
  */
 class FixUsersTableSchema extends Migration
@@ -19,8 +19,8 @@ class FixUsersTableSchema extends Migration
 
         $fields = $this->db->getFieldNames('users');
 
-        // Expand role ENUM to include all 4 roles
-        $this->db->query("ALTER TABLE users MODIFY COLUMN `role` ENUM('admin','manager','staff','cashier') NOT NULL DEFAULT 'staff'");
+        // Ensure role ENUM matches the application (admin/supervisor/collector/staff)
+        $this->db->query("ALTER TABLE users MODIFY COLUMN `role` ENUM('admin','supervisor','collector','staff') NOT NULL DEFAULT 'staff'");
 
         // Add status column if missing
         if (! in_array('status', $fields)) {
@@ -42,8 +42,8 @@ class FixUsersTableSchema extends Migration
             return;
         }
 
-        // Revert role ENUM to original two values
-        $this->db->query("ALTER TABLE users MODIFY COLUMN `role` ENUM('admin','staff') NOT NULL");
+        // Best-effort revert to a minimal set (legacy)
+        $this->db->query("ALTER TABLE users MODIFY COLUMN `role` ENUM('admin','staff') NOT NULL DEFAULT 'staff'");
 
         // Drop status column
         $fields = $this->db->getFieldNames('users');

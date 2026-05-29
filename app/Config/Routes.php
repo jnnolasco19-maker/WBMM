@@ -20,22 +20,22 @@ $routes->get('notifications', 'NotificationController::index');
 
 // Stalls
 $routes->get('stalls', 'StallController::index');
-$routes->match(['get', 'post'], 'stalls/create', 'StallController::create');
-$routes->match(['get', 'post'], 'stalls/edit/(:num)', 'StallController::edit/$1');
-$routes->post('stalls/delete/(:num)', 'StallController::delete/$1');
+$routes->match(['get', 'post'], 'stalls/create', 'StallController::create', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], 'stalls/edit/(:num)', 'StallController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('stalls/delete/(:num)', 'StallController::delete/$1', ['filter' => 'role:admin']);
 $routes->get('stalls/view/(:num)', 'StallController::view/$1');
 
 // Vendors
 $routes->get('vendors', 'VendorController::index');
-$routes->match(['get', 'post'], 'vendors/create', 'VendorController::create');
-$routes->match(['get', 'post'], 'vendors/edit/(:num)', 'VendorController::edit/$1');
-$routes->post('vendors/delete/(:num)', 'VendorController::delete/$1');
+$routes->match(['get', 'post'], 'vendors/create', 'VendorController::create', ['filter' => 'role:admin,staff']);
+$routes->match(['get', 'post'], 'vendors/edit/(:num)', 'VendorController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('vendors/delete/(:num)', 'VendorController::delete/$1', ['filter' => 'role:admin']);
 $routes->get('vendors/view/(:num)', 'VendorController::view/$1');
 
 // Assignments
-$routes->get('assignments', 'AssignmentController::index');
-$routes->match(['get', 'post'], 'assignments/create', 'AssignmentController::create');
-$routes->post('assignments/terminate/(:num)', 'AssignmentController::terminate/$1');
+$routes->get('assignments', 'AssignmentController::index', ['filter' => 'role:admin,staff']);
+$routes->match(['get', 'post'], 'assignments/create', 'AssignmentController::create', ['filter' => 'role:admin,staff']);
+$routes->post('assignments/terminate/(:num)', 'AssignmentController::terminate/$1', ['filter' => 'role:admin']);
 
 // Payments
 $routes->get('payments', 'PaymentController::index');
@@ -47,9 +47,9 @@ $routes->get('payments/ajax/compute', 'PaymentController::ajaxCompute');
 
 // Records & Reports
 $routes->get('records', 'RecordController::index');
-$routes->get('records/summary', 'RecordController::summary');
+$routes->get('records/summary', 'RecordController::summary', ['filter' => 'role:admin,supervisor']);
 $routes->get('records/export', 'RecordController::export');
-$routes->get('records/summary/export', 'RecordController::exportSummary');
+$routes->get('records/summary/export', 'RecordController::exportSummary', ['filter' => 'role:admin,supervisor']);
 $routes->get('records/overdue', 'RecordController::overdue');
 $routes->get('records/overdue/export', 'RecordController::exportOverdue');
 $routes->get('records/vacant', 'RecordController::vacant');
@@ -58,16 +58,16 @@ $routes->get('records/permits', 'RecordController::permits');
 $routes->get('records/permits/export', 'RecordController::exportPermits');
 
 // Collector Remittance
-$routes->get('reports/collector', 'ReportController::collector');
-$routes->get('reports/collector/export', 'ReportController::collectorExport');
-$routes->get('reports/collector/(:num)', 'ReportController::collectorDetail/$1');
+$routes->get('reports/collector', 'ReportController::collector', ['filter' => 'role:admin,supervisor']);
+$routes->get('reports/collector/export', 'ReportController::collectorExport', ['filter' => 'role:admin,supervisor']);
+$routes->get('reports/collector/(:num)', 'ReportController::collectorDetail/$1', ['filter' => 'role:admin,supervisor']);
 
 // Rates
-$routes->get('rates', 'RateController::index');
-$routes->match(['get', 'post'], 'rates/create', 'RateController::create');
+$routes->get('rates', 'RateController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], 'rates/create', 'RateController::create', ['filter' => 'role:admin']);
 
 // Users
-$routes->get('users', 'UserController::index');
-$routes->match(['get', 'post'], 'users/create', 'UserController::create');
-$routes->match(['get', 'post'], 'users/edit/(:num)', 'UserController::edit/$1');
-$routes->post('users/deactivate/(:num)', 'UserController::deactivate/$1');
+$routes->get('users', 'UserController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], 'users/create', 'UserController::create', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], 'users/edit/(:num)', 'UserController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('users/deactivate/(:num)', 'UserController::deactivate/$1', ['filter' => 'role:admin']);
