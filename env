@@ -1,0 +1,18 @@
+#--------------------------------------------------------------------
+# WBMM Environment Configuration
+# Copy this file to .env for local overrides
+#--------------------------------------------------------------------
+
+CI_ENVIRONMENT = development
+
+app.baseURL = 'http://localhost/WBMM/public/'
+
+database.default.hostname = localhost
+database.default.database = wbmm_db
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+
+# encryption.key =

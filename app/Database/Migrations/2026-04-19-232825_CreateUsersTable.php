@@ -32,8 +32,15 @@ class CreateUsersTable extends Migration
             ],
             'role' => [
                 'type'       => 'ENUM',
-                'constraint' => ['admin', 'staff'],
+                'constraint' => ['admin', 'manager', 'staff', 'cashier'],
                 'null'       => false,
+                'default'    => 'staff',
+            ],
+            'status' => [
+                'type'       => 'ENUM',
+                'constraint' => ['active', 'inactive'],
+                'null'       => false,
+                'default'    => 'active',
             ],
             'created_at' => [
                 'type' => 'DATETIME',

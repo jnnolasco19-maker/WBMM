@@ -51,10 +51,17 @@
         </style>
     </head>
     <body>
+        <h2>Auth (Tests\Feature\Auth)</h2>
+        <ul>
+            <li class="success">Login page loads</li>
+            <li class="success">Invalid login shows generic error</li>
+            <li class="success">Valid admin login redirects to dashboard</li>
+            <li class="success">Collector login redirects to payment create</li>
+        </ul>
         <h2>Example Database</h2>
         <ul>
-            <li class="defect">Model find all</li>
-            <li class="defect">Soft delete leaves row</li>
+            <li class="success">Model find all</li>
+            <li class="success">Soft delete leaves row</li>
         </ul>
         <h2>Example Session</h2>
         <ul>
@@ -64,6 +71,22 @@
         <ul>
             <li class="success">Is defined app path</li>
             <li class="success">Base url has been set</li>
+        </ul>
+        <h2>Payment Ajax (Tests\Feature\PaymentAjax)</h2>
+        <ul>
+            <li class="success">Ajax compute inside monthly</li>
+        </ul>
+        <h2>Payment Reference (Tests\Unit\PaymentReference)</h2>
+        <ul>
+            <li class="success">Reference no pattern</li>
+            <li class="success">Reference sequence padding</li>
+        </ul>
+        <h2>Rate Model (Tests\Unit\RateModel)</h2>
+        <ul>
+            <li class="success">Inside monthly computation</li>
+            <li class="success">Inside daily computation</li>
+            <li class="success">Outside flat weekly</li>
+            <li class="success">Ambulant daily only</li>
         </ul>
     </body>
 </html>

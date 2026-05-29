@@ -1,149 +1,81 @@
 <?= $this->extend('layouts/main') ?>
-
 <?= $this->section('content') ?>
+<h1 class="h3 mb-4">Collect Arkalaba</h1>
+<?php if (! $can_collect): ?>
+<div class="alert alert-info">You have view-only access. Contact a collector or administrator to record payments.</div>
+<?php endif; ?>
+<div class="card"><div class="card-body">
+<form method="post" action="<?= base_url('payments/create') ?>" id="paymentForm">
+<?= csrf_field() ?>
+<input type="hidden" id="stall_type_val" name="stall_type_hidden" value="">
+<input type="hidden" id="sqm_val" value="0">
+<input type="hidden" id="rate_used" name="rate_used" value="">
+<input type="hidden" id="preselect_stall_id" value="<?= (int) ($query_stall_id ?? 0) ?>">
 
-<div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
-        
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <a href="<?= base_url('payments') ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                <i class="fa-solid fa-arrow-left me-1"></i> Back
-            </a>
-            <h1 class="h3 fw-bold mb-0">Record Rental Payment</h1>
-        </div>
-
-        <?php $errors = session()->getFlashdata('errors') ?? []; ?>
-
-        <!-- Capture URL query param for dynamic auto-selection -->
-        <?php 
-        $queryVendorId = isset($_GET['vendor_id']) ? (int) $_GET['vendor_id'] : 0; 
-        ?>
-
-        <div class="card card-custom">
-            <div class="card-body p-4 p-md-5">
-                <form action="<?= base_url('payments/create') ?>" method="post" novalidate>
-                    <?= csrf_field() ?>
-
-                    <div class="row g-4">
-                        <!-- Select Vendor -->
-                        <div class="col-12">
-                            <label for="vendor_id" class="form-label fw-semibold text-dark">Stall Vendor <span class="text-danger">*</span></label>
-                            <select id="vendor_id" name="vendor_id" class="form-select <?= isset($errors['vendor_id']) ? 'is-invalid' : '' ?>" required>
-                                <option value="">-- Choose Vendor --</option>
-                                <?php foreach ($vendors as $vendor): ?>
-                                    <option value="<?= $vendor['id'] ?>" <?= (old('vendor_id', $queryVendorId) == $vendor['id']) ? 'selected' : '' ?>>
-                                        <?= esc($vendor['name']) ?> (Stall: <?= esc($vendor['stall_number']) ?> — <?= esc($vendor['section']) ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <?php if (isset($errors['vendor_id'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['vendor_id']) ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Amount -->
-                        <div class="col-12 col-md-6">
-                            <label for="amount" class="form-label fw-semibold text-dark">Amount Collected (₱) <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light text-muted">₱</span>
-                                <input type="number" id="amount" name="amount" step="0.01" min="0" class="form-control <?= isset($errors['amount']) ? 'is-invalid' : '' ?>" placeholder="0.00" value="<?= esc(old('amount')) ?>" required>
-                                <?php if (isset($errors['amount'])): ?>
-                                    <div class="invalid-feedback"><?= esc($errors['amount']) ?></div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- Payment Type -->
-                        <div class="col-12 col-md-6">
-                            <label for="payment_type" class="form-label fw-semibold text-dark">Payment Recurrence <span class="text-danger">*</span></label>
-                            <select id="payment_type" name="payment_type" class="form-select <?= isset($errors['payment_type']) ? 'is-invalid' : '' ?>" required>
-                                <option value="daily" <?= old('payment_type') === 'daily' ? 'selected' : '' ?>>Daily Rent</option>
-                                <option value="weekly" <?= old('payment_type') === 'weekly' ? 'selected' : '' ?>>Weekly Lease</option>
-                                <option value="monthly" <?= old('payment_type') === 'monthly' ? 'selected' : '' ?>>Monthly Lease</option>
-                            </select>
-                            <?php if (isset($errors['payment_type'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['payment_type']) ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Period covered start -->
-                        <div class="col-12 col-md-6">
-                            <label for="period_start" class="form-label fw-semibold text-dark">Lease Period Start Covered <span class="text-danger">*</span></label>
-                            <input type="date" id="period_start" name="period_start" class="form-control <?= isset($errors['period_start']) ? 'is-invalid' : '' ?>" value="<?= esc(old('period_start', date('Y-m-d'))) ?>" required>
-                            <?php if (isset($errors['period_start'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['period_start']) ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Period covered end -->
-                        <div class="col-12 col-md-6">
-                            <label for="period_end" class="form-label fw-semibold text-dark">Lease Period End Covered <span class="text-danger">*</span></label>
-                            <input type="date" id="period_end" name="period_end" class="form-control <?= isset($errors['period_end']) ? 'is-invalid' : '' ?>" value="<?= esc(old('period_end', date('Y-m-d'))) ?>" required>
-                            <?php if (isset($errors['period_end'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['period_end']) ?></div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Notes -->
-                        <div class="col-12">
-                            <label for="notes" class="form-label fw-semibold text-dark">Collection Notes / Comments</label>
-                            <textarea id="notes" name="notes" class="form-control <?= isset($errors['notes']) ? 'is-invalid' : '' ?>" rows="3" placeholder="Reference remarks..." maxlength="1000"><?= esc(old('notes')) ?></textarea>
-                            <?php if (isset($errors['notes'])): ?>
-                                <div class="invalid-feedback"><?= esc($errors['notes']) ?></div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-
-                    <div class="d-flex gap-3 mt-5">
-                        <button type="submit" class="btn btn-gradient-primary px-4 py-2">
-                            <i class="fa-solid fa-calculator me-2"></i> Register Payment
-                        </button>
-                        <a href="<?= base_url('payments') ?>" class="btn btn-light border px-4 py-2">Cancel</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-
+<h5 class="text-muted mb-3">Step 1 — Select Vendor</h5>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Search vendor</label>
+        <input type="text" id="vendor_search" class="form-control" placeholder="Name or vendor no..." <?= $can_collect ? '' : 'disabled' ?>>
+    </div>
+    <div class="col-md-5">
+        <label class="form-label">Vendor *</label>
+        <select name="vendor_id" id="vendor_id" class="form-select" required <?= $can_collect ? '' : 'disabled' ?>>
+            <option value="">— Select vendor —</option>
+            <?php foreach ($vendors as $v): ?>
+            <option value="<?= $v['id'] ?>" <?= ($query_vendor_id ?? 0) == $v['id'] ? 'selected' : '' ?>>
+                <?= esc($v['vendor_no'].' — '.$v['first_name'].' '.$v['last_name']) ?>
+            </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <span id="vendor_type_badge" class="badge bg-secondary mb-2">—</span>
     </div>
 </div>
 
-<?= $this->section('script') ?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const periodStart = document.getElementById('period_start');
-    const periodEnd   = document.getElementById('period_end');
-    const typeSelect  = document.getElementById('payment_type');
+<h5 class="text-muted mb-3">Step 2 — Select Stall</h5>
+<div id="stall_section" class="row g-3 mb-4">
+    <div class="col-md-8">
+        <select name="stall_id" id="stall_id" class="form-select" <?= $can_collect ? '' : 'disabled' ?>>
+            <option value="">— Select stall —</option>
+        </select>
+        <small class="text-muted">Skipped for ambulant vendors (no fixed stall).</small>
+    </div>
+</div>
 
-    // Auto-compute period covered dates for cashier convenience
-    function autoAlignDates() {
-        if (!periodStart.value) return;
-
-        const start = new Date(periodStart.value);
-        let end = new Date(start);
-
-        if (typeSelect.value === 'daily') {
-            // End same day
-            end = start;
-        } else if (typeSelect.value === 'weekly') {
-            // End 6 days later
-            end.setDate(start.getDate() + 6);
-        } else if (typeSelect.value === 'monthly') {
-            // End 1 month later less 1 day
-            end.setMonth(start.getMonth() + 1);
-            end.setDate(end.getDate() - 1);
-        }
-
-        // Format Date back into YYYY-MM-DD
-        const yyyy = end.getFullYear();
-        const mm = String(end.getMonth() + 1).padStart(2, '0');
-        const dd = String(end.getDate()).padStart(2, '0');
-        periodEnd.value = `${yyyy}-${mm}-${dd}`;
-    }
-
-    typeSelect.addEventListener('change', autoAlignDates);
-    periodStart.addEventListener('change', autoAlignDates);
-});
-</script>
-<?= $this->endSection() ?>
-
+<h5 class="text-muted mb-3">Step 3 — Payment Details</h5>
+<div class="row g-3">
+    <div class="col-md-3"><label class="form-label">Payment Type</label>
+        <select name="payment_type" id="payment_type" class="form-select" required <?= $can_collect ? '' : 'disabled' ?>>
+            <option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+        </select></div>
+    <div class="col-md-3"><label class="form-label">Period Start</label>
+        <input type="date" name="period_start" id="period_start" class="form-control" required <?= $can_collect ? '' : 'disabled' ?>></div>
+    <div class="col-md-3"><label class="form-label">Period End</label>
+        <input type="date" name="period_end" id="period_end" class="form-control" required <?= $can_collect ? '' : 'disabled' ?>></div>
+    <div class="col-md-3"><label class="form-label">Computed Amount (₱)</label>
+        <input type="text" id="computed_amount" name="computed_amount" class="form-control bg-light" readonly></div>
+    <div class="col-md-3"><label class="form-label">Amount Paid (₱) *</label>
+        <input type="number" step="0.01" name="amount_paid" id="amount_paid" class="form-control" required <?= $can_collect ? '' : 'disabled' ?>></div>
+    <?php if ($user_role === 'admin'): ?>
+    <div class="col-md-4"><label class="form-label">Collected By (Maningil)</label>
+        <select name="collected_by" class="form-select">
+            <?php foreach ($collectors as $c): ?>
+            <option value="<?= $c['id'] ?>" <?= $c['id'] == session()->get('user_id') ? 'selected' : '' ?>><?= esc($c['name']) ?></option>
+            <?php endforeach; ?>
+        </select></div>
+    <?php endif; ?>
+    <div class="col-12">
+        <div id="underpayment_warning" class="alert alert-warning d-none">
+            <i class="fa-solid fa-triangle-exclamation"></i> Amount paid is less than computed amount. A note is required before saving.
+        </div>
+    </div>
+    <div class="col-12"><label class="form-label">Notes</label>
+        <textarea name="notes" id="payment_notes" class="form-control" rows="2" placeholder="Required if underpayment"></textarea></div>
+</div>
+<?php if ($can_collect): ?>
+<div class="mt-4"><button type="submit" class="btn btn-success btn-lg"><i class="fa-solid fa-receipt"></i> Record Payment &amp; Print Resibo</button></div>
+<?php endif; ?>
+</form></div></div>
 <?= $this->endSection() ?>

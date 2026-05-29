@@ -1,72 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($page_title) ?> — WBMM</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-light">
+<?= $this->extend('layouts/main') ?>
 
-<?= view('layouts/navbar', ['user_name' => $user_name, 'user_role' => $user_role]) ?>
+<?= $this->section('content') ?>
 
-<main class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
 
-            <!-- Flash messages -->
-            <?php if (session()->getFlashdata('message')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= esc(session()->getFlashdata('message')) ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?>
-
-            <?php if (session()->getFlashdata('errors')): ?>
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                            <li><?= esc($error) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
-            <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h1 class="h4 mb-0 py-2">My Profile</h1>
-                </div>
-                <div class="card-body">
-                    <form action="<?= base_url('profile') ?>" method="post">
-                        <?= csrf_field() ?>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= esc(old('name', $user['name'])) ?>" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= esc(old('email', $user['email'])) ?>" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="password" class="form-label">New Password <small class="text-muted">(leave blank to keep current password)</small></label>
-                            <input type="password" class="form-control" id="password" name="password" autocomplete="new-password">
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="<?= base_url('dashboard') ?>" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <a href="<?= base_url('dashboard') ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back
+            </a>
+            <h1 class="h3 fw-bold mb-0">My Profile</h1>
         </div>
-    </div>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <?php $errors = session()->getFlashdata('errors') ?? []; ?>
+
+        <div class="card card-custom">
+            <div class="card-body p-4 p-md-5">
+                <form action="<?= base_url('profile') ?>" method="post" novalidate>
+                    <?= csrf_field() ?>
+
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label for="name" class="form-label fw-semibold text-dark">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" id="name" name="name"
+                                   class="form-control <?= isset($errors['name']) ? 'is-invalid' : '' ?>"
+                                   value="<?= esc(old('name', $user['name'])) ?>" required>
+                            <?php if (isset($errors['name'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['name']) ?></div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="email" class="form-label fw-semibold text-dark">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" id="email" name="email"
+                                   class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
+                                   value="<?= esc(old('email', $user['email'])) ?>" required>
+                            <?php if (isset($errors['email'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['email']) ?></div>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="password" class="form-label fw-semibold text-dark">
+                                New Password
+                                <small class="text-muted fw-normal">(leave blank to keep current)</small>
+                            </label>
+                            <input type="password" id="password" name="password"
+                                   class="form-control <?= isset($errors['password']) ? 'is-invalid' : '' ?>"
+                                   autocomplete="new-password">
+                            <?php if (isset($errors['password'])): ?>
+                                <div class="invalid-feedback"><?= esc($errors['password']) ?></div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-5">
+                        <button type="submit" class="btn btn-gradient-primary px-4 py-2">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> Update Profile
+                        </button>
+                        <a href="<?= base_url('dashboard') ?>" class="btn btn-light border px-4 py-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<?= $this->endSection() ?>

@@ -1,0 +1,35 @@
+{
+  "info": {
+    "name": "WBMM API Routes",
+    "description": "Smoke tests for WBMM session routes (run after logging in via browser or use Postman cookies).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost/WBMM/public" }
+  ],
+  "item": [
+    {
+      "name": "Login Page",
+      "request": { "method": "GET", "url": "{{baseUrl}}/login" }
+    },
+    {
+      "name": "Dashboard (requires session)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/dashboard" }
+    },
+    {
+      "name": "Payments AJAX Compute",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/payments/ajax/compute?stall_type=inside&payment_type=monthly&sqm=6"
+      }
+    },
+    {
+      "name": "Collector Remittance Report",
+      "request": { "method": "GET", "url": "{{baseUrl}}/reports/collector" }
+    },
+    {
+      "name": "Export Records CSV",
+      "request": { "method": "GET", "url": "{{baseUrl}}/records/export" }
+    }
+  ]
+}

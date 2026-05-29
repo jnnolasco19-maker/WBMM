@@ -1,0 +1,87 @@
+:root {
+    --wbmm-primary: #1e40af;
+    --wbmm-sidebar: #0f172a;
+    --wbmm-bg: #f1f5f9;
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--wbmm-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.wbmm-wrapper {
+    flex: 1;
+    min-height: calc(100vh - 120px);
+}
+
+.wbmm-sidebar {
+    width: 260px;
+    background: var(--wbmm-sidebar);
+    color: #e2e8f0;
+    flex-shrink: 0;
+}
+
+.wbmm-sidebar .nav-link {
+    color: #94a3b8;
+    padding: 0.65rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    border-left: 3px solid transparent;
+}
+
+.wbmm-sidebar .nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.wbmm-sidebar .nav-link.active {
+    color: #fff;
+    background: rgba(37, 99, 235, 0.25);
+    border-left-color: #60a5fa;
+}
+
+.wbmm-content {
+    overflow-x: auto;
+}
+
+.kpi-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+}
+
+.badge-inside { background: #2563eb; }
+.badge-outside { background: #059669; }
+.badge-ambulant { background: #d97706; }
+
+.table-wbmm th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    background: #f8fafc;
+}
+
+.receipt-box {
+    max-width: 700px;
+    margin: 0 auto;
+    border: 2px solid #1e293b;
+    padding: 2rem;
+    background: #fff;
+}
+
+@media print {
+    .no-print { display: none !important; }
+    .wbmm-sidebar, .navbar, footer { display: none !important; }
+    .wbmm-content { padding: 0 !important; }
+    body { background: #fff; }
+}

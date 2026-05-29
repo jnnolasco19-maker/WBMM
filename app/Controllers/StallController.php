@@ -2,247 +2,172 @@
 
 namespace App\Controllers;
 
+use App\Models\AuditLogModel;
+use App\Models\PaymentModel;
 use App\Models\StallModel;
-use App\Models\VendorModel;
+use App\Models\VendorStallModel;
 
 class StallController extends BaseController
 {
-    private function getRole(): string
+    private function requireAdmin(): bool|object
     {
-        return (string) session()->get('user_role');
+        if (session()->get('user_role') !== 'admin') {
+            return redirect()->to('/stalls')
+                ->with('error', 'Only administrators can perform this action.');
+        }
+
+        return true;
     }
 
-    private function requireAdminOrManager(): ?object
+    public function index(): string
     {
-        $role = $this->getRole();
-        if (in_array($role, ['admin', 'manager'], true)) {
-            return null;
-        }
-        session()->destroy();
-        return redirect()->to(base_url('login'));
-    }
+        $model = new StallModel();
 
-    private function requireAdminOnly(): ?object
-    {
-        $role = $this->getRole();
-        if ($role === 'admin') {
-            return null;
-        }
-        if (! in_array($role, ['admin', 'manager'], true)) {
-            session()->destroy();
-            return redirect()->to(base_url('login'));
-        }
-        return $this->response->setStatusCode(403)->setBody(view('errors/403', [
-            'user_name' => session()->get('user_name'),
-            'user_role' => $role,
+        return view('stalls/index', $this->viewData([
+            'page_title' => 'Stalls',
+            'stalls'     => $model->getFiltered(
+                (string) $this->request->getGet('type'),
+                (string) $this->request->getGet('section'),
+                (string) $this->request->getGet('status'),
+                (string) $this->request->getGet('search')
+            ),
+            'sections'   => $model->getSections(),
+            'type'       => (string) $this->request->getGet('type'),
+            'section'    => (string) $this->request->getGet('section'),
+            'status'     => (string) $this->request->getGet('status'),
+            'search'     => (string) $this->request->getGet('search'),
         ]));
     }
 
-    // -------------------------------------------------------------------------
-    // LIST
-    // -------------------------------------------------------------------------
-
-    public function index(): string|object
-    {
-        $role = $this->getRole();
-        if (! in_array($role, ['admin', 'manager'], true)) {
-            return redirect()->to(base_url('dashboard'))
-                ->with('error', 'Access Denied. You do not have permission to access this page.');
-        }
-
-        $model  = new StallModel();
-        $search = (string) $this->request->getGet('search');
-        $status = (string) $this->request->getGet('status');
-
-        $stalls = $model->getFiltered($search, $status)->paginate(15, 'stalls');
-
-        return view('stalls/index', [
-            'page_title' => 'Stalls',
-            'user_name'  => session()->get('user_name'),
-            'user_role'  => $role,
-            'stalls'     => $stalls,
-            'pager'      => $model->pager,
-            'search'     => $search,
-            'status'     => $status,
-        ]);
-    }
-
-    // -------------------------------------------------------------------------
-    // CREATE
-    // -------------------------------------------------------------------------
-
     public function create(): string|object
     {
-        $guard = $this->requireAdminOrManager();
-        if ($guard !== null) return $guard;
+        $guard = $this->requireAdmin();
+        if ($guard !== true) {
+            return $guard;
+        }
 
-        $vendorModel = new VendorModel();
-        $vendors     = $vendorModel->where('status', 'active')->findAll();
+        if ($this->request->getMethod() === 'POST') {
+            return $this->saveStall();
+        }
 
-        return view('stalls/create', [
-            'page_title' => 'Add Stall',
-            'user_name'  => session()->get('user_name'),
-            'user_role'  => $this->getRole(),
-            'vendors'    => $vendors,
-        ]);
+        return view('stalls/create', $this->viewData(['page_title' => 'Add Stall']));
     }
-
-    public function store(): object
-    {
-        $guard = $this->requireAdminOrManager();
-        if ($guard !== null) return $guard;
-
-        $rules = [
-            'stall_number' => 'required|max_length[20]',
-            'location'     => 'permit_empty|max_length[150]',
-            'size'         => 'permit_empty|max_length[50]',
-            'status'       => 'required|in_list[occupied,vacant]',
-            'vendor_id'    => 'permit_empty|integer',
-        ];
-
-        if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()
-                ->with('errors', $this->validator->getErrors());
-        }
-
-        $stallNumber = trim((string) $this->request->getPost('stall_number'));
-        $model       = new StallModel();
-
-        // Unique stall_number check
-        if ($model->where('stall_number', $stallNumber)->first()) {
-            return redirect()->back()->withInput()
-                ->with('errors', ['stall_number' => 'This stall number is already in use.']);
-        }
-
-        $vendorId = $this->request->getPost('vendor_id');
-
-        // Validate vendor_id references existing vendor
-        if ($vendorId) {
-            $vendorModel = new VendorModel();
-            if (! $vendorModel->find((int) $vendorId)) {
-                return redirect()->back()->withInput()
-                    ->with('errors', ['vendor_id' => 'The selected vendor does not exist.']);
-            }
-        }
-
-        $model->insert([
-            'stall_number' => $stallNumber,
-            'location'     => $this->request->getPost('location'),
-            'size'         => $this->request->getPost('size'),
-            'status'       => $this->request->getPost('status'),
-            'vendor_id'    => $vendorId ?: null,
-        ]);
-
-        return redirect()->to(base_url('stalls'))
-            ->with('message', 'Stall created successfully.');
-    }
-
-    // -------------------------------------------------------------------------
-    // EDIT / UPDATE
-    // -------------------------------------------------------------------------
 
     public function edit(int $id): string|object
     {
-        $guard = $this->requireAdminOrManager();
-        if ($guard !== null) return $guard;
-
-        $model = new StallModel();
-        $stall = $model->find($id);
-
-        if (! $stall) {
-            return redirect()->to(base_url('stalls'))
-                ->with('error', 'Stall not found.');
+        $guard = $this->requireAdmin();
+        if ($guard !== true) {
+            return $guard;
         }
 
-        $vendorModel = new VendorModel();
-        $vendors     = $vendorModel->where('status', 'active')->findAll();
+        $stall = (new StallModel())->find($id);
+        if (! $stall) {
+            return redirect()->to('/stalls')->with('error', 'Stall not found.');
+        }
 
-        return view('stalls/edit', [
+        if ($this->request->getMethod() === 'POST') {
+            return $this->saveStall($id, $stall);
+        }
+
+        return view('stalls/edit', $this->viewData([
             'page_title' => 'Edit Stall',
-            'user_name'  => session()->get('user_name'),
-            'user_role'  => $this->getRole(),
             'stall'      => $stall,
-            'vendors'    => $vendors,
-        ]);
+        ]));
     }
 
-    public function update(int $id): object
+    private function saveStall(?int $id = null, ?array $existing = null): object
     {
-        $guard = $this->requireAdminOrManager();
-        if ($guard !== null) return $guard;
-
-        $model = new StallModel();
-        $stall = $model->find($id);
-
-        if (! $stall) {
-            return redirect()->to(base_url('stalls'))
-                ->with('error', 'Stall not found.');
-        }
-
+        $type = $this->request->getPost('type');
         $rules = [
-            'stall_number' => 'required|max_length[20]',
-            'location'     => 'permit_empty|max_length[150]',
-            'size'         => 'permit_empty|max_length[50]',
-            'status'       => 'required|in_list[occupied,vacant]',
-            'vendor_id'    => 'permit_empty|integer',
+            'stall_code' => $id
+                ? "required|max_length[50]|is_unique[stalls.stall_code,id,{$id}]"
+                : 'required|max_length[50]|is_unique[stalls.stall_code]',
+            'section'    => 'required|max_length[100]',
+            'type'       => 'required|in_list[inside,outside,ambulant]',
         ];
 
+        if ($id === null) {
+            $rules['status'] = 'required|in_list[vacant,suspended]';
+        }
+
+        if ($type === 'inside') {
+            $rules['sqm']         = 'required|decimal|greater_than[0]';
+            $rules['floor_level'] = 'required|max_length[20]';
+        }
+
         if (! $this->validate($rules)) {
-            return redirect()->back()->withInput()
-                ->with('errors', $this->validator->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $stallNumber = trim((string) $this->request->getPost('stall_number'));
+        $data = [
+            'stall_code'  => strtoupper(trim($this->request->getPost('stall_code'))),
+            'section'     => $this->request->getPost('section'),
+            'type'        => $type,
+            'sqm'         => $type === 'inside' ? $this->request->getPost('sqm') : null,
+            'floor_level' => $type === 'inside' ? $this->request->getPost('floor_level') : null,
+            'notes'       => $this->request->getPost('notes') ?: null,
+        ];
 
-        // Unique stall_number check — exclude current stall
-        $duplicate = $model->where('stall_number', $stallNumber)->where('id !=', $id)->first();
-        if ($duplicate) {
-            return redirect()->back()->withInput()
-                ->with('errors', ['stall_number' => 'This stall number is already in use.']);
-        }
-
-        $vendorId = $this->request->getPost('vendor_id');
-
-        if ($vendorId) {
-            $vendorModel = new VendorModel();
-            if (! $vendorModel->find((int) $vendorId)) {
-                return redirect()->back()->withInput()
-                    ->with('errors', ['vendor_id' => 'The selected vendor does not exist.']);
+        if ($id === null) {
+            $data['status'] = $this->request->getPost('status');
+        } else {
+            $newStatus = $this->request->getPost('status');
+            if ($newStatus !== 'occupied') {
+                $data['status'] = $newStatus;
             }
         }
 
-        $model->update($id, [
-            'stall_number' => $stallNumber,
-            'location'     => $this->request->getPost('location'),
-            'size'         => $this->request->getPost('size'),
-            'status'       => $this->request->getPost('status'),
-            'vendor_id'    => $vendorId ?: null,
-        ]);
+        $model = new StallModel();
+        if ($id === null) {
+            $model->insert($data);
+            $newId = $model->getInsertID();
+            (new AuditLogModel())->log('create', 'stalls', $newId, 'Created stall: ' . $data['stall_code']);
 
-        return redirect()->to(base_url('stalls'))
-            ->with('message', 'Stall updated successfully.');
+            return redirect()->to('/stalls')->with('success', 'Stall created successfully.');
+        }
+
+        $model->update($id, $data);
+        (new AuditLogModel())->log('update', 'stalls', $id, 'Updated stall: ' . $data['stall_code']);
+
+        return redirect()->to('/stalls')->with('success', 'Stall updated successfully.');
     }
-
-    // -------------------------------------------------------------------------
-    // DELETE
-    // -------------------------------------------------------------------------
 
     public function delete(int $id): object
     {
-        $guard = $this->requireAdminOnly();
-        if ($guard !== null) return $guard;
+        $guard = $this->requireAdmin();
+        if ($guard !== true) {
+            return $guard;
+        }
 
         $model = new StallModel();
         $stall = $model->find($id);
-
         if (! $stall) {
-            return redirect()->to(base_url('stalls'))
-                ->with('error', 'Stall not found.');
+            return redirect()->to('/stalls')->with('error', 'Stall not found.');
         }
 
+        if ((new VendorStallModel())->isStallOccupied($id)) {
+            return redirect()->to('/stalls')
+                ->with('error', 'Cannot delete a stall with an active vendor assignment.');
+        }
+
+        (new AuditLogModel())->log('delete', 'stalls', $id, 'Deleted stall: ' . $stall['stall_code']);
         $model->delete($id);
 
-        return redirect()->to(base_url('stalls'))
-            ->with('message', 'Stall deleted successfully.');
+        return redirect()->to('/stalls')->with('success', 'Stall deleted successfully.');
+    }
+
+    public function view(int $id): string|object
+    {
+        $stall = (new StallModel())->getDetail($id);
+        if (! $stall) {
+            return redirect()->to('/stalls')->with('error', 'Stall not found.');
+        }
+
+        return view('stalls/view', $this->viewData([
+            'page_title'  => 'Stall ' . $stall['stall_code'],
+            'stall'       => $stall,
+            'assignments' => (new VendorStallModel())->getAllByStall($id),
+            'payments'    => (new PaymentModel())->getByStall($id),
+        ]));
     }
 }

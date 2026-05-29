@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\AuditLogModel;
 use App\Models\UserModel;
 
 class AuthController extends BaseController
@@ -9,69 +10,68 @@ class AuthController extends BaseController
     public function login(): string|object
     {
         if (session()->get('is_logged_in')) {
-            return redirect()->to('/dashboard');
+            return $this->redirectByRole();
         }
 
-        return view('auth/login', [
-            'page_title' => 'Sign In'
-        ]);
+        if ($this->request->getMethod() === 'POST') {
+            return $this->processLogin();
+        }
+
+        return view('auth/login', ['page_title' => 'Sign In']);
     }
 
-    public function loginProcess(): object
+    public function logout(): object
     {
         if (session()->get('is_logged_in')) {
-            return redirect()->to('/dashboard');
+            (new AuditLogModel())->log('logout', 'users', (int) session()->get('user_id'), 'User logged out');
         }
+        session()->destroy();
 
+        return redirect()->to('/login')->with('success', 'You have been logged out.');
+    }
+
+    private function processLogin(): object
+    {
         $rules = [
             'email'    => 'required|valid_email',
-            'password' => 'required|min_length[6]|max_length[100]'
+            'password' => 'required|min_length[6]',
         ];
 
         if (! $this->validate($rules)) {
             return redirect()->back()->withInput()
-                ->with('errors', $this->validator->getErrors());
+                ->with('error', 'Invalid email or password.');
         }
 
-        $email    = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+        $user = (new UserModel())->findByEmail($this->request->getPost('email'));
 
-        $userModel = new UserModel();
-        $user      = $userModel->findByEmail($email);
-
-        if (! $user || ! password_verify($password, $user['password'])) {
+        if (! $user || ! password_verify($this->request->getPost('password'), $user['password'])) {
             return redirect()->back()->withInput()
                 ->with('error', 'Invalid email or password.');
         }
 
         if ($user['status'] !== 'active') {
             return redirect()->back()->withInput()
-                ->with('error', 'Your account has been deactivated.');
+                ->with('error', 'Your account has been deactivated. Contact the administrator.');
         }
 
-        // Establish session parameters
         session()->set([
             'user_id'      => (int) $user['id'],
             'user_name'    => $user['name'],
             'user_role'    => $user['role'],
-            'is_logged_in' => true
+            'is_logged_in' => true,
         ]);
 
-        $this->logActivity('User logged in successfully', 'users', $user['id']);
+        (new AuditLogModel())->log('login', 'users', (int) $user['id'], 'User logged in');
 
-        return redirect()->to('/dashboard')
-            ->with('message', 'Welcome back, ' . $user['name'] . '!');
+        return $this->redirectByRole();
     }
 
-    public function logout(): object
+    private function redirectByRole(): object
     {
-        if (session()->get('is_logged_in')) {
-            $this->logActivity('User logged out', 'users', session()->get('user_id'));
+        if (session()->get('user_role') === 'collector') {
+            return redirect()->to('/payments/create');
         }
-        
-        session()->destroy();
 
-        return redirect()->to('/login')
-            ->with('message', 'You have been logged out successfully.');
+        return redirect()->to('/dashboard');
     }
 }

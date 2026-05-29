@@ -2,59 +2,53 @@
 
 namespace App\Controllers;
 
+use App\Models\AuditLogModel;
+use App\Models\VendorModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * BaseController provides a convenient place for loading components
- * and performing functions that are needed by all your controllers.
- *
- * Extend this class in any new controllers:
- * ```
- *     class Home extends BaseController
- * ```
- *
- * For security, be sure to declare any new methods as protected or private.
- */
 abstract class BaseController extends Controller
 {
-    /**
-     * Be sure to declare properties for any property fetch you initialized.
-     * The creation of dynamic property is deprecated in PHP 8.2.
-     */
-
-    // protected $session;
-
-    /**
-     * @return void
-     */
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
-        // Load here all helpers you want to be available in your controllers that extend BaseController.
-        // Caution: Do not put the this below the parent::initController() call below.
-        // $this->helpers = ['form', 'url'];
-
-        // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
-
-        // Preload any models, libraries, etc, here.
-        // $this->session = service('session');
+        helper(['form', 'url']);
     }
 
-    /**
-     * Log actions inside the audit_logs table for compliance and tracking.
-     */
-    protected function logActivity(string $action, string $table, ?int $recordId = null): void
+    protected function viewData(array $extra = []): array
     {
-        $userId = session()->get('user_id');
-        $auditModel = new \App\Models\AuditLogModel();
-        $auditModel->insert([
-            'user_id'        => $userId ?: null,
-            'action'         => $action,
-            'table_affected' => $table,
-            'record_id'      => $recordId,
-        ]);
+        $role = session()->get('user_role');
+        $alertCount = 0;
+
+        if (in_array($role, ['admin', 'supervisor', 'staff'], true)) {
+            $vendorModel = new VendorModel();
+            $alertCount  = count($vendorModel->getOverdue())
+                + count($vendorModel->getExpiringPermits(30));
+        } elseif ($role === 'collector') {
+            $alertCount = count((new VendorModel())->getExpiringPermits(30));
+        }
+
+        return array_merge([
+            'user_name'   => session()->get('user_name'),
+            'user_role'   => $role,
+            'alert_count' => $alertCount,
+        ], $extra);
+    }
+
+    protected function requireRoles(array $roles): bool|object
+    {
+        if (! in_array(session()->get('user_role'), $roles, true)) {
+            return redirect()->to('/dashboard')
+                ->with('error', 'You do not have permission to access this page.');
+        }
+
+        return true;
+    }
+
+    protected function audit(string $action, string $table, ?int $recordId = null, string $details = ''): void
+    {
+        (new AuditLogModel())->log($action, $table, $recordId, $details);
     }
 }

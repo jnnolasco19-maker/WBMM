@@ -34,10 +34,28 @@ class UpdateUsersTableWithRoleId extends Migration
 
     public function down(): void
     {
-        // Remove foreign key constraint
-        $this->db->query("ALTER TABLE users DROP FOREIGN KEY fk_users_role_id");
-        
+        // Disable FK checks so we can drop the constraint safely
+        $this->db->query('SET FOREIGN_KEY_CHECKS=0');
+
+        // Remove foreign key constraint if it exists
+        $indexes = $this->db->query("
+            SELECT CONSTRAINT_NAME FROM information_schema.TABLE_CONSTRAINTS
+            WHERE TABLE_SCHEMA = DATABASE()
+              AND TABLE_NAME = 'users'
+              AND CONSTRAINT_NAME = 'fk_users_role_id'
+              AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+        ")->getResultArray();
+
+        if (! empty($indexes)) {
+            $this->db->query('ALTER TABLE users DROP FOREIGN KEY fk_users_role_id');
+        }
+
+        $this->db->query('SET FOREIGN_KEY_CHECKS=1');
+
         // Remove role_id column
-        $this->forge->dropColumn('users', 'role_id');
+        $fields = $this->db->getFieldNames('users');
+        if (in_array('role_id', $fields)) {
+            $this->forge->dropColumn('users', 'role_id');
+        }
     }
 }

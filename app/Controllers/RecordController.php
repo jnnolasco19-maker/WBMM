@@ -2,250 +2,246 @@
 
 namespace App\Controllers;
 
-use App\Models\VendorModel;
-use App\Models\UserModel;
 use App\Models\PaymentModel;
-use App\Models\AuditLogModel;
+use App\Models\StallModel;
+use App\Models\UserModel;
+use App\Models\VendorModel;
 
 class RecordController extends BaseController
 {
-    public function index(): string|object
+    private function requireRecordsAccess(): bool|object
     {
-        $search      = (string) $this->request->getGet('search');
-        $vendorId    = (string) $this->request->getGet('vendor_id');
-        $paymentType = (string) $this->request->getGet('payment_type');
-        $collectedBy = (string) $this->request->getGet('collected_by');
-        $dateFrom    = (string) $this->request->getGet('date_from');
-        $dateTo      = (string) $this->request->getGet('date_to');
-
-        $vendorModel = new VendorModel();
-        $userModel   = new UserModel();
-        $paymentModel = new PaymentModel();
-
-        // Paginated results for the list
-        $payments = $paymentModel->getFilteredPayments($search, $vendorId, $paymentType, $collectedBy, $dateFrom, $dateTo)
-                                 ->paginate(15, 'payments');
-
-        // Unpaginated results to compute the summary totals
-        $allFilteredPayments = $paymentModel->getFilteredPayments($search, $vendorId, $paymentType, $collectedBy, $dateFrom, $dateTo)
-                                            ->findAll();
-
-        $totalCollectionsSum = 0.00;
-        foreach ($allFilteredPayments as $p) {
-            $totalCollectionsSum += (float) $p['amount'];
+        if (! in_array(session()->get('user_role'), ['admin', 'supervisor', 'staff', 'collector'], true)) {
+            return redirect()->to('/dashboard')->with('error', 'Access denied.');
         }
 
-        return view('records/index', [
-            'page_title'            => 'Records & Reports',
-            'user_name'             => session()->get('user_name'),
-            'user_role'             => session()->get('user_role'),
-            'payments'              => $payments,
-            'pager'                 => $paymentModel->pager,
-            'vendors'               => $vendorModel->findAll(),
-            'collectors'            => $userModel->where('role', 'staff')->findAll(),
-            'total_collections_sum' => $totalCollectionsSum,
-            'search'                => $search,
-            'vendor_id'             => $vendorId,
-            'payment_type'          => $paymentType,
-            'collected_by'          => $collectedBy,
-            'date_from'             => $dateFrom,
-            'date_to'               => $dateTo
-        ]);
+        return true;
+    }
+
+    private function collectorFilter(): ?int
+    {
+        return session()->get('user_role') === 'collector'
+            ? (int) session()->get('user_id')
+            : null;
+    }
+
+    public function index(): string|object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $paymentModel = new PaymentModel();
+        $payments = $paymentModel->applyFilters(
+            (string) $this->request->getGet('search'),
+            (string) $this->request->getGet('stall_type'),
+            (string) $this->request->getGet('payment_type'),
+            (string) $this->request->getGet('collected_by'),
+            (string) $this->request->getGet('date_from'),
+            (string) $this->request->getGet('date_to'),
+            (string) $this->request->getGet('vendor_id'),
+            $this->collectorFilter()
+        )->paginate(25);
+
+        return view('records/index', $this->viewData([
+            'page_title' => 'Transaction Records',
+            'payments'   => $payments,
+            'pager'      => $paymentModel->pager,
+            'vendors'    => (new VendorModel())->getActiveForDropdown(),
+            'collectors' => (new UserModel())->getActiveCollectors(),
+            'filters'    => $this->request->getGet(),
+        ]));
     }
 
     public function export(): object
     {
-        $search      = (string) $this->request->getGet('search');
-        $vendorId    = (string) $this->request->getGet('vendor_id');
-        $paymentType = (string) $this->request->getGet('payment_type');
-        $collectedBy = (string) $this->request->getGet('collected_by');
-        $dateFrom    = (string) $this->request->getGet('date_from');
-        $dateTo      = (string) $this->request->getGet('date_to');
-
-        $paymentModel = new PaymentModel();
-        $payments = $paymentModel->getFilteredPayments($search, $vendorId, $paymentType, $collectedBy, $dateFrom, $dateTo)->findAll();
-
-        $filename = 'WBMM_Collections_' . date('Ymd_His') . '.csv';
-
-        // Set response headers for download
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=' . $filename);
-
-        $output = fopen('php://output', 'w');
-
-        // Column headers
-        fputcsv($output, [
-            'Reference No', 
-            'Vendor Name', 
-            'Stall Number', 
-            'Amount', 
-            'Payment Type', 
-            'Period Covered', 
-            'Collected By', 
-            'Notes', 
-            'Date Logged'
-        ]);
-
-        foreach ($payments as $payment) {
-            fputcsv($output, [
-                $payment['reference_no'],
-                $payment['vendor_name'],
-                $payment['stall_number'],
-                number_format((float) $payment['amount'], 2),
-                ucfirst($payment['payment_type']),
-                $payment['period_start'] . ' to ' . $payment['period_end'],
-                $payment['collector_name'] ?: 'System',
-                $payment['notes'] ?: '',
-                $payment['created_at']
-            ]);
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
         }
 
-        fclose($output);
-        exit;
-    }
+        $payments = (new PaymentModel())->getFiltered(
+            (string) $this->request->getGet('search'),
+            (string) $this->request->getGet('stall_type'),
+            (string) $this->request->getGet('payment_type'),
+            (string) $this->request->getGet('collected_by'),
+            (string) $this->request->getGet('date_from'),
+            (string) $this->request->getGet('date_to'),
+            (string) $this->request->getGet('vendor_id'),
+            $this->collectorFilter()
+        );
 
-    public function auditLogs(): string|object
-    {
-        if (session()->get('user_role') !== 'admin') {
-            return redirect()->to('/dashboard')->with('error', 'Access Denied. Admin privileges required.');
-        }
-
-        $auditLogModel = new AuditLogModel();
-        $logs = $auditLogModel->getLogsWithUsers();
-
-        return view('records/audit_logs', [
-            'page_title' => 'System Audit Logs',
-            'user_name'  => session()->get('user_name'),
-            'user_role'  => session()->get('user_role'),
-            'logs'       => $logs
-        ]);
+        return $this->csvDownload('WBMM_Records_' . date('Ymd_His') . '.csv', [
+            'Reference No', 'Vendor', 'Vendor No', 'Stall', 'Type', 'Payment Type',
+            'Computed', 'Paid', 'Period Start', 'Period End', 'Collected By', 'Date', 'Notes',
+        ], $payments, static function (array $p): array {
+            return [
+                $p['reference_no'],
+                $p['vendor_name'],
+                $p['vendor_no'],
+                $p['stall_code'] ?? '—',
+                $p['stall_type'] ?? 'ambulant',
+                $p['payment_type'],
+                $p['computed_amount'],
+                $p['amount_paid'],
+                $p['period_start'],
+                $p['period_end'],
+                $p['collector_name'],
+                $p['payment_date'],
+                $p['notes'] ?? '',
+            ];
+        });
     }
 
     public function summary(): string|object
     {
-        $db = \Config\Database::connect();
+        $guard = $this->requireRoles(['admin', 'supervisor']);
+        if ($guard !== true) {
+            return $guard;
+        }
 
-        // 1. Group by payment_type
-        $byPaymentType = $db->table('payments')
-            ->select('payment_type, COUNT(id) as count, SUM(amount) as total')
-            ->groupBy('payment_type')
-            ->get()
-            ->getResultArray();
+        $paymentModel = new PaymentModel();
 
-        // 2. Group by section
-        $bySection = $db->table('payments')
-            ->select('vendors.section, COUNT(payments.id) as count, SUM(payments.amount) as total')
-            ->join('vendors', 'vendors.id = payments.vendor_id')
-            ->groupBy('vendors.section')
-            ->get()
-            ->getResultArray();
-
-        // 3. Group by month
-        $byMonth = $db->table('payments')
-            ->select("DATE_FORMAT(payments.created_at, '%Y-%m') as month_val, COUNT(id) as count, SUM(amount) as total")
-            ->groupBy('month_val')
-            ->orderBy('month_val', 'DESC')
-            ->get()
-            ->getResultArray();
-
-        return view('records/summary', [
-            'page_title'      => 'Financial Summary Report',
-            'user_name'       => session()->get('user_name'),
-            'user_role'       => session()->get('user_role'),
-            'by_payment_type' => $byPaymentType,
-            'by_section'      => $bySection,
-            'by_month'        => $byMonth,
-        ]);
+        return view('records/summary', $this->viewData([
+            'page_title'   => 'Financial Summary',
+            'by_type'      => $paymentModel->getSummaryByStallType(),
+            'by_section'   => $paymentModel->getSummaryBySection(),
+            'by_month'     => $paymentModel->getSummaryByMonth(6),
+        ]));
     }
 
     public function exportSummary(): object
     {
-        $db = \Config\Database::connect();
+        $guard = $this->requireRoles(['admin', 'supervisor']);
+        if ($guard !== true) {
+            return $guard;
+        }
 
-        // Query data
-        $byPaymentType = $db->table('payments')
-            ->select('payment_type, COUNT(id) as count, SUM(amount) as total')
-            ->groupBy('payment_type')
-            ->get()
-            ->getResultArray();
+        $paymentModel = new PaymentModel();
+        $rows         = array_merge(
+            array_map(static fn ($r) => ['Stall Type', $r['group_key'], $r['total_computed'], $r['total_paid'], $r['txn_count']], $paymentModel->getSummaryByStallType()),
+            array_map(static fn ($r) => ['Section', $r['group_key'], $r['total_computed'], $r['total_paid'], $r['txn_count']], $paymentModel->getSummaryBySection()),
+            array_map(static fn ($r) => ['Month', $r['group_key'], $r['total_computed'], $r['total_paid'], $r['txn_count']], $paymentModel->getSummaryByMonth(6))
+        );
 
-        $bySection = $db->table('payments')
-            ->select('vendors.section, COUNT(payments.id) as count, SUM(payments.amount) as total')
-            ->join('vendors', 'vendors.id = payments.vendor_id')
-            ->groupBy('vendors.section')
-            ->get()
-            ->getResultArray();
+        return $this->csvDownload('WBMM_Summary_' . date('Ymd_His') . '.csv',
+            ['Group', 'Label', 'Computed', 'Paid', 'Transactions'],
+            $rows,
+            static fn (array $r) => $r
+        );
+    }
 
-        $byMonth = $db->table('payments')
-            ->select("DATE_FORMAT(payments.created_at, '%Y-%m') as month_val, COUNT(id) as count, SUM(amount) as total")
-            ->groupBy('month_val')
-            ->orderBy('month_val', 'DESC')
-            ->get()
-            ->getResultArray();
+    public function overdue(): string|object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
 
-        $filename = 'WBMM_Financial_Summary_' . date('Ymd_His') . '.csv';
+        return view('records/overdue', $this->viewData([
+            'page_title' => 'Overdue Arkalaba',
+            'overdue'    => (new VendorModel())->getOverdue(),
+        ]));
+    }
 
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=' . $filename);
+    public function exportOverdue(): object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $rows = (new VendorModel())->getOverdue();
+
+        return $this->csvDownload('WBMM_Overdue_' . date('Ymd_His') . '.csv',
+            ['Vendor', 'Vendor No', 'Stall', 'Section', 'Type', 'Last Payment', 'Days Overdue'],
+            $rows,
+            static fn (array $r) => [
+                $r['vendor_name'], $r['vendor_no'], $r['stall_code'], $r['section'],
+                $r['stall_type'], $r['last_payment_date'] ?? 'Never', $r['days_overdue'],
+            ]
+        );
+    }
+
+    public function vacant(): string|object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        return view('records/vacant', $this->viewData([
+            'page_title' => 'Vacant Stalls',
+            'stalls'     => (new StallModel())->getVacantReport(),
+        ]));
+    }
+
+    public function exportVacant(): object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $rows = (new StallModel())->getVacantReport();
+
+        return $this->csvDownload('WBMM_Vacant_' . date('Ymd_His') . '.csv',
+            ['Stall Code', 'Section', 'Type', 'SQM', 'Last Vendor', 'Vendor No'],
+            $rows,
+            static fn (array $r) => [
+                $r['stall_code'], $r['section'], $r['type'], $r['sqm'] ?? '',
+                $r['last_vendor_name'] ?? '', $r['last_vendor_no'] ?? '',
+            ]
+        );
+    }
+
+    public function permits(): string|object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $days = (int) ($this->request->getGet('days') ?: 30);
+
+        return view('records/permits', $this->viewData([
+            'page_title' => 'Permit Expiry Report',
+            'permits'    => (new VendorModel())->getExpiringPermits($days),
+            'days'       => $days,
+        ]));
+    }
+
+    public function exportPermits(): object
+    {
+        $guard = $this->requireRecordsAccess();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $days = (int) ($this->request->getGet('days') ?: 30);
+        $rows = (new VendorModel())->getExpiringPermits($days);
+
+        return $this->csvDownload('WBMM_Permits_' . date('Ymd_His') . '.csv',
+            ['Vendor', 'Vendor No', 'Stall', 'Permit No', 'Expiry', 'Days Remaining'],
+            $rows,
+            static fn (array $r) => [
+                $r['vendor_name'], $r['vendor_no'], $r['stall_code'],
+                $r['permit_no'] ?? '', $r['permit_expiry'], $r['days_remaining'],
+            ]
+        );
+    }
+
+    private function csvDownload(string $filename, array $headers, array $rows, callable $mapper): object
+    {
+        $this->response->setHeader('Content-Type', 'text/csv; charset=utf-8');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
 
         $output = fopen('php://output', 'w');
-
-        // Title
-        fputcsv($output, ['FINANCIAL SUMMARY REPORT - GENERAL SANTOS CITY PUBLIC MARKET']);
-        fputcsv($output, ['Generated on: ' . date('Y-m-d H:i:s')]);
-        fputcsv($output, []);
-
-        // 1. Payment Type Section
-        fputcsv($output, ['1. BY COLLECTION TYPE']);
-        fputcsv($output, ['Collection Type', 'Transaction Count', 'Total Amount (PHP)']);
-        $totalCountPT = 0;
-        $totalSumPT = 0.00;
-        foreach ($byPaymentType as $pt) {
-            fputcsv($output, [
-                ucfirst($pt['payment_type']),
-                $pt['count'],
-                number_format((float) $pt['total'], 2, '.', '')
-            ]);
-            $totalCountPT += (int) $pt['count'];
-            $totalSumPT += (float) $pt['total'];
+        fputcsv($output, $headers);
+        foreach ($rows as $row) {
+            fputcsv($output, $mapper($row));
         }
-        fputcsv($output, ['GRAND TOTAL', $totalCountPT, number_format($totalSumPT, 2, '.', '')]);
-        fputcsv($output, []);
-
-        // 2. Market Section Section
-        fputcsv($output, ['2. BY MARKET SECTION']);
-        fputcsv($output, ['Market Section', 'Transaction Count', 'Total Amount (PHP)']);
-        $totalCountSec = 0;
-        $totalSumSec = 0.00;
-        foreach ($bySection as $sec) {
-            fputcsv($output, [
-                $sec['section'],
-                $sec['count'],
-                number_format((float) $sec['total'], 2, '.', '')
-            ]);
-            $totalCountSec += (int) $sec['count'];
-            $totalSumSec += (float) $sec['total'];
-        }
-        fputcsv($output, ['GRAND TOTAL', $totalCountSec, number_format($totalSumSec, 2, '.', '')]);
-        fputcsv($output, []);
-
-        // 3. Monthly Trends Section
-        fputcsv($output, ['3. BY CALENDAR MONTH']);
-        fputcsv($output, ['Month', 'Transaction Count', 'Total Amount (PHP)']);
-        $totalCountMon = 0;
-        $totalSumMon = 0.00;
-        foreach ($byMonth as $mon) {
-            $formattedMonth = date('F Y', strtotime($mon['month_val'] . '-01'));
-            fputcsv($output, [
-                $formattedMonth,
-                $mon['count'],
-                number_format((float) $mon['total'], 2, '.', '')
-            ]);
-            $totalCountMon += (int) $mon['count'];
-            $totalSumMon += (float) $mon['total'];
-        }
-        fputcsv($output, ['GRAND TOTAL', $totalCountMon, number_format($totalSumMon, 2, '.', '')]);
-
         fclose($output);
         exit;
     }

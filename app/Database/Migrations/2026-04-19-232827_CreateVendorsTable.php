@@ -20,19 +20,24 @@ class CreateVendorsTable extends Migration
                 'constraint' => 150,
                 'null'       => false,
             ],
-            'contact_number' => [
+            'stall_number' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
+                'null'       => false,
+            ],
+            'section' => [
+                'type'       => 'ENUM',
+                'constraint' => ['Dry Goods', 'Wet Market', 'Livestock', 'Commercial'],
+                'null'       => false,
+            ],
+            'contact' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 20,
                 'null'       => true,
             ],
-            'email' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 150,
-                'null'       => true,
-            ],
-            'address' => [
-                'type' => 'TEXT',
-                'null' => true,
+            'permit_expiry' => [
+                'type' => 'DATE',
+                'null' => false,
             ],
             'status' => [
                 'type'       => 'ENUM',
@@ -51,7 +56,7 @@ class CreateVendorsTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addUniqueKey('email');
+        $this->forge->addUniqueKey('stall_number');
         $this->forge->createTable('vendors', true, ['ENGINE' => 'InnoDB', 'DEFAULT CHARSET' => 'utf8mb4']);
     }
 

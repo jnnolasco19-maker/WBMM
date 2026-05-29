@@ -3,259 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($page_title) ? esc($page_title) : 'WBMM' ?> — Gensan Public Market</title>
-    <!-- Bootstrap 5 -->
+    <meta name="base-url" content="<?= base_url() ?>">
+    <title><?= esc($page_title ?? 'WBMM') ?> — WBMM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .navbar-brand-custom {
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .sidebar {
-            background-color: #1e293b;
-            color: #f8fafc;
-            width: 260px;
-            flex-shrink: 0;
-            min-height: calc(100vh - 56px);
-            transition: all 0.3s;
-        }
-        .sidebar .nav-link {
-            color: #cbd5e1;
-            font-weight: 500;
-            padding: 0.8rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s;
-        }
-        .sidebar .nav-link:hover {
-            color: #ffffff;
-            background-color: #334155;
-            padding-left: 1.8rem;
-        }
-        .sidebar .nav-link.active {
-            color: #ffffff;
-            background: linear-gradient(45deg, #2563eb, #7c3aed);
-            border-left: 4px solid #60a5fa;
-        }
-        .main-wrapper {
-            display: flex;
-            flex: 1;
-            min-height: calc(100vh - 56px);
-        }
-        .content-area {
-            flex: 1;
-            padding: 2rem;
-            background-color: #f3f4f6;
-            overflow-y: auto;
-        }
-        .card-custom {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.2s, box-shadow 0.2s;
-            background-color: #ffffff;
-        }
-        .card-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-        }
-        .btn-gradient-primary {
-            background: linear-gradient(45deg, #2563eb, #7c3aed);
-            color: white;
-            border: none;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-        .btn-gradient-primary:hover {
-            opacity: 0.9;
-            color: white;
-        }
-        .badge-expired {
-            background-color: #ef4444;
-            color: white;
-            font-weight: 600;
-        }
-        .badge-active {
-            background-color: #10b981;
-            color: white;
-            font-weight: 600;
-        }
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            padding: 1rem 0;
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-        @media (max-width: 768px) {
-            .content-area {
-                padding: 1rem;
-            }
-        }
-    </style>
-    <!-- Chart.js -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-    <!-- TOP HEADER -->
-    <nav class="navbar navbar-expand-lg navbar-white bg-white border-bottom sticky-top py-2 shadow-sm">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="<?= base_url('dashboard') ?>">
-                <i class="fa-solid fa-store text-primary" style="font-size: 1.4rem;"></i>
-                <span class="navbar-brand-custom h4 mb-0">GenSan WBMM</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar" aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="topNavbar">
-                <!-- Navigation links visible on mobile and tablet only -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-lg-none border-top pt-3 mt-3">
-                    <li class="nav-item">
-                        <a class="nav-link <?= str_contains(current_url(), '/dashboard') ? 'text-primary fw-bold' : 'text-secondary' ?>" href="<?= base_url('dashboard') ?>">
-                            <i class="fa-solid fa-chart-line me-2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?= str_contains(current_url(), '/vendors') ? 'text-primary fw-bold' : 'text-secondary' ?>" href="<?= base_url('vendors') ?>">
-                            <i class="fa-solid fa-users me-2"></i> Vendors Directory
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?= str_contains(current_url(), '/payments') ? 'text-primary fw-bold' : 'text-secondary' ?>" href="<?= base_url('payments') ?>">
-                            <i class="fa-solid fa-cash-register me-2"></i> Arkalaba Collection
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link <?= str_contains(current_url(), '/records') ? 'text-primary fw-bold' : 'text-secondary' ?>" href="<?= base_url('records') ?>">
-                            <i class="fa-solid fa-file-invoice-dollar text-primary me-2" style="color: #8b5cf6 !important;"></i> Records & Reports
-                        </a>
-                    </li>
-                    <?php if ($user_role === 'admin'): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?= str_contains(current_url(), '/users') ? 'text-primary fw-bold' : 'text-secondary' ?>" href="<?= base_url('users') ?>">
-                            <i class="fa-solid fa-user-gear me-2"></i> User Management
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                </ul>
-
-                <div class="d-flex align-items-center gap-3 ms-lg-auto pt-3 pt-lg-0 border-top border-lg-none mt-3 mt-lg-0">
-                    <div class="text-end">
-                        <small class="text-muted d-block" style="font-size: 0.75rem;">Logged in as</small>
-                        <span class="fw-semibold text-dark"><?= esc($user_name) ?></span>
-                        <span class="badge text-uppercase ms-1 bg-secondary text-white" style="font-size: 0.65rem;"><?= esc($user_role) ?></span>
-                    </div>
-                    <a href="<?= base_url('logout') ?>" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 rounded-pill px-3 ms-auto">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- WRAPPER -->
-    <div class="main-wrapper">
-        
-        <!-- SIDEBAR (desktop/tablet-landscape only) -->
-        <aside class="sidebar d-none d-lg-flex flex-column">
-            <ul class="nav flex-column py-3 flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link <?= str_contains(current_url(), '/dashboard') ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>Dashboard</span>
-                    </a>
+<?php
+$role = $user_role ?? session()->get('user_role');
+$name = $user_name ?? session()->get('user_name');
+$alerts = $alert_count ?? 0;
+$uri = service('uri');
+$path = $uri->getPath();
+?>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid px-3">
+        <a class="navbar-brand fw-bold" href="<?= base_url($role === 'collector' ? 'payments/create' : 'dashboard') ?>">
+            <i class="fa-solid fa-store me-2"></i>WBMM
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                <li class="nav-item text-white-50 small d-none d-lg-block">General Santos City Public Market</li>
+                <li class="nav-item text-white">
+                    <span class="small opacity-75">Logged in:</span>
+                    <strong><?= esc($name) ?></strong>
+                    <span class="badge bg-light text-primary text-uppercase ms-1"><?= esc($role) ?></span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= str_contains(current_url(), '/vendors') ? 'active' : '' ?>" href="<?= base_url('vendors') ?>">
-                        <i class="fa-solid fa-users"></i>
-                        <span>Vendors Directory</span>
+                    <a href="<?= base_url('logout') ?>" class="btn btn-outline-light btn-sm">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= str_contains(current_url(), '/payments') ? 'active' : '' ?>" href="<?= base_url('payments') ?>">
-                        <i class="fa-solid fa-cash-register"></i>
-                        <span>Arkalaba Collection</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= str_contains(current_url(), '/records') ? 'active' : '' ?>" href="<?= base_url('records') ?>">
-                        <i class="fa-solid fa-file-invoice-dollar"></i>
-                        <span>Records & Reports</span>
-                    </a>
-                </li>
-                <?php if ($user_role === 'admin'): ?>
-                <li class="nav-item">
-                    <a class="nav-link <?= str_contains(current_url(), '/users') ? 'active' : '' ?>" href="<?= base_url('users') ?>">
-                        <i class="fa-solid fa-user-gear"></i>
-                        <span>User Management</span>
-                    </a>
-                </li>
-                <?php endif; ?>
             </ul>
-            <div class="p-3 text-center border-top border-secondary text-muted small">
-                <i class="fa-regular fa-clock me-1"></i> <?= date('Y-m-d H:i') ?>
-            </div>
-        </aside>
-
-        <!-- CONTENT -->
-        <main class="content-area">
-            
-            <!-- Global Flash alerts -->
-            <?php if (session()->getFlashdata('message')): ?>
-                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 px-4 py-3 mb-4" role="alert">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-circle-check h5 mb-0 text-success"></i>
-                        <div><?= esc(session()->getFlashdata('message')) ?></div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?>
-
-            <?php if (session()->getFlashdata('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4 px-4 py-3 mb-4" role="alert">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-circle-exclamation h5 mb-0 text-danger"></i>
-                        <div><?= esc(session()->getFlashdata('error')) ?></div>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            <?php endif; ?>
-
-            <!-- Child view injection -->
-            <?= $this->renderSection('content') ?>
-
-        </main>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="text-center bg-white border-top">
-        <div class="container-fluid">
-            <p class="mb-0">© 2026 General Santos City Public Market. All Rights Reserved. Powered by CodeIgniter 4.</p>
         </div>
-    </footer>
+    </div>
+</nav>
 
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<div class="d-flex wbmm-wrapper">
+    <aside class="wbmm-sidebar d-none d-lg-flex flex-column">
+        <ul class="nav flex-column py-3 flex-grow-1">
+            <?php if ($role !== 'collector'): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'dashboard') ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'notifications') ? 'active' : '' ?>" href="<?= base_url('notifications') ?>">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                    <?php if ($alerts > 0): ?><span class="badge bg-danger ms-auto"><?= $alerts ?></span><?php endif; ?>
+                </a>
+            </li>
+            <?php endif; ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'stalls') ? 'active' : '' ?>" href="<?= base_url('stalls') ?>">
+                    <i class="fa-solid fa-border-all"></i> Stalls
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'vendors') ? 'active' : '' ?>" href="<?= base_url('vendors') ?>">
+                    <i class="fa-solid fa-users"></i> Vendors
+                </a>
+            </li>
+            <?php if (in_array($role, ['admin', 'staff'], true)): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'assignments') ? 'active' : '' ?>" href="<?= base_url('assignments') ?>">
+                    <i class="fa-solid fa-link"></i> Assignments
+                </a>
+            </li>
+            <?php endif; ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'payments') ? 'active' : '' ?>" href="<?= base_url($role === 'collector' ? 'payments/create' : 'payments') ?>">
+                    <i class="fa-solid fa-receipt"></i> Arkalaba Collection
+                </a>
+            </li>
+            <?php if ($role === 'collector'): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= $path === 'records' ? 'active' : '' ?>" href="<?= base_url('records') ?>">
+                    <i class="fa-solid fa-list"></i> My Collections
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if ($role !== 'collector'): ?>
+            <li class="nav-item">
+                <span class="nav-link text-muted small text-uppercase pt-3">Records & Reports</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= $path === 'records' ? 'active' : '' ?>" href="<?= base_url('records') ?>">
+                    <i class="fa-solid fa-list"></i> Transactions
+                </a>
+            </li>
+            <?php if (in_array($role, ['admin', 'supervisor'], true)): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'records/summary') ? 'active' : '' ?>" href="<?= base_url('records/summary') ?>">
+                    <i class="fa-solid fa-chart-pie"></i> Summary
+                </a>
+            </li>
+            <?php endif; ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'records/overdue') ? 'active' : '' ?>" href="<?= base_url('records/overdue') ?>">
+                    <i class="fa-solid fa-circle-exclamation text-danger"></i> Overdue Arkalaba
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'records/vacant') ? 'active' : '' ?>" href="<?= base_url('records/vacant') ?>">
+                    <i class="fa-solid fa-door-open"></i> Vacant Stalls
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'records/permits') ? 'active' : '' ?>" href="<?= base_url('records/permits') ?>">
+                    <i class="fa-solid fa-id-card"></i> Permit Expiry
+                </a>
+            </li>
+            <?php if (in_array($role, ['admin', 'supervisor'], true)): ?>
+            <li class="nav-item mt-2">
+                <a class="nav-link <?= str_contains($path, 'reports/collector') ? 'active' : '' ?>" href="<?= base_url('reports/collector') ?>">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> Collector Remittance
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if ($role === 'admin'): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'rates') ? 'active' : '' ?>" href="<?= base_url('rates') ?>">
+                    <i class="fa-solid fa-tags"></i> Rate Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= str_contains($path, 'users') ? 'active' : '' ?>" href="<?= base_url('users') ?>">
+                    <i class="fa-solid fa-user-gear"></i> User Management
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php endif; ?>
+        </ul>
+        <div class="p-3 border-top border-secondary text-muted small text-center">
+            LGU General Santos City
+        </div>
+    </aside>
+
+    <main class="wbmm-content flex-grow-1">
+        <div class="container-fluid py-4">
+            <?php if (session()->getFlashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show"><?= esc(session()->getFlashdata('success')) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show"><?= esc(session()->getFlashdata('error')) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('warning')): ?>
+                <div class="alert alert-warning alert-dismissible fade show"><?= esc(session()->getFlashdata('warning')) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+            <?php endif; ?>
+            <?php if (session()->getFlashdata('errors')): ?>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        <?php foreach (session()->getFlashdata('errors') as $err): ?>
+                            <li><?= esc($err) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?= $this->renderSection('content') ?>
+        </div>
+    </main>
+</div>
+
+<footer class="wbmm-footer text-center py-3 border-top bg-white">
+    <small class="text-muted">© <?= date('Y') ?> WBMM — Web-Based Market Management System · General Santos City Public Market</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('assets/js/wbmm.js') ?>"></script>
+<?= $this->renderSection('scripts') ?>
 </body>
 </html>

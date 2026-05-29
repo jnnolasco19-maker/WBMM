@@ -49,15 +49,15 @@ class RBACSeeder extends Seeder
         $staffRole = $this->db->table('roles')->where('role_name', 'staff')->get()->getRowArray();
         $cashierRole = $this->db->table('roles')->where('role_name', 'cashier')->get()->getRowArray();
 
-        // Insert permissions (optional advanced feature)
+        // Insert permissions mapped to actual application features
         $permissions = [
-            ['permission_name' => 'manage_users', 'description' => 'Can manage users and roles'],
-            ['permission_name' => 'manage_products', 'description' => 'Can manage products'],
-            ['permission_name' => 'manage_inventory', 'description' => 'Can manage inventory'],
-            ['permission_name' => 'manage_orders', 'description' => 'Can manage orders'],
-            ['permission_name' => 'view_reports', 'description' => 'Can view reports'],
-            ['permission_name' => 'create_orders', 'description' => 'Can create new orders'],
-            ['permission_name' => 'delete_records', 'description' => 'Can delete records'],
+            ['permission_name' => 'manage_users',    'description' => 'Can manage user accounts and roles'],
+            ['permission_name' => 'manage_vendors',  'description' => 'Can register, edit, and delete vendors'],
+            ['permission_name' => 'manage_stalls',   'description' => 'Can create, edit, and delete stalls'],
+            ['permission_name' => 'record_payments', 'description' => 'Can record rental payments'],
+            ['permission_name' => 'view_records',    'description' => 'Can view records and reports'],
+            ['permission_name' => 'export_records',  'description' => 'Can export CSV reports'],
+            ['permission_name' => 'view_audit_logs', 'description' => 'Can view system audit logs'],
         ];
 
         $this->db->table('permissions')->emptyTable();
@@ -82,8 +82,8 @@ class RBACSeeder extends Seeder
             ];
         }
 
-        // Manager: Most permissions except user management
-        $managerPerms = ['manage_products', 'manage_inventory', 'manage_orders', 'view_reports'];
+        // Manager: Vendors, stalls, payments, records — no user management or audit logs
+        $managerPerms = ['manage_vendors', 'manage_stalls', 'record_payments', 'view_records', 'export_records'];
         foreach ($managerPerms as $permName) {
             $rolePermissions[] = [
                 'role_id' => $managerRole['id'],
@@ -92,8 +92,8 @@ class RBACSeeder extends Seeder
             ];
         }
 
-        // Staff: Product and inventory management
-        $staffPerms = ['manage_products', 'manage_inventory'];
+        // Staff: Record payments and view records only
+        $staffPerms = ['record_payments', 'view_records'];
         foreach ($staffPerms as $permName) {
             $rolePermissions[] = [
                 'role_id' => $staffRole['id'],
@@ -102,10 +102,10 @@ class RBACSeeder extends Seeder
             ];
         }
 
-        // Cashier: Order creation only
+        // Cashier: Record payments only
         $rolePermissions[] = [
             'role_id' => $cashierRole['id'],
-            'permission_id' => $permMap['create_orders'],
+            'permission_id' => $permMap['record_payments'],
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
@@ -117,20 +117,22 @@ class RBACSeeder extends Seeder
         
         foreach ($users as $user) {
             $roleId = null;
-            
-            // Map old role enum to new role_id
+
             switch (strtolower($user['role'])) {
                 case 'admin':
                     $roleId = $adminRole['id'];
                     break;
-                case 'staff':
-                    $roleId = $staffRole['id'];
+                case 'manager':
+                    $roleId = $managerRole['id'];
                     break;
+                case 'cashier':
+                    $roleId = $cashierRole['id'];
+                    break;
+                case 'staff':
                 default:
-                    // Default to staff if unknown
                     $roleId = $staffRole['id'];
             }
-            
+
             $this->db->table('users')->where('id', $user['id'])->update(['role_id' => $roleId]);
         }
 

@@ -1,6 +1,12 @@
+Auth (Tests\Feature\Auth)
+ [x] Login page loads
+ [x] Invalid login shows generic error
+ [x] Valid admin login redirects to dashboard
+ [x] Collector login redirects to payment create
+
 Example Database
- [ ] Model find all
- [ ] Soft delete leaves row
+ [x] Model find all
+ [x] Soft delete leaves row
 
 Example Session
  [x] Session simple
@@ -8,4 +14,17 @@ Example Session
 Health
  [x] Is defined app path
  [x] Base url has been set
+
+Payment Ajax (Tests\Feature\PaymentAjax)
+ [x] Ajax compute inside monthly
+
+Payment Reference (Tests\Unit\PaymentReference)
+ [x] Reference no pattern
+ [x] Reference sequence padding
+
+Rate Model (Tests\Unit\RateModel)
+ [x] Inside monthly computation
+ [x] Inside daily computation
+ [x] Outside flat weekly
+ [x] Ambulant daily only
 
