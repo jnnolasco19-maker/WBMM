@@ -10,8 +10,7 @@ Auth (Tests\Feature\Auth)
  [x] Collector login redirects to payment create
 
 Example Database
- [x] Model find all
- [x] Soft delete leaves row
+ [x] Dummy
 
 Example Session
  [x] Session simple
