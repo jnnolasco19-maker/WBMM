@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
 </head>
 <body class="bg-light d-flex align-items-center min-vh-100">
 <div class="container">
@@ -42,5 +43,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('<?= base_url("service-worker.js") ?>')
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.error('Service Worker registration failed', err));
+        });
+    }
+</script>
 </body>
 </html>
