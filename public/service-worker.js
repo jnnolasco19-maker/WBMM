@@ -1,38 +1,26 @@
-const CACHE_NAME = 'wbmm-cache-v1';
-const urlsToCache = [
-  './login',
-  './assets/css/custom.css',
-  './assets/js/wbmm.js',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap'
-];
+const CACHE_NAME = 'wbmm-cache-v2';
 
-// Install Service Worker and cache core static assets
+// Install Service Worker without pre-caching pages
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Force this new service worker to activate immediately and replace the old one
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Static assets pre-cached');
-        return cache.addAll(urlsToCache);
-      })
-  );
+  self.skipWaiting();
 });
 
-// Take control of open pages instantly
+// Clean up old caches on activation to instantly clear any stuck "offline" copies
 self.addEventListener('activate', event => {
-  event.waitUntil(clients.claim()); // Force immediate takeover of current browser sessions
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          return caches.delete(cache);
+        })
+      );
+    }).then(() => clients.claim())
+  );
 });
 
-// Network First Caching Strategy (Crucial for dynamic PHP/MySQL applications)
-// 1. Try to fetch the fresh page from the internet first (so databases and login work).
-// 2. If the user is offline (e.g., inside the market), fall back to cached files.
+// Dummy fetch handler to satisfy Chrome's PWA installation requirements.
+// We do not intercept any requests, allowing Chrome's main browser thread
+// to solve InfinityFree's security challenge and load 100% online in real-time.
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request)
-      .catch(() => {
-        return caches.match(event.request);
-      })
-  );
+  // Let the browser handle all network requests normally
 });
