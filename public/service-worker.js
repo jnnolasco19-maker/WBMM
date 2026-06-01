@@ -8,26 +8,25 @@ const urlsToCache = [
   'https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap'
 ];
 
-// Install Service Worker
+// Install Service Worker and cache core static assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
+        console.log('Static assets pre-cached');
         return cache.addAll(urlsToCache);
       })
   );
 });
 
-// Cache and return requests
+// Network First Caching Strategy (Crucial for dynamic PHP/MySQL applications)
+// 1. Try to fetch the fresh page from the internet first (so databases and login work).
+// 2. If the user is offline (e.g., inside the market), fall back to cached files.
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response; // Return from cache
-        }
-        return fetch(event.request); // Fallback to network
+    fetch(event.request)
+      .catch(() => {
+        return caches.match(event.request);
       })
   );
 });
