@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
+    # Force HTTPS (required for secure PWA installation)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
     # Do not rewrite if the request already targets the public directory
     RewriteCond %{REQUEST_URI} !^/public/
     

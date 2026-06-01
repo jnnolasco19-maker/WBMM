@@ -12,6 +12,14 @@
 <input type="hidden" id="rate_used" name="rate_used" value="">
 <input type="hidden" id="preselect_stall_id" value="<?= (int) ($query_stall_id ?? 0) ?>">
 
+<?php if ($can_collect): ?>
+<div class="d-print-none mb-4">
+    <button type="button" class="btn btn-primary btn-lg w-100 py-3 fw-bold" id="startScannerBtn">
+        <i class="fa-solid fa-camera me-2"></i> Scan Vendor / Stall QR Code
+    </button>
+</div>
+<?php endif; ?>
+
 <h5 class="text-muted mb-3">Step 1 — Select Vendor</h5>
 <div class="row g-3 mb-4">
     <div class="col-md-4">
@@ -78,4 +86,82 @@
 <div class="mt-4"><button type="submit" class="btn btn-success btn-lg"><i class="fa-solid fa-receipt"></i> Record Payment &amp; Print Resibo</button></div>
 <?php endif; ?>
 </form></div></div>
+
+<!-- QR Scanner Modal -->
+<div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="scannerModalLabel"><i class="fa-solid fa-qrcode me-2"></i>Scan QR Code</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="qr-reader" style="width: 100%; max-width: 400px; margin: 0 auto;"></div>
+                <div id="qr-reader-results" class="mt-3 text-muted small">Point your camera at a Stall or Vendor QR Code.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->section('scripts') ?>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    let html5QrcodeScanner = null;
+
+    if (document.getElementById('startScannerBtn')) {
+        document.getElementById('startScannerBtn').addEventListener('click', function() {
+            const scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+            scannerModal.show();
+        });
+    }
+
+    document.getElementById('scannerModal').addEventListener('shown.bs.modal', function () {
+        html5QrcodeScanner = new Html5Qrcode("qr-reader");
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            // Stop scanning and turn off camera
+            html5QrcodeScanner.stop().then((ignore) => {
+                try {
+                    // Instantly redirect to the pre-filled payment creation page!
+                    if (decodedText.includes('payments/create')) {
+                        window.location.href = decodedText;
+                    } else {
+                        alert('Invalid QR Code. Please scan a valid WBMM Stall or Vendor tag.');
+                        startScanning();
+                    }
+                } catch (e) {
+                    alert('Invalid QR Code structure.');
+                    startScanning();
+                }
+            });
+            
+            // Hide modal
+            bootstrap.Modal.getInstance(document.getElementById('scannerModal')).hide();
+        };
+        
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        
+        function startScanning() {
+            html5QrcodeScanner.start(
+                { facingMode: "environment" },
+                config,
+                qrCodeSuccessCallback
+            ).catch(err => {
+                console.error(err);
+                document.getElementById('qr-reader-results').innerText = "Unable to start camera. Please verify permissions.";
+            });
+        }
+        
+        startScanning();
+    });
+
+    document.getElementById('scannerModal').addEventListener('hidden.bs.modal', function () {
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.stop().catch(err => console.error(err));
+        }
+    });
+</script>
+<?= $this->endSection() ?>
 <?= $this->endSection() ?>

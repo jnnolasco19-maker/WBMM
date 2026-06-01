@@ -19,6 +19,22 @@
     <p class="mb-0 small">Permit: <?= esc($stall['permit_no'] ?? '—') ?> · Expiry: <?= esc($stall['permit_expiry'] ?? '—') ?></p>
 </div></div>
 <?php endif; ?>
+
+<div class="card mb-4 text-center d-print-block" id="printableQrCard">
+    <div class="card-header bg-primary text-white d-print-none">Stall QR Code</div>
+    <div class="card-body py-4">
+        <h5 class="fw-bold mb-1">Stall <?= esc($stall['stall_code']) ?></h5>
+        <p class="text-muted small mb-3"><?= esc($stall['section']) ?> Section · <?= esc(ucfirst($stall['type'])) ?></p>
+        <div class="d-flex justify-content-center mb-3">
+            <canvas id="qrCodeCanvas"></canvas>
+        </div>
+        <div class="d-print-none">
+            <button onclick="window.print()" class="btn btn-outline-primary btn-sm btn-print-qr">
+                <i class="fa-solid fa-print me-1"></i> Print Stall Tag
+            </button>
+        </div>
+    </div>
+</div>
 </div>
 
 <div class="col-md-6">
@@ -44,4 +60,18 @@
 </div>
 </div>
 <a href="<?= base_url('stalls') ?>" class="btn btn-outline-secondary">← Back</a>
+
+<?= $this->section('scripts') ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new QRious({
+            element: document.getElementById('qrCodeCanvas'),
+            value: '<?= base_url("payments/create?stall_id=" . $stall['id'] . (!empty($stall['vendor_id']) ? "&vendor_id=" . $stall['vendor_id'] : "")) ?>',
+            size: 180,
+            level: 'H'
+        });
+    });
+</script>
+<?= $this->endSection() ?>
 <?= $this->endSection() ?>

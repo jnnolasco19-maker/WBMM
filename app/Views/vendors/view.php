@@ -18,10 +18,26 @@
     <p><strong>ID:</strong> <?= esc($vendor['id_type'] ?? '—') ?> <?= esc($vendor['id_number'] ?? '') ?></p>
     <p class="mb-0"><strong>Address:</strong> <?= esc($vendor['address'] ?? '—') ?></p>
 </div></div>
-<div class="card bg-light"><div class="card-body text-center">
+<div class="card mb-3 bg-light"><div class="card-body text-center">
     <div class="text-muted small">Paid This Month</div>
     <div class="h3 text-success mb-0">₱<?= number_format($total_this_month, 2) ?></div>
 </div></div>
+
+<div class="card mb-3 text-center d-print-block" id="printableQrCard">
+    <div class="card-header bg-primary text-white d-print-none">Vendor QR Code</div>
+    <div class="card-body py-4">
+        <h5 class="fw-bold mb-1"><?= esc($vendor['first_name'].' '.$vendor['last_name']) ?></h5>
+        <p class="text-muted small mb-3"><?= esc($vendor['vendor_no']) ?> · <?= esc(ucfirst($vendor['type'])) ?> Vendor</p>
+        <div class="d-flex justify-content-center mb-3">
+            <canvas id="qrCodeCanvas"></canvas>
+        </div>
+        <div class="d-print-none">
+            <button onclick="window.print()" class="btn btn-outline-primary btn-sm btn-print-qr">
+                <i class="fa-solid fa-print me-1"></i> Print Vendor Tag
+            </button>
+        </div>
+    </div>
+</div>
 </div>
 <div class="col-md-7">
 <div class="card mb-3"><div class="card-header">Active Stall Assignments</div>
@@ -63,4 +79,18 @@
 </div>
 </div>
 <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary mt-3">← Back</a>
+
+<?= $this->section('scripts') ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new QRious({
+            element: document.getElementById('qrCodeCanvas'),
+            value: '<?= base_url("payments/create?vendor_id=" . $vendor['id']) ?>',
+            size: 180,
+            level: 'H'
+        });
+    });
+</script>
+<?= $this->endSection() ?>
 <?= $this->endSection() ?>

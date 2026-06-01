@@ -84,4 +84,22 @@ body {
     .wbmm-sidebar, .navbar, footer { display: none !important; }
     .wbmm-content { padding: 0 !important; }
     body { background: #fff; }
+    
+    /* Isolate and center the QR card when printing */
+    #printableQrCard {
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -20%);
+        width: 320px !important;
+        border: 2px dashed #475569 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        padding: 1.5rem !important;
+    }
+    
+    /* Hide all other cards and details to keep print clean */
+    .card:not(#printableQrCard), h1, p.text-muted, .btn, .btn-outline-secondary, a {
+        display: none !important;
+    }
 }
