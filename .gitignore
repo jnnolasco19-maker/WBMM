@@ -6,3 +6,11 @@
 !/writable/debugbar/.gitkeep
 !/writable/logs/.gitkeep
 .env
+
+# Ignore vendor dependencies and large zip assets
+/vendor/
+/build/
+*.zip
+*.rar
+*.7z
+.phpunit.result.cache

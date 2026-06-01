@@ -34,8 +34,8 @@ $routes->get('vendors/view/(:num)', 'VendorController::view/$1');
 
 // Assignments
 $routes->get('assignments', 'AssignmentController::index', ['filter' => 'role:admin,staff']);
-$routes->match(['get', 'post'], 'assignments/create', 'AssignmentController::create', ['filter' => 'role:admin,staff']);
-$routes->match(['get', 'post'], 'assignments/edit/(:num)', 'AssignmentController::edit/$1', ['filter' => 'role:admin,staff']);
+$routes->match(['GET', 'POST'], 'assignments/create', 'AssignmentController::create', ['filter' => 'role:admin,staff']);
+$routes->match(['GET', 'POST'], 'assignments/edit/(:num)', 'AssignmentController::edit/$1', ['filter' => 'role:admin,staff']);
 $routes->post('assignments/terminate/(:num)', 'AssignmentController::terminate/$1', ['filter' => 'role:admin']);
 
 // Payments
