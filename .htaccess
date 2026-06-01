@@ -5,9 +5,8 @@
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     
-    # Do not rewrite if the request already targets the public directory
-    RewriteCond %{REQUEST_URI} !^/public/
-    
     # Transparently route all traffic to the public/ folder
+    # We use REDIRECT_STATUS check to completely prevent infinite redirect loops on shared hosting!
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
