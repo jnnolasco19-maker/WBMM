@@ -9,6 +9,9 @@ class NotificationController extends BaseController
 {
     public function index(): string|object
     {
+        // Mark notifications as viewed in this session
+        session()->set('notifications_viewed', true);
+
         $role        = session()->get('user_role');
         $vendorModel = new VendorModel();
         $stallModel  = new StallModel();

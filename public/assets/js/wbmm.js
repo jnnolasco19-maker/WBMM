@@ -14,11 +14,14 @@
         if (!typeSelect || !sqmGroup) return;
 
         const isInside = typeSelect.value === 'inside';
-        sqmGroup.style.display = isInside ? '' : 'none';
+        const isOutside = typeSelect.value === 'outside';
+        const needsSqm = isInside || isOutside;
+
+        sqmGroup.style.display = needsSqm ? '' : 'none';
         if (floorGroup) floorGroup.style.display = isInside ? '' : 'none';
 
         const sqmInput = document.getElementById('sqm');
-        if (sqmInput) sqmInput.required = isInside;
+        if (sqmInput) sqmInput.required = needsSqm;
     }
 
     function filterSelectOptions(selectEl, query) {
@@ -43,14 +46,6 @@
         if (paymentType.value === 'daily') {
             periodStart.value = fmt(today);
             periodEnd.value = fmt(today);
-        } else if (paymentType.value === 'weekly') {
-            const day = today.getDay();
-            const monday = new Date(today);
-            monday.setDate(today.getDate() - (day === 0 ? 6 : day - 1));
-            const sunday = new Date(monday);
-            sunday.setDate(monday.getDate() + 6);
-            periodStart.value = fmt(monday);
-            periodEnd.value = fmt(sunday);
         } else if (paymentType.value === 'monthly') {
             const first = new Date(today.getFullYear(), today.getMonth(), 1);
             const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -128,7 +123,14 @@
 
             if (stallSection) stallSection.style.display = '';
             const pt = document.getElementById('payment_type');
-            if (pt) pt.disabled = false;
+            if (pt) {
+                if (data.vendor.type === 'inside' || data.vendor.type === 'outside') {
+                    pt.value = 'monthly';
+                    pt.disabled = true;
+                } else {
+                    pt.disabled = false;
+                }
+            }
 
             data.stalls.forEach((s) => {
                 const opt = document.createElement('option');
@@ -148,17 +150,28 @@
         } catch (e) {
             console.warn('Vendor load failed', e);
         }
-    }
-
-    function onStallSelect() {
+     }
+ 
+     function onStallSelect() {
         const stallSelect = document.getElementById('stall_id');
         const opt = stallSelect?.selectedOptions[0];
         if (!opt || !opt.value) return;
         document.getElementById('stall_type_val').value = opt.dataset.type || '';
         document.getElementById('sqm_val').value = opt.dataset.sqm || 0;
+
+        const pt = document.getElementById('payment_type');
+        if (pt) {
+            if (opt.dataset.type === 'inside' || opt.dataset.type === 'outside') {
+                pt.value = 'monthly';
+                pt.disabled = true;
+            } else {
+                pt.disabled = false;
+            }
+        }
+
         computePaymentAmount();
         suggestPeriodDates();
-    }
+     }
 
     function filterAssignmentStalls() {
         const vendorSelect = document.getElementById('assignment_vendor_id');
@@ -175,6 +188,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+        const paymentForm = document.getElementById('paymentForm');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', function () {
+                const pt = document.getElementById('payment_type');
+                if (pt) pt.disabled = false;
+            });
+        }
+
         toggleSqmFields();
         const typeSelect = document.getElementById('stall_type');
         if (typeSelect) typeSelect.addEventListener('change', toggleSqmFields);
@@ -223,12 +244,19 @@
         const rateInputs = document.querySelectorAll('[data-rate-preview]');
         if (rateInputs.length) {
             const updatePreview = () => {
-                const sqm = 6;
+                const sqm = 2.5;
                 const inside = parseFloat(document.getElementById('inside_rate_per_sqm')?.value || 45);
-                const monthly = (sqm * inside).toFixed(2);
+                const insideDaily = (sqm * inside).toFixed(2);
+                const insideMonthly = (sqm * inside * 30).toFixed(2);
+
+                const outside = parseFloat(document.getElementById('outside_monthly_rate')?.value || 50);
+                const outsideDaily = (sqm * outside).toFixed(2);
+                const outsideMonthly = (sqm * outside * 30).toFixed(2);
+
                 const preview = document.getElementById('rate_preview');
                 if (preview) {
-                    preview.textContent = 'A ' + sqm + ' sqm inside stall pays ₱' + monthly + '/month (' + sqm + ' sqm × ₱' + inside.toFixed(2) + '/sqm)';
+                    preview.innerHTML = 'A ' + sqm + ' sqm inside stall pays ₱' + insideDaily + '/day (₱' + insideMonthly + '/month) (' + sqm + ' sqm × ₱' + inside.toFixed(2) + '/sqm daily)<br>' +
+                                      'A ' + sqm + ' sqm outside stall pays ₱' + outsideDaily + '/day (₱' + outsideMonthly + '/month) (' + sqm + ' sqm × ₱' + outside.toFixed(2) + '/sqm daily)';
                 }
             };
             rateInputs.forEach((inp) => inp.addEventListener('input', updatePreview));

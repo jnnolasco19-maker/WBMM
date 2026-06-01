@@ -14,20 +14,18 @@ final class RateModelTest extends TestCase
     private function compute(array $rate, string $stallType, string $paymentType, float $sqm = 0): float
     {
         if ($stallType === 'inside') {
-            $monthly = $sqm * (float) $rate['inside_rate_per_sqm'];
-
+            $daily = $sqm * (float) $rate['inside_rate_per_sqm'];
             return match ($paymentType) {
-                'daily'  => round($monthly / 30, 2),
-                'weekly' => round($monthly / 4, 2),
-                default  => round($monthly, 2),
+                'daily'   => round($daily, 2),
+                default   => round($daily * 30, 2),
             };
         }
 
         if ($stallType === 'outside') {
+            $daily = $sqm * (float) $rate['outside_monthly_rate'];
             return match ($paymentType) {
-                'daily'  => (float) $rate['outside_daily_rate'],
-                'weekly' => (float) $rate['outside_weekly_rate'],
-                default  => (float) $rate['outside_monthly_rate'],
+                'daily'   => round($daily, 2),
+                default   => round($daily * 30, 2),
             };
         }
 
@@ -40,24 +38,29 @@ final class RateModelTest extends TestCase
             'inside_rate_per_sqm'  => 45.00,
             'outside_daily_rate'   => 25.00,
             'outside_weekly_rate'  => 150.00,
-            'outside_monthly_rate' => 500.00,
+            'outside_monthly_rate' => 50.00,
             'ambulant_daily_rate'  => 15.00,
         ];
     }
 
     public function testInsideMonthlyComputation(): void
     {
-        $this->assertSame(270.0, $this->compute($this->rateFixture(), 'inside', 'monthly', 6.0));
+        $this->assertSame(8100.0, $this->compute($this->rateFixture(), 'inside', 'monthly', 6.0));
     }
 
     public function testInsideDailyComputation(): void
     {
-        $this->assertSame(9.0, $this->compute($this->rateFixture(), 'inside', 'daily', 6.0));
+        $this->assertSame(270.0, $this->compute($this->rateFixture(), 'inside', 'daily', 6.0));
     }
 
-    public function testOutsideFlatWeekly(): void
+    public function testOutsideMonthlyComputation(): void
     {
-        $this->assertSame(150.0, $this->compute($this->rateFixture(), 'outside', 'weekly', 0));
+        $this->assertSame(3750.0, $this->compute($this->rateFixture(), 'outside', 'monthly', 2.5));
+    }
+
+    public function testOutsideDailyComputation(): void
+    {
+        $this->assertSame(125.0, $this->compute($this->rateFixture(), 'outside', 'daily', 2.5));
     }
 
     public function testAmbulantDailyOnly(): void

@@ -25,6 +25,7 @@ class RateModel extends Model
             ->join('users u', 'u.id = r.created_by', 'left')
             ->where('r.effective_date <=', date('Y-m-d'))
             ->orderBy('r.effective_date', 'DESC')
+            ->orderBy('r.id', 'DESC')
             ->limit(1)
             ->get()->getRowArray() ?: null;
     }
@@ -48,19 +49,18 @@ class RateModel extends Model
     public function compute(array $rate, string $stallType, string $paymentType, float $sqm = 0): float
     {
         if ($stallType === 'inside') {
-            $monthly = $sqm * (float) $rate['inside_rate_per_sqm'];
+            $daily = $sqm * (float) $rate['inside_rate_per_sqm'];
             return match ($paymentType) {
-                'daily'   => round($monthly / 30, 2),
-                'weekly'  => round($monthly / 4,  2),
-                default   => round($monthly,       2),
+                'daily'   => round($daily, 2),
+                default   => round($daily * 30, 2),
             };
         }
 
         if ($stallType === 'outside') {
+            $daily = $sqm * (float) $rate['outside_monthly_rate'];
             return match ($paymentType) {
-                'daily'   => (float) $rate['outside_daily_rate'],
-                'weekly'  => (float) $rate['outside_weekly_rate'],
-                default   => (float) $rate['outside_monthly_rate'],
+                'daily'   => round($daily, 2),
+                default   => round($daily * 30, 2),
             };
         }
 

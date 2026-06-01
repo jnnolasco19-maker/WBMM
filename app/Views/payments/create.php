@@ -48,7 +48,7 @@
 <div class="row g-3">
     <div class="col-md-3"><label class="form-label">Payment Type</label>
         <select name="payment_type" id="payment_type" class="form-select" required <?= $can_collect ? '' : 'disabled' ?>>
-            <option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+            <option value="daily">Daily</option><option value="monthly">Monthly</option>
         </select></div>
     <div class="col-md-3"><label class="form-label">Period Start</label>
         <input type="date" name="period_start" id="period_start" class="form-control" required <?= $can_collect ? '' : 'disabled' ?>></div>

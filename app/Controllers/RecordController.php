@@ -234,8 +234,8 @@ class RecordController extends BaseController
 
     private function csvDownload(string $filename, array $headers, array $rows, callable $mapper): object
     {
-        $this->response->setHeader('Content-Type', 'text/csv; charset=utf-8');
-        $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
 
         $output = fopen('php://output', 'w');
         fputcsv($output, $headers);

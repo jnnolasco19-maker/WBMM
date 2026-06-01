@@ -30,6 +30,10 @@ abstract class BaseController extends Controller
             $alertCount = count((new VendorModel())->getExpiringPermits(30));
         }
 
+        if (session()->get('notifications_viewed')) {
+            $alertCount = 0;
+        }
+
         return array_merge([
             'user_name'   => session()->get('user_name'),
             'user_role'   => $role,

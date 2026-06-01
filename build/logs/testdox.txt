@@ -1,3 +1,8 @@
+Assignment (Tests\Feature\Assignment)
+ [x] Edit assignment access denied for collector
+ [x] Edit assignment get
+ [x] Edit assignment post success
+
 Auth (Tests\Feature\Auth)
  [x] Login page loads
  [x] Invalid login shows generic error
@@ -17,6 +22,7 @@ Health
 
 Payment Ajax (Tests\Feature\PaymentAjax)
  [x] Ajax compute inside monthly
+ [x] Ajax compute outside monthly
 
 Payment Reference (Tests\Unit\PaymentReference)
  [x] Reference no pattern
@@ -25,6 +31,7 @@ Payment Reference (Tests\Unit\PaymentReference)
 Rate Model (Tests\Unit\RateModel)
  [x] Inside monthly computation
  [x] Inside daily computation
- [x] Outside flat weekly
+ [x] Outside monthly computation
+ [x] Outside daily computation
  [x] Ambulant daily only
 

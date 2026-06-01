@@ -90,8 +90,10 @@ class StallController extends BaseController
             $rules['status'] = 'required|in_list[vacant,suspended]';
         }
 
+        if (in_array($type, ['inside', 'outside'], true)) {
+            $rules['sqm'] = 'required|decimal|greater_than[0]';
+        }
         if ($type === 'inside') {
-            $rules['sqm']         = 'required|decimal|greater_than[0]';
             $rules['floor_level'] = 'required|max_length[20]';
         }
 
@@ -103,7 +105,7 @@ class StallController extends BaseController
             'stall_code'  => strtoupper(trim($this->request->getPost('stall_code'))),
             'section'     => $this->request->getPost('section'),
             'type'        => $type,
-            'sqm'         => $type === 'inside' ? $this->request->getPost('sqm') : null,
+            'sqm'         => in_array($type, ['inside', 'outside'], true) ? $this->request->getPost('sqm') : null,
             'floor_level' => $type === 'inside' ? $this->request->getPost('floor_level') : null,
             'notes'       => $this->request->getPost('notes') ?: null,
         ];

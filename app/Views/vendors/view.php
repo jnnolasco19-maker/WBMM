@@ -27,12 +27,17 @@
 <div class="card mb-3"><div class="card-header">Active Stall Assignments</div>
 <?php if (empty($active_stalls)): ?><div class="card-body text-muted">No active stalls.</div>
 <?php else: ?>
-<table class="table mb-0"><thead><tr><th>Stall</th><th>Permit</th><th>Expiry</th></tr></thead><tbody>
+<table class="table mb-0"><thead><tr><th>Stall</th><th>Permit</th><th>Expiry</th><?php if (in_array($user_role, ['admin', 'staff'], true)): ?><th class="text-end">Action</th><?php endif; ?></tr></thead><tbody>
 <?php foreach ($active_stalls as $s): ?>
 <tr class="<?= in_array($s['id'], $overdue_ids ?? []) ? 'table-danger' : '' ?>">
     <td><a href="<?= base_url('stalls/view/'.$s['stall_id']) ?>"><?= esc($s['stall_code']) ?></a></td>
     <td><?= esc($s['permit_no'] ?? '—') ?></td>
     <td><?= esc($s['permit_expiry'] ?? '—') ?></td>
+    <?php if (in_array($user_role, ['admin', 'staff'], true)): ?>
+    <td class="text-end">
+        <a href="<?= base_url('assignments/edit/' . $s['id']) ?>" class="btn btn-sm btn-outline-primary py-0">Renew</a>
+    </td>
+    <?php endif; ?>
 </tr>
 <?php endforeach; ?>
 </tbody></table>

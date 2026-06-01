@@ -75,7 +75,7 @@ class PaymentController extends BaseController
 
         $rules = [
             'vendor_id'      => 'required|integer',
-            'payment_type'   => 'required|in_list[daily,weekly,monthly]',
+            'payment_type'   => 'required|in_list[daily,monthly]',
             'period_start'   => 'required|valid_date[Y-m-d]',
             'period_end'     => 'required|valid_date[Y-m-d]',
             'computed_amount'=> 'required|decimal',
@@ -89,6 +89,14 @@ class PaymentController extends BaseController
         $vendor = (new VendorModel())->find((int) $this->request->getPost('vendor_id'));
         if (! $vendor || $vendor['status'] !== 'active') {
             return redirect()->back()->withInput()->with('error', 'Invalid vendor selected.');
+        }
+
+        $paymentType = $this->request->getPost('payment_type');
+        if (in_array($vendor['type'], ['inside', 'outside'], true) && $paymentType !== 'monthly') {
+            return redirect()->back()->withInput()->with('error', 'Permanent stall holders can only pay monthly.');
+        }
+        if ($vendor['type'] === 'ambulant' && $paymentType !== 'daily') {
+            return redirect()->back()->withInput()->with('error', 'Ambulant vendors can only pay daily.');
         }
 
         $stallId = (int) $this->request->getPost('stall_id');
@@ -196,11 +204,7 @@ class PaymentController extends BaseController
             return (float) $rate['inside_rate_per_sqm'];
         }
         if ($stallType === 'outside') {
-            return match ($paymentType) {
-                'daily'  => (float) $rate['outside_daily_rate'],
-                'weekly' => (float) $rate['outside_weekly_rate'],
-                default  => (float) $rate['outside_monthly_rate'],
-            };
+            return (float) $rate['outside_monthly_rate'];
         }
 
         return (float) $rate['ambulant_daily_rate'];

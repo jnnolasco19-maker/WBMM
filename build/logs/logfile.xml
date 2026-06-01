@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="CLI Arguments" tests="16" assertions="23" errors="0" failures="0" skipped="0" time="0.221379">
-    <testsuite name="ExampleDatabaseTest" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.055810">
-      <testcase name="testModelFindAll" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" line="17" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="1" time="0.043439"/>
-      <testcase name="testSoftDeleteLeavesRow" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" line="28" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="2" time="0.012371"/>
-    </testsuite>
-    <testsuite name="Tests\Feature\AuthTest" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.140467">
-      <testcase name="testLoginPageLoads" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="37" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.019424"/>
-      <testcase name="testInvalidLoginShowsGenericError" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="44" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.007281"/>
-      <testcase name="testValidAdminLoginRedirectsToDashboard" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="52" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.056923"/>
-      <testcase name="testCollectorLoginRedirectsToPaymentCreate" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="60" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.056839"/>
-    </testsuite>
-    <testsuite name="Tests\Feature\PaymentAjaxTest" file="C:\xampp\htdocs\WBMM\tests\feature\PaymentAjaxTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.021035">
-      <testcase name="testAjaxComputeInsideMonthly" file="C:\xampp\htdocs\WBMM\tests\feature\PaymentAjaxTest.php" line="26" class="Tests\Feature\PaymentAjaxTest" classname="Tests.Feature.PaymentAjaxTest" assertions="2" time="0.021035"/>
-    </testsuite>
-    <testsuite name="ExampleSessionTest" file="C:\xampp\htdocs\WBMM\tests\session\ExampleSessionTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.000976">
-      <testcase name="testSessionSimple" file="C:\xampp\htdocs\WBMM\tests\session\ExampleSessionTest.php" line="10" class="ExampleSessionTest" classname="ExampleSessionTest" assertions="1" time="0.000976"/>
-    </testsuite>
-    <testsuite name="HealthTest" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.002178">
-      <testcase name="testIsDefinedAppPath" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" line="12" class="HealthTest" classname="HealthTest" assertions="1" time="0.000828"/>
-      <testcase name="testBaseUrlHasBeenSet" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" line="17" class="HealthTest" classname="HealthTest" assertions="2" time="0.001350"/>
-    </testsuite>
-    <testsuite name="Tests\Unit\PaymentReferenceTest" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.000513">
-      <testcase name="testReferenceNoPattern" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" line="12" class="Tests\Unit\PaymentReferenceTest" classname="Tests.Unit.PaymentReferenceTest" assertions="1" time="0.000409"/>
-      <testcase name="testReferenceSequencePadding" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" line="18" class="Tests\Unit\PaymentReferenceTest" classname="Tests.Unit.PaymentReferenceTest" assertions="1" time="0.000104"/>
-    </testsuite>
-    <testsuite name="Tests\Unit\RateModelTest" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.000399">
-      <testcase name="testInsideMonthlyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="48" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000140"/>
-      <testcase name="testInsideDailyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="53" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000098"/>
-      <testcase name="testOutsideFlatWeekly" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="58" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000083"/>
-      <testcase name="testAmbulantDailyOnly" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="63" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000078"/>
+  <testsuite name="C:\xampp\htdocs\WBMM\phpunit.xml.dist" tests="21" assertions="35" errors="0" failures="0" skipped="0" time="0.239665">
+    <testsuite name="App" tests="21" assertions="35" errors="0" failures="0" skipped="0" time="0.239665">
+      <testsuite name="ExampleDatabaseTest" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.056980">
+        <testcase name="testModelFindAll" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" line="17" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="1" time="0.042800"/>
+        <testcase name="testSoftDeleteLeavesRow" file="C:\xampp\htdocs\WBMM\tests\database\ExampleDatabaseTest.php" line="28" class="ExampleDatabaseTest" classname="ExampleDatabaseTest" assertions="2" time="0.014180"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\AssignmentTest" file="C:\xampp\htdocs\WBMM\tests\feature\AssignmentTest.php" tests="3" assertions="9" errors="0" failures="0" skipped="0" time="0.039379">
+        <testcase name="testEditAssignmentAccessDeniedForCollector" file="C:\xampp\htdocs\WBMM\tests\feature\AssignmentTest.php" line="26" class="Tests\Feature\AssignmentTest" classname="Tests.Feature.AssignmentTest" assertions="1" time="0.015609"/>
+        <testcase name="testEditAssignmentGet" file="C:\xampp\htdocs\WBMM\tests\feature\AssignmentTest.php" line="37" class="Tests\Feature\AssignmentTest" classname="Tests.Feature.AssignmentTest" assertions="3" time="0.014935"/>
+        <testcase name="testEditAssignmentPostSuccess" file="C:\xampp\htdocs\WBMM\tests\feature\AssignmentTest.php" line="50" class="Tests\Feature\AssignmentTest" classname="Tests.Feature.AssignmentTest" assertions="5" time="0.008834"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\AuthTest" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.125201">
+        <testcase name="testLoginPageLoads" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="37" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.006032"/>
+        <testcase name="testInvalidLoginShowsGenericError" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="44" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.006843"/>
+        <testcase name="testValidAdminLoginRedirectsToDashboard" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="52" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.056312"/>
+        <testcase name="testCollectorLoginRedirectsToPaymentCreate" file="C:\xampp\htdocs\WBMM\tests\feature\AuthTest.php" line="60" class="Tests\Feature\AuthTest" classname="Tests.Feature.AuthTest" assertions="2" time="0.056015"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\PaymentAjaxTest" file="C:\xampp\htdocs\WBMM\tests\feature\PaymentAjaxTest.php" tests="2" assertions="4" errors="0" failures="0" skipped="0" time="0.014162">
+        <testcase name="testAjaxComputeInsideMonthly" file="C:\xampp\htdocs\WBMM\tests\feature\PaymentAjaxTest.php" line="26" class="Tests\Feature\PaymentAjaxTest" classname="Tests.Feature.PaymentAjaxTest" assertions="2" time="0.008139"/>
+        <testcase name="testAjaxComputeOutsideMonthly" file="C:\xampp\htdocs\WBMM\tests\feature\PaymentAjaxTest.php" line="43" class="Tests\Feature\PaymentAjaxTest" classname="Tests.Feature.PaymentAjaxTest" assertions="2" time="0.006023"/>
+      </testsuite>
+      <testsuite name="ExampleSessionTest" file="C:\xampp\htdocs\WBMM\tests\session\ExampleSessionTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.000948">
+        <testcase name="testSessionSimple" file="C:\xampp\htdocs\WBMM\tests\session\ExampleSessionTest.php" line="10" class="ExampleSessionTest" classname="ExampleSessionTest" assertions="1" time="0.000948"/>
+      </testsuite>
+      <testsuite name="HealthTest" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" tests="2" assertions="3" errors="0" failures="0" skipped="0" time="0.002113">
+        <testcase name="testIsDefinedAppPath" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" line="12" class="HealthTest" classname="HealthTest" assertions="1" time="0.000806"/>
+        <testcase name="testBaseUrlHasBeenSet" file="C:\xampp\htdocs\WBMM\tests\unit\HealthTest.php" line="17" class="HealthTest" classname="HealthTest" assertions="2" time="0.001307"/>
+      </testsuite>
+      <testsuite name="Tests\Unit\PaymentReferenceTest" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.000440">
+        <testcase name="testReferenceNoPattern" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" line="12" class="Tests\Unit\PaymentReferenceTest" classname="Tests.Unit.PaymentReferenceTest" assertions="1" time="0.000339"/>
+        <testcase name="testReferenceSequencePadding" file="C:\xampp\htdocs\WBMM\tests\unit\PaymentReferenceTest.php" line="18" class="Tests\Unit\PaymentReferenceTest" classname="Tests.Unit.PaymentReferenceTest" assertions="1" time="0.000100"/>
+      </testsuite>
+      <testsuite name="Tests\Unit\RateModelTest" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" tests="5" assertions="5" errors="0" failures="0" skipped="0" time="0.000442">
+        <testcase name="testInsideMonthlyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="46" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000102"/>
+        <testcase name="testInsideDailyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="51" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000082"/>
+        <testcase name="testOutsideMonthlyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="56" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000084"/>
+        <testcase name="testOutsideDailyComputation" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="61" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000098"/>
+        <testcase name="testAmbulantDailyOnly" file="C:\xampp\htdocs\WBMM\tests\unit\RateModelTest.php" line="66" class="Tests\Unit\RateModelTest" classname="Tests.Unit.RateModelTest" assertions="1" time="0.000075"/>
+      </testsuite>
     </testsuite>
   </testsuite>
 </testsuites>

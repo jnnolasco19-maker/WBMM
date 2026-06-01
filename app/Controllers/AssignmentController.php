@@ -133,4 +133,55 @@ class AssignmentController extends BaseController
 
         return redirect()->to('/assignments')->with('success', 'Assignment terminated.');
     }
+
+    public function edit(int $id): string|object
+    {
+        $guard = $this->requireAdminOrStaff();
+        if ($guard !== true) {
+            return $guard;
+        }
+
+        $vsModel = new VendorStallModel();
+        $assign  = $vsModel->getDetail($id);
+
+        if (! $assign) {
+            return redirect()->to('/assignments')->with('error', 'Assignment not found.');
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            return $this->updateAssignment($id, $assign);
+        }
+
+        return view('assignments/edit', $this->viewData([
+            'page_title' => 'Renew Permit / Edit Assignment',
+            'assign'     => $assign,
+        ]));
+    }
+
+    private function updateAssignment(int $id, array $assign): object
+    {
+        $rules = [
+            'assigned_date' => 'required|valid_date[Y-m-d]',
+            'permit_expiry' => 'permit_empty|valid_date[Y-m-d]',
+            'permit_issued' => 'permit_empty|valid_date[Y-m-d]',
+        ];
+
+        if (! $this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $vsModel = new VendorStallModel();
+        $vsModel->update($id, [
+            'permit_no'     => $this->request->getPost('permit_no') ?: null,
+            'permit_issued' => $this->request->getPost('permit_issued') ?: null,
+            'permit_expiry' => $this->request->getPost('permit_expiry') ?: null,
+            'assigned_date' => $this->request->getPost('assigned_date'),
+            'notes'         => $this->request->getPost('notes') ?: null,
+        ]);
+
+        (new AuditLogModel())->log('update', 'vendor_stalls', $id,
+            'Renewed permit / updated assignment for stall ' . $assign['stall_code']);
+
+        return redirect()->to('/vendors/view/' . $assign['vendor_id'])->with('success', 'Assignment updated successfully.');
+    }
 }
