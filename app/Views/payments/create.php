@@ -65,7 +65,15 @@
     <div class="col-md-3"><label class="form-label">Computed Amount (₱)</label>
         <input type="text" id="computed_amount" name="computed_amount" class="form-control bg-light" readonly></div>
     <div class="col-md-3"><label class="form-label">Amount Paid (₱) *</label>
-        <input type="number" step="0.01" name="amount_paid" id="amount_paid" class="form-control" required <?= $can_collect ? '' : 'disabled' ?>></div>
+        <div class="input-group">
+            <input type="number" step="0.01" name="amount_paid" id="amount_paid" class="form-control" required readonly <?= $can_collect ? '' : 'disabled' ?>>
+            <?php if ($can_collect): ?>
+            <button class="btn btn-outline-secondary" type="button" id="toggle_amount_paid" title="Click to edit / partial payment">
+                <i class="fa-solid fa-lock"></i>
+            </button>
+            <?php endif; ?>
+        </div>
+    </div>
     <?php if ($user_role === 'admin'): ?>
     <div class="col-md-4"><label class="form-label">Collected By (Maningil)</label>
         <select name="collected_by" class="form-select">

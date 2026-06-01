@@ -71,7 +71,7 @@
             if (data.computed_amount !== undefined) {
                 computedEl.value = parseFloat(data.computed_amount).toFixed(2);
                 if (rateUsedEl) rateUsedEl.value = data.rate_used;
-                if (amountPaidEl && !amountPaidEl.dataset.touched) {
+                if (amountPaidEl && (amountPaidEl.hasAttribute('readonly') || !amountPaidEl.dataset.touched)) {
                     amountPaidEl.value = parseFloat(data.computed_amount).toFixed(2);
                 }
                 checkUnderpayment();
@@ -231,6 +231,29 @@
                 this.dataset.touched = '1';
                 checkUnderpayment();
             });
+
+            const toggleBtn = document.getElementById('toggle_amount_paid');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function () {
+                    const isReadonly = amountPaid.hasAttribute('readonly');
+                    if (isReadonly) {
+                        amountPaid.removeAttribute('readonly');
+                        amountPaid.focus();
+                        toggleBtn.innerHTML = '<i class="fa-solid fa-lock-open text-warning"></i>';
+                        toggleBtn.classList.remove('btn-outline-secondary');
+                        toggleBtn.classList.add('btn-warning');
+                    } else {
+                        amountPaid.setAttribute('readonly', 'readonly');
+                        const computed = document.getElementById('computed_amount')?.value || 0;
+                        amountPaid.value = computed;
+                        amountPaid.dataset.touched = '';
+                        toggleBtn.innerHTML = '<i class="fa-solid fa-lock"></i>';
+                        toggleBtn.classList.remove('btn-warning');
+                        toggleBtn.classList.add('btn-outline-secondary');
+                        checkUnderpayment();
+                    }
+                });
+            }
         }
 
         suggestPeriodDates();

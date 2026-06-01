@@ -137,6 +137,30 @@ class PaymentController extends BaseController
         }
 
         $paymentModel = new PaymentModel();
+
+        // Prevent duplicate or overlapping payments for the same vendor/stall
+        $periodStart = $this->request->getPost('period_start');
+        $periodEnd   = $this->request->getPost('period_end');
+        
+        $overlapQuery = $paymentModel->where('vendor_id', (int) $vendor['id'])
+            ->where('period_start <=', $periodEnd)
+            ->where('period_end >=', $periodStart);
+            
+        if ($stallId > 0) {
+            $overlapQuery->where('stall_id', $stallId);
+        } else {
+            $overlapQuery->where('stall_id IS NULL');
+        }
+        
+        $duplicate = $overlapQuery->first();
+        if ($duplicate) {
+            $formattedStart = date('M d, Y', strtotime($duplicate['period_start']));
+            $formattedEnd   = date('M d, Y', strtotime($duplicate['period_end']));
+            return redirect()->back()->withInput()->with('error', 
+                "A payment already exists for this vendor covering the period {$formattedStart} to {$formattedEnd} (Reference: {$duplicate['reference_no']})."
+            );
+        }
+
         $referenceNo    = $paymentModel->generateReferenceNo();
         $paymentModel->insert([
             'reference_no'    => $referenceNo,

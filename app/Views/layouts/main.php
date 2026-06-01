@@ -8,8 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
-    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
+    <link href="<?= base_url('assets/css/custom.css?v=1.2') ?>" rel="stylesheet">
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>" crossorigin="use-credentials">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -41,6 +41,101 @@ $path = $uri->getPath();
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </li>
+            </ul>
+            <ul class="navbar-nav d-lg-none mt-3 border-top border-white-50 pt-3">
+                <?php if ($role !== 'collector'): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'dashboard') ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">
+                        <i class="fa-solid fa-chart-line me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'notifications') ? 'active' : '' ?>" href="<?= base_url('notifications') ?>">
+                        <i class="fa-solid fa-bell me-2"></i> Notifications
+                        <?php if ($alerts > 0): ?><span class="badge bg-danger ms-auto float-end"><?= $alerts ?></span><?php endif; ?>
+                    </a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'stalls') ? 'active' : '' ?>" href="<?= base_url('stalls') ?>">
+                        <i class="fa-solid fa-border-all me-2"></i> Stalls
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'vendors') ? 'active' : '' ?>" href="<?= base_url('vendors') ?>">
+                        <i class="fa-solid fa-users me-2"></i> Vendors
+                    </a>
+                </li>
+                <?php if (in_array($role, ['admin', 'staff'], true)): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'assignments') ? 'active' : '' ?>" href="<?= base_url('assignments') ?>">
+                        <i class="fa-solid fa-link me-2"></i> Assignments
+                    </a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'payments') ? 'active' : '' ?>" href="<?= base_url($role === 'collector' ? 'payments/create' : 'payments') ?>">
+                        <i class="fa-solid fa-receipt me-2"></i> Arkalaba Collection
+                    </a>
+                </li>
+                <?php if ($role === 'collector'): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= $path === 'records' ? 'active' : '' ?>" href="<?= base_url('records') ?>">
+                        <i class="fa-solid fa-list me-2"></i> My Collections
+                    </a>
+                </li>
+                <?php endif; ?>
+                <?php if ($role !== 'collector'): ?>
+                <li class="nav-item mt-2">
+                    <span class="navbar-text text-white-50 small text-uppercase fw-bold">Records & Reports</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $path === 'records' ? 'active' : '' ?>" href="<?= base_url('records') ?>">
+                        <i class="fa-solid fa-list me-2"></i> Transactions
+                    </a>
+                </li>
+                <?php if (in_array($role, ['admin', 'supervisor'], true)): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'records/summary') ? 'active' : '' ?>" href="<?= base_url('records/summary') ?>">
+                        <i class="fa-solid fa-chart-pie"></i> Summary
+                    </a>
+                </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'records/overdue') ? 'active' : '' ?>" href="<?= base_url('records/overdue') ?>">
+                        <i class="fa-solid fa-circle-exclamation text-warning me-2"></i> Overdue Arkalaba
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'records/vacant') ? 'active' : '' ?>" href="<?= base_url('records/vacant') ?>">
+                        <i class="fa-solid fa-door-open me-2"></i> Vacant Stalls
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'records/permits') ? 'active' : '' ?>" href="<?= base_url('records/permits') ?>">
+                        <i class="fa-solid fa-id-card me-2"></i> Permit Expiry
+                    </a>
+                </li>
+                <?php if (in_array($role, ['admin', 'supervisor'], true)): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'reports/collector') ? 'active' : '' ?>" href="<?= base_url('reports/collector') ?>">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> Collector Remittance
+                    </a>
+                </li>
+                <?php endif; ?>
+                <?php if ($role === 'admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'rates') ? 'active' : '' ?>" href="<?= base_url('rates') ?>">
+                        <i class="fa-solid fa-tags me-2"></i> Rate Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= str_contains($path, 'users') ? 'active' : '' ?>" href="<?= base_url('users') ?>">
+                        <i class="fa-solid fa-user-gear"></i> User Management
+                    </a>
+                </li>
+                <?php endif; ?>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -182,7 +277,7 @@ $path = $uri->getPath();
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?= base_url('assets/js/wbmm.js') ?>"></script>
+<script src="<?= base_url('assets/js/wbmm.js?v=1.2') ?>"></script>
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

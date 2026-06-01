@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
-    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>" crossorigin="use-credentials">
 </head>
 <body class="bg-light d-flex align-items-center min-vh-100">
 <div class="container">
