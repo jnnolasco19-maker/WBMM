@@ -88,14 +88,17 @@ Our transparent `.htaccess` automatically routes all traffic into the `public` d
 ---
 
 ## 🔒 Default Logins for Testing (from schema.sql)
-You can sign in with any of these pre-seeded roles to evaluate the system:
+You can sign in with any of these pre-seeded roles to evaluate the system (all accounts share the default password: **`Admin@1234`**):
 
 * **Administrator Account:**
   * **Email:** `admin@wbmm.com`
-  * **Password:** `password123`
+  * **Password:** `Admin@1234`
+* **Supervisor Account:**
+  * **Email:** `supervisor@wbmm.com`
+  * **Password:** `Admin@1234`
 * **Staff Account:**
   * **Email:** `staff@wbmm.com`
-  * **Password:** `password123`
-* **Collector Account:**
-  * **Email:** `collector@wbmm.com`
-  * **Password:** `password123`
+  * **Password:** `Admin@1234`
+* **Collector Accounts:**
+  * **Emails:** `collector1@wbmm.com` (Juan Maningil) or `collector2@wbmm.com` (Pedro Tigsingil)
+  * **Password:** `Admin@1234`
