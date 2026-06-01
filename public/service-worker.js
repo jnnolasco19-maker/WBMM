@@ -10,6 +10,7 @@ const urlsToCache = [
 
 // Install Service Worker and cache core static assets
 self.addEventListener('install', event => {
+  self.skipWaiting(); // Force this new service worker to activate immediately and replace the old one
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -17,6 +18,11 @@ self.addEventListener('install', event => {
         return cache.addAll(urlsToCache);
       })
   );
+});
+
+// Take control of open pages instantly
+self.addEventListener('activate', event => {
+  event.waitUntil(clients.claim()); // Force immediate takeover of current browser sessions
 });
 
 // Network First Caching Strategy (Crucial for dynamic PHP/MySQL applications)
