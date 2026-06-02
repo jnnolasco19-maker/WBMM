@@ -24,6 +24,9 @@
             <select name="status" class="form-select"><option value="vacant">Vacant</option><option value="suspended">Suspended</option></select>
             <small class="text-muted">Occupied is set automatically when a vendor is assigned.</small></div>
         <div class="col-12"><label class="form-label">Notes</label><textarea name="notes" class="form-control" rows="2"><?= old('notes') ?></textarea></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit No</label><input type="text" name="barangay_permit_no" class="form-control" value="<?= old('barangay_permit_no') ?>"></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit Issued</label><input type="date" name="barangay_permit_issued" class="form-control" value="<?= old('barangay_permit_issued') ?>"></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit Expiry</label><input type="date" name="barangay_permit_expiry" class="form-control" value="<?= old('barangay_permit_expiry') ?>"></div>
     </div>
     <div class="mt-4"><button class="btn btn-primary">Save Stall</button>
         <a href="<?= base_url('stalls') ?>" class="btn btn-outline-secondary">Cancel</a></div>

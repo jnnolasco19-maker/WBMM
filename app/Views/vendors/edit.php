@@ -23,6 +23,9 @@
     </select></div>
     <div class="col-md-4"><label class="form-label">ID Number</label><input type="text" name="id_number" class="form-control" value="<?= esc(old('id_number',$vendor['id_number'])) ?>"></div>
     <div class="col-12"><label class="form-label">Address</label><textarea name="address" class="form-control" rows="2"><?= esc(old('address',$vendor['address'])) ?></textarea></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit No</label><input type="text" name="barangay_permit_no" class="form-control" value="<?= esc(old('barangay_permit_no',$vendor['barangay_permit_no'])) ?>"></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit Issued</label><input type="date" name="barangay_permit_issued" class="form-control" value="<?= esc(old('barangay_permit_issued',$vendor['barangay_permit_issued'])) ?>"></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit Expiry</label><input type="date" name="barangay_permit_expiry" class="form-control" value="<?= esc(old('barangay_permit_expiry',$vendor['barangay_permit_expiry'])) ?>"></div>
 </div>
 <div class="mt-4"><button class="btn btn-primary">Update</button>
 <a href="<?= base_url('vendors/view/'.$vendor['id']) ?>" class="btn btn-outline-secondary">Cancel</a></div>

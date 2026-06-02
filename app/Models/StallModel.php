@@ -11,6 +11,7 @@ class StallModel extends Model
     protected $allowedFields = [
         'stall_code', 'section', 'type', 'sqm',
         'floor_level', 'status', 'notes',
+        'barangay_permit_no', 'barangay_permit_issued', 'barangay_permit_expiry',
     ];
     protected $useTimestamps = false;
     protected $returnType    = 'array';

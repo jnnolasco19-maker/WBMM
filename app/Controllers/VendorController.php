@@ -84,11 +84,14 @@ class VendorController extends BaseController
     private function saveVendor(?int $id = null): object
     {
         $rules = [
-            'first_name' => 'required|max_length[100]',
-            'last_name'  => 'required|max_length[100]',
-            'type'       => 'required|in_list[inside,outside,ambulant]',
-            'status'     => 'required|in_list[active,inactive,suspended]',
-            'contact'    => 'permit_empty|max_length[20]',
+            'first_name'             => 'required|max_length[100]',
+            'last_name'              => 'required|max_length[100]',
+            'type'                   => 'required|in_list[inside,outside,ambulant]',
+            'status'                 => 'required|in_list[active,inactive,suspended]',
+            'contact'                => 'permit_empty|max_length[20]',
+            'barangay_permit_no'     => 'permit_empty|max_length[50]',
+            'barangay_permit_issued' => 'permit_empty|valid_date[Y-m-d]',
+            'barangay_permit_expiry' => 'permit_empty|valid_date[Y-m-d]',
         ];
 
         if (! $this->validate($rules)) {
@@ -96,15 +99,18 @@ class VendorController extends BaseController
         }
 
         $data = [
-            'first_name'    => $this->request->getPost('first_name'),
-            'last_name'     => $this->request->getPost('last_name'),
-            'business_name' => $this->request->getPost('business_name') ?: null,
-            'contact'       => $this->request->getPost('contact') ?: null,
-            'address'       => $this->request->getPost('address') ?: null,
-            'id_type'       => $this->request->getPost('id_type') ?: null,
-            'id_number'     => $this->request->getPost('id_number') ?: null,
-            'type'          => $this->request->getPost('type'),
-            'status'        => $this->request->getPost('status'),
+            'first_name'             => $this->request->getPost('first_name'),
+            'last_name'              => $this->request->getPost('last_name'),
+            'business_name'          => $this->request->getPost('business_name') ?: null,
+            'contact'                => $this->request->getPost('contact') ?: null,
+            'address'                => $this->request->getPost('address') ?: null,
+            'id_type'                => $this->request->getPost('id_type') ?: null,
+            'id_number'              => $this->request->getPost('id_number') ?: null,
+            'type'                   => $this->request->getPost('type'),
+            'status'                 => $this->request->getPost('status'),
+            'barangay_permit_no'     => $this->request->getPost('barangay_permit_no') ?: null,
+            'barangay_permit_issued' => $this->request->getPost('barangay_permit_issued') ?: null,
+            'barangay_permit_expiry' => $this->request->getPost('barangay_permit_expiry') ?: null,
         ];
 
         $model = new VendorModel();

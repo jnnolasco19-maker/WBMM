@@ -24,6 +24,9 @@
         <?php foreach (['active','inactive','suspended'] as $st): ?><option value="<?= $st ?>"><?= ucfirst($st) ?></option><?php endforeach; ?>
     </select></div>
     <div class="col-12"><label class="form-label">Address</label><textarea name="address" class="form-control" rows="2"><?= old('address') ?></textarea></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit No</label><input type="text" name="barangay_permit_no" class="form-control" value="<?= old('barangay_permit_no') ?>"></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit Issued</label><input type="date" name="barangay_permit_issued" class="form-control" value="<?= old('barangay_permit_issued') ?>"></div>
+    <div class="col-md-4"><label class="form-label">Barangay Permit Expiry</label><input type="date" name="barangay_permit_expiry" class="form-control" value="<?= old('barangay_permit_expiry') ?>"></div>
 </div>
 <div class="mt-4"><button class="btn btn-primary">Register Vendor</button>
 <a href="<?= base_url('vendors') ?>" class="btn btn-outline-secondary">Cancel</a></div>

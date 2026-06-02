@@ -57,6 +57,9 @@ CREATE TABLE stalls (
     floor_level VARCHAR(20)  DEFAULT NULL,
     status      ENUM('occupied','vacant','suspended') DEFAULT 'vacant',
     notes       TEXT,
+    barangay_permit_no  VARCHAR(50),
+    barangay_permit_issued DATE,
+    barangay_permit_expiry DATE,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,18 +67,21 @@ CREATE TABLE stalls (
 -- VENDORS (people or businesses)
 -- --------------------------------------------------------
 CREATE TABLE vendors (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
-    vendor_no       VARCHAR(30)  NOT NULL UNIQUE,
-    first_name      VARCHAR(100) NOT NULL,
-    last_name       VARCHAR(100) NOT NULL,
-    business_name   VARCHAR(150),
-    contact         VARCHAR(20),
-    address         TEXT,
-    id_type         VARCHAR(50),
-    id_number       VARCHAR(50),
-    type            ENUM('inside','outside','ambulant') NOT NULL,
-    status          ENUM('active','inactive','suspended') DEFAULT 'active',
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    vendor_no           VARCHAR(30)  NOT NULL UNIQUE,
+    first_name          VARCHAR(100) NOT NULL,
+    last_name           VARCHAR(100) NOT NULL,
+    business_name       VARCHAR(150),
+    contact             VARCHAR(20),
+    address             TEXT,
+    id_type             VARCHAR(50),
+    id_number           VARCHAR(50),
+    type                ENUM('inside','outside','ambulant') NOT NULL,
+    status              ENUM('active','inactive','suspended') DEFAULT 'active',
+    barangay_permit_no  VARCHAR(50),
+    barangay_permit_issued DATE,
+    barangay_permit_expiry DATE,
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

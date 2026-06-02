@@ -26,6 +26,9 @@
                 <?php endforeach; ?>
             </select></div>
         <div class="col-12"><label class="form-label">Notes</label><textarea name="notes" class="form-control" rows="2"><?= esc(old('notes', $stall['notes'])) ?></textarea></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit No</label><input type="text" name="barangay_permit_no" class="form-control" value="<?= esc(old('barangay_permit_no', $stall['barangay_permit_no'])) ?>"></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit Issued</label><input type="date" name="barangay_permit_issued" class="form-control" value="<?= esc(old('barangay_permit_issued', $stall['barangay_permit_issued'])) ?>"></div>
+        <div class="col-md-4"><label class="form-label">Barangay Permit Expiry</label><input type="date" name="barangay_permit_expiry" class="form-control" value="<?= esc(old('barangay_permit_expiry', $stall['barangay_permit_expiry'])) ?>"></div>
     </div>
     <div class="mt-4"><button class="btn btn-primary">Update</button>
         <a href="<?= base_url('stalls') ?>" class="btn btn-outline-secondary">Cancel</a></div>

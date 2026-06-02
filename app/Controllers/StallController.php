@@ -79,11 +79,14 @@ class StallController extends BaseController
     {
         $type = $this->request->getPost('type');
         $rules = [
-            'stall_code' => $id
+            'stall_code'             => $id
                 ? "required|max_length[50]|is_unique[stalls.stall_code,id,{$id}]"
                 : 'required|max_length[50]|is_unique[stalls.stall_code]',
-            'section'    => 'required|max_length[100]',
-            'type'       => 'required|in_list[inside,outside,ambulant]',
+            'section'                => 'required|max_length[100]',
+            'type'                   => 'required|in_list[inside,outside,ambulant]',
+            'barangay_permit_no'     => 'permit_empty|max_length[50]',
+            'barangay_permit_issued' => 'permit_empty|valid_date[Y-m-d]',
+            'barangay_permit_expiry' => 'permit_empty|valid_date[Y-m-d]',
         ];
 
         if ($id === null) {
@@ -102,12 +105,15 @@ class StallController extends BaseController
         }
 
         $data = [
-            'stall_code'  => strtoupper(trim($this->request->getPost('stall_code'))),
-            'section'     => $this->request->getPost('section'),
-            'type'        => $type,
-            'sqm'         => in_array($type, ['inside', 'outside'], true) ? $this->request->getPost('sqm') : null,
-            'floor_level' => $type === 'inside' ? $this->request->getPost('floor_level') : null,
-            'notes'       => $this->request->getPost('notes') ?: null,
+            'stall_code'             => strtoupper(trim($this->request->getPost('stall_code'))),
+            'section'                => $this->request->getPost('section'),
+            'type'                   => $type,
+            'sqm'                    => in_array($type, ['inside', 'outside'], true) ? $this->request->getPost('sqm') : null,
+            'floor_level'            => $type === 'inside' ? $this->request->getPost('floor_level') : null,
+            'notes'                  => $this->request->getPost('notes') ?: null,
+            'barangay_permit_no'     => $this->request->getPost('barangay_permit_no') ?: null,
+            'barangay_permit_issued' => $this->request->getPost('barangay_permit_issued') ?: null,
+            'barangay_permit_expiry' => $this->request->getPost('barangay_permit_expiry') ?: null,
         ];
 
         if ($id === null) {

@@ -11,6 +11,7 @@ class VendorModel extends Model
     protected $allowedFields = [
         'vendor_no', 'first_name', 'last_name', 'business_name',
         'contact', 'address', 'id_type', 'id_number', 'type', 'status',
+        'barangay_permit_no', 'barangay_permit_issued', 'barangay_permit_expiry',
     ];
     protected $useTimestamps = false;
     protected $returnType    = 'array';
